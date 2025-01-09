@@ -1,0 +1,12 @@
+# IDE:
+obj/
+bin/
+.idea/
+.vscode/
+.vs/
+.DS_Store/
+**/.DS_Store/
+*/**/.ropeproject/
+*.pyproj
+*.pyproj.user
+*.sln
