@@ -18,7 +18,7 @@ runs:
     - name: 'Run Ruff Linter'
       shell: bash
       run: |
-        poetry run ruff check --force-exclude --severity ${inputs.severity} ${inputs.config && "--config " + inputs.config} ${inputs.files}
+        poetry run ruff check --force-exclude --severity ${{ inputs.severity }} ${{ inputs.config && join('--config ', inputs.config) }} ${{ inputs.files }}
 
     - name: 'Lint Complete'
       shell: bash
