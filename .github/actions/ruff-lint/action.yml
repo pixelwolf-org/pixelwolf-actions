@@ -1,0 +1,23 @@
+name: 'Ruff Linter Action'
+description: 'A GitHub Action to run the Ruff linter on specified or all project files. Requires poetry.'
+inputs:
+  files:
+    description: 'Comma-separated paths of files or directories to check. If not provided, the linter will run on all files.'
+    default: '.'
+    required: false
+  config:
+    description: 'Path to a custom Ruff configuration file. Optional.'
+    required: false
+  severity:
+    description: 'Minimum severity level to report issues. Options: E (error), W (warning), etc.'
+    default: 'E'
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: 'Run Ruff Linter'
+      run: |
+        poetry run ruff check --force-exclude --severity ${inputs.severity} ${inputs.config && "--config " + inputs.config} ${inputs.files}
+    - name: 'Lint Complete'
+      run: |
+        echo "Ruff Linter finished."
