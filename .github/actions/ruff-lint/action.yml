@@ -8,17 +8,13 @@ inputs:
   config:
     description: 'Path to a custom Ruff configuration file. Optional.'
     required: false
-  severity:
-    description: 'Minimum severity level to report issues. Options: E (error), W (warning), etc.'
-    default: 'E'
-    required: false
 runs:
   using: composite
   steps:
     - name: 'Run Ruff Linter'
       shell: bash
       run: |
-        poetry run ruff check --force-exclude --severity ${{ inputs.severity }} ${{ inputs.config && join('--config ', inputs.config) }} ${{ inputs.files }}
+        poetry run ruff check --force-exclude ${{ inputs.config && join('--config ', inputs.config) }} ${{ inputs.files }}
 
     - name: 'Lint Complete'
       shell: bash

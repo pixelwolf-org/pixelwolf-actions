@@ -17,12 +17,6 @@ This GitHub Action runs the [Ruff linter](https://github.com/charliermarsh/ruff)
 - **Description**: Path to a custom Ruff configuration file.
 - **Default**: Not set.
 
-### `severity` (Optional)
-- **Description**: Minimum severity level to report issues. Options include:
-  - `E`: Error
-  - `W`: Warning
-- **Default**: `E`
-
 ## Usage
 
 ### Basic Example
@@ -38,8 +32,6 @@ jobs:
 
       - name: Run Ruff Linter
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/ruff-lint@main
-        with:
-          files: 'src/, tests/'
 ```
 
 ### Advanced Example
@@ -58,7 +50,6 @@ jobs:
         with:
           files: 'src/, tests/'
           config: '.ruff-config.toml'
-          severity: 'W'
 ```
 
 ## Outputs
