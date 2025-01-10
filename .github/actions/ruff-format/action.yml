@@ -1,0 +1,22 @@
+name: 'Ruff Format'
+description: 'A GitHub Action to run the `ruff format --check` on specified or all project files. Requires poetry.'
+inputs:
+  files:
+    description: 'Comma-separated paths of files or directories to check. If not provided, the linter will run on all files.'
+    default: '.'
+    required: false
+  config:
+    description: 'Path to a custom Ruff configuration file. Optional.'
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: 'Run Ruff Format Check'
+      shell: bash
+      run: |
+        poetry run ruff format --check ${{ inputs.config && join('--config ', inputs.config) }} ${{ inputs.files }}
+
+    - name: 'Format Check Complete'
+      shell: bash
+      run: |
+        echo "Ruff format finished."
