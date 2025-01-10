@@ -14,7 +14,7 @@ runs:
     - name: 'Run Ruff Format Check'
       shell: bash
       run: |
-        poetry run ruff format --check ${{ inputs.config && join('--config ', inputs.config) }} ${{ inputs.files }}
+        poetry run ruff format --check --force-exclude ${{ inputs.config && join('--config ', inputs.config) }} ${{ inputs.files }}
 
     - name: 'Format Check Complete'
       shell: bash
