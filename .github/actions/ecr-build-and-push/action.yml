@@ -1,0 +1,59 @@
+name: 'ECR Build and Push'
+description: 'This GitHub Action builds a Docker image and pushes it to an Amazon Elastic Container Registry (ECR). It requires AWS credentials to be set up in the environment.'
+
+inputs:
+  repository:
+    description: 'The name of the ECR repository where the Docker image will be pushed. Example: my-repo-name'
+    type: string
+    required: true
+  tag:
+    description: 'The tag for the Docker image. If not provided, the commit hash of the current GitHub workflow will be used as the tag.'
+    type: string
+    required: false
+    default: ''
+  context:
+    description: 'The build context for the Docker image. Can be a local path or a URL. Default: "." (current directory).'
+    type: string
+    required: false
+    default: '.'
+
+outputs:
+  image:
+    description: 'The full URI of the built and pushed Docker image in ECR.'
+    value: ${{ steps.set-outputs.outputs.image }}
+
+runs:
+  using: composite
+  steps:
+    - name: 'Determine Docker Image Tag'
+      id: build-tag
+      shell: bash
+      run: |
+        tag="${{ inputs.tag }}"
+        if [ -z "$tag" ]; then
+          tag="$(echo $GITHUB_SHA | cut -c1-7)"
+        fi
+        if [ -z "$tag" ]; then
+          echo "Error: Unable to determine a valid tag."
+          exit 1
+        fi
+        echo "tag=$tag" >> $GITHUB_OUTPUT
+
+    - name: 'Authenticate with Amazon ECR'
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: 'Build and Push Docker Image'
+      uses: docker/build-push-action@v6
+      with:
+        context: ${{ inputs.context }}
+        tags: |
+          ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repository }}:${{ steps.build-tag.outputs.tag }}
+          ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repository }}:latest
+        push: true
+
+    - name: 'Set Output Variables'
+      id: set-outputs
+      shell: bash
+      run: |
+        echo "image=${{ steps.login-ecr.outputs.registry }}/${{ inputs.repository }}:${{ steps.build-tag.outputs.tag }}" >> $GITHUB_OUTPUT
