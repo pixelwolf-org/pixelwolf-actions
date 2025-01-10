@@ -17,9 +17,13 @@ This GitHub Action runs the [Ruff linter](https://github.com/charliermarsh/ruff)
 - **Description**: Path to a custom Ruff configuration file.
 - **Default**: Not set.
 
+## Outputs
+This action does not produce any specific outputs but logs the linting process and results.
+
 ## Usage
 
 ### Basic Example
+
 ```yaml
 jobs:
   lint:
@@ -35,6 +39,7 @@ jobs:
 ```
 
 ### Advanced Example
+
 ```yaml
 jobs:
   lint:
@@ -52,10 +57,9 @@ jobs:
           config: '.ruff-config.toml'
 ```
 
-## Outputs
-This action does not produce any specific outputs but logs the linting process and results.
-
 ## Notes
-- Ensure that your project uses `poetry` for dependency management as it is required to install Ruff.
-- `poetry` must be installed in the runner.
+
+- Ensure `poetry` is installed and configured in your environment.
+- Use this action in conjunction with other CI tools to maintain high code quality.
+- See [Ruff's documentation](https://docs.astral.sh/ruff/) for more details on formatting options and configurations.
 
