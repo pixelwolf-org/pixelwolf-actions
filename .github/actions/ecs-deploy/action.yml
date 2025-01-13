@@ -1,0 +1,55 @@
+name: 'ECS Deploy'
+description: 'Deploy an Amazon ECR image to Amazon ECS. Requires AWS credentials configured in the workflow.'
+
+inputs:
+  ecr-image:
+    description: 'The URI of the Amazon ECR image to deploy.'
+    required: true
+  ecs-cluster:
+    description: 'The name of the Amazon ECS cluster.'
+    required: true
+  ecs-service:
+    description: 'The name of the Amazon ECS service.'
+    required: true
+  ecs-container:
+    description: 'The name of the container in the task definition to update.'
+    required: true
+  ecs-task-definition:
+    description: 'The family name of the Amazon ECS task definition.'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 'Information Check'
+      shell: bash
+      run: |
+        echo "📦 Deploying Image: ${{ inputs.ecr-image }}"
+        echo "📍 ECS Cluster: ${{ inputs.ecs-cluster }}"
+        echo "📍 ECS Service: ${{ inputs.ecs-service }}"
+        echo "📍 ECS Container: ${{ inputs.ecs-container }}"
+        echo "📍 ECS Task Definition Family: ${{ inputs.ecs-task-definition }}"
+
+    - name: 'Download Task Definition JSON'
+      shell: bash
+      run: |
+        aws ecs describe-task-definition \
+          --task-definition ${{ inputs.ecs-task-definition }} \
+          --query taskDefinition > task-definition.json
+
+    - name: 'Update ECS Task Definition with New Image'
+      id: render-task
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: ${{ inputs.ecs-container }}
+        image: ${{ inputs.ecr-image }}
+
+    - name: 'Deploy Updated Task Definition to ECS Service'
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+      with:
+        cluster: ${{ inputs.ecs-cluster }}
+        service: ${{ inputs.ecs-service }}
+        task-definition: ${{ steps.render-task.outputs.task-definition }}
+        wait-for-service-stability: true
+        propagate-tags: SERVICE
