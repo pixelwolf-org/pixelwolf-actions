@@ -16,10 +16,9 @@ A GitHub Action to build a Docker image and push it to an Amazon Elastic Contain
 - **Type**: `string`
 - **Required**: Yes
 
-### `repository`
+### `tag`
 - **Description**: The Docker image tag. If not provided, defaults to the GitHub commit hash.
 - **Type**: `string`
-- **Default**: ""
 - **Required**: No
 
 ### `context`
@@ -28,8 +27,13 @@ A GitHub Action to build a Docker image and push it to an Amazon Elastic Contain
 - **Default**: .
 - **Required**: No
 
-## Outputs
+### `dockerfile`
+- **Description**: The path to the Dockerfile.
+- **Type**: `string`
+- **Default**: `./Dockerfile`
+- **Required**: No
 
+## Outputs
 
 ### `image`
 - **Description**: The full URI of the Docker image pushed to the ECR repository.
@@ -67,6 +71,10 @@ jobs:
           repository: my-ecr-repo
           tag: v1.0.0
           context: ./app
+
+      - name: Print Image URI
+        run: |
+          echo "Docker Image URI: ${{ steps.build.outputs.image }}"
 ```
 
 ## Notes
@@ -75,5 +83,7 @@ jobs:
 - **Permissions**: The IAM role or user associated with your AWS credentials must have permissions to push to the specified ECR repository.
 - **Registry Authentication**: This action handles ECR login automatically using the `aws-actions/amazon-ecr-login` action.
 - **Default Tagging**: If no tag is provided, the first 7 characters of the current GitHub commit hash are used.
+
+---
 
 For additional information, consult the [AWS ECR documentation](https://docs.aws.amazon.com/AmazonECR/latest/userguide/what-is-ecr.html).

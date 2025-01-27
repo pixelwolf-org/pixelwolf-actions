@@ -3,7 +3,7 @@ description: 'This GitHub Action builds a Docker image and pushes it to an Amazo
 
 inputs:
   repository:
-    description: 'The name of the ECR repository where the Docker image will be pushed. Example: my-repo-name'
+    description: 'The name of the ECR repository where the Docker image will be pushed. Example: my-repo-name.'
     type: string
     required: true
   tag:
@@ -16,6 +16,11 @@ inputs:
     type: string
     required: false
     default: '.'
+  dockerfile:
+    description: 'The path to the Dockerfile. Default: "./Dockerfile".'
+    type: string
+    required: false
+    default: './Dockerfile'
 
 outputs:
   image:
@@ -47,6 +52,7 @@ runs:
       uses: docker/build-push-action@v6
       with:
         context: ${{ inputs.context }}
+        file: ${{ inputs.dockerfile }}
         tags: |
           ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repository }}:${{ steps.build-tag.outputs.tag }}
           ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repository }}:latest
