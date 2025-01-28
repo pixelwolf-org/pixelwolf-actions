@@ -37,7 +37,7 @@ jobs:
       ...
 
       - name: Run Ruff Format Check
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/ruff-format@main
+        uses: pixelwolf-org/pixelwolf-actions/actions/ruff-format@main
 ```
 
 ### Advanced Example
@@ -53,7 +53,7 @@ jobs:
       ...
 
       - name: Run Ruff Format Check
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/ruff-format@main
+        uses: pixelwolf-org/pixelwolf-actions/actions/ruff-format@main
         with:
           files: "src/, tests/"
           config: ".ruff.toml"

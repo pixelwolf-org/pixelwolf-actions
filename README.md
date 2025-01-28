@@ -12,12 +12,12 @@ The **Pixelwolf Actions** repository is designed to:
 
 ## Actions
 
-| Action Name                                               | Description                                     |
-|-----------------------------------------------------------|-------------------------------------------------|
-| [ruff-lint](.github/actions/ruff-lint/)                   | Runs Ruff linter on the project files.          |
-| [ruff-format](.github/actions/ruff-format/)               | Runs Ruff formatter check on the project files. |
-| [ecr-build-and-push](.github/actions/ecr-build-and-push/) | Build and push a docker image to AWS ECR.       |
-| [ecs-deploy](.github/actions/ecs-deploy/)                 | Deploys an Amazon ECR image to Amazon ECS.      |
+| Action Name                                       | Description                                     |
+|---------------------------------------------------|-------------------------------------------------|
+| [ruff-lint](actions/ruff-lint/)                   | Runs Ruff linter on the project files.          |
+| [ruff-format](actions/ruff-format/)               | Runs Ruff formatter check on the project files. |
+| [ecr-build-and-push](actions/ecr-build-and-push/) | Build and push a docker image to AWS ECR.       |
+| [ecs-deploy](actions/ecs-deploy/)                 | Deploys an Amazon ECR image to Amazon ECS.      |
 
 ## Repository Structure
 
@@ -63,7 +63,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Linter
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/ruff-lint@main
+        uses: pixelwolf-org/pixelwolf-actions/actions/ruff-lint@main
 ```
 
 ## Contributing

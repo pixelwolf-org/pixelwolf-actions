@@ -35,7 +35,7 @@ jobs:
       ...
 
       - name: Run Ruff Linter
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/ruff-lint@main
+        uses: pixelwolf-org/pixelwolf-actions/actions/ruff-lint@main
 ```
 
 ### Advanced Example
@@ -51,7 +51,7 @@ jobs:
       ...
 
       - name: Run Ruff Linter with custom config
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/ruff-lint@main
+        uses: pixelwolf-org/pixelwolf-actions/actions/ruff-lint@main
         with:
           files: 'src/, tests/'
           config: '.ruff-config.toml'
