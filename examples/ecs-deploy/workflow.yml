@@ -1,0 +1,40 @@
+name: Deploy <env>
+
+run-name: Run <env> Deploy
+
+on:
+  push:
+    branches:
+      - '<branch>'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup aws credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.<aws-oidc-role-arn> }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Build and Push Docker Image
+        id: build
+        uses: pixelwolf-org/pixelwolf-actions/actions/ecr-build-and-push@main
+        with:
+          repository: <ecr-repository-name>
+
+      - name: Deploy Image to ECS
+        uses: pixelwolf-org/pixelwolf-actions/actions/ecs-deploy@main
+        with:
+          ecr-image: ${{ steps.build.outputs.image }}
+          ecs-cluster: <ecs-cluster>
+          ecs-service: <ecs-service>
+          ecs-container: <ecs-container>
+          ecs-task-definition: <ecs-task-definition>
