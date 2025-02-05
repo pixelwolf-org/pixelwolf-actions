@@ -22,13 +22,13 @@ jobs:
       - name: Deploy Lambda Function
         uses: pixelwolf-org/pixelwolf-actions/actions/deploy-lambda@main
         with:
-          function_name: "my-lambda-function"
+          function-name: "my-lambda-function"
           image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-repo:latest"
 ```
 
 ## Inputs
 
-### `function_name`
+### `function-name`
 - **Description**: The name of the AWS Lambda function to update.
 - **Type**: `string`
 - **Required**: Yes
