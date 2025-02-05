@@ -25,6 +25,9 @@ The **Pixelwolf Actions** repository is built to:
 ### [Deploy a Docker Image to ECS](./examples/ecs-deploy)
 This example demonstrates how to use the `ecr-build-and-push` and `ecs-deploy` actions to build, push, and deploy a Docker image to an ECS cluster.
 
+### [Deploy a Docker Image to Lambda Function](./examples/lambda-deploy)
+This example demonstrates how to use the `ecr-build-and-push` and `lambda-deploy` actions to build, push, and deploy a Docker image to a Lambda Function.
+
 ## Contributing
 
 ### Repository Structure
