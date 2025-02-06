@@ -1,0 +1,24 @@
+name: 'Deploy Lambda Function'
+description: 'Updates an AWS Lambda function with a new ECR container image.'
+
+inputs:
+  function-name:
+    description: 'The name of the AWS Lambda function to update.'
+    required: true
+  image:
+    description: 'The URI of the new container image to deploy to the Lambda function.'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Deploy Lambda Function
+      shell: bash
+      run: |
+        echo "Deploying AWS Lambda function: ${{ inputs.function-name }}"
+        
+        aws lambda update-function-code \
+          --function-name "${{ inputs.function-name }}" \
+          --image-uri "${{ inputs.image }}"
+
+        echo "Deployment completed successfully."
