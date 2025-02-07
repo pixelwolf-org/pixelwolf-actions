@@ -1,0 +1,43 @@
+name: "Setup Python Environment"
+description: "Sets up Python and Poetry with optional caching for dependencies."
+
+inputs:
+  python-version:
+    description: "Python version to install. Example: '3.12'"
+    required: true
+  poetry-version:
+    description: "Poetry version to install. Leave empty to install the latest version."
+    required: false
+  use-cache:
+    description: "Enable caching for Poetry and pip dependencies."
+    default: "true"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install Poetry
+      shell: bash
+      run: |
+        if [[ -n "${{ inputs.poetry-version }}" ]]; then
+          curl -sSL https://install.python-poetry.org | POETRY_VERSION=${{ inputs.poetry-version }} python3 -
+        else
+          curl -sSL https://install.python-poetry.org | python3 -
+        fi
+        echo "Poetry installed: $(poetry --version)"
+
+    - name: Set up Poetry cache (if enabled)
+      if: ${{ inputs.use-cache == 'true' }}
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/pypoetry
+          ~/.cache/pip
+        key: ${{ runner.os }}-python-${{ inputs.python-version }}-poetry-${{ inputs.poetry-version }}-cache-${{ hashFiles('**/poetry.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-python-${{ inputs.python-version }}-poetry-${{ inputs.poetry-version }}-cache-
