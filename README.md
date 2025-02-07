@@ -10,6 +10,7 @@ Welcome to the **Pixelwolf Actions** repository! This repository serves as the c
 3. [Actions](#actions)
    - [Deployment](#deployment)
    - [Python](#python)
+   - [Utilities](#utilities)
 4. [Workflows](#workflows)
 5. [Contributing](#contributing)
    - [Repository Structure](#repository-structure)
@@ -45,11 +46,15 @@ The **Pixelwolf Actions** repository is built to:
 
 ### Python
 
-
 | **Action Name**                         | **Description**            |
 |-----------------------------------------|----------------------------|
 | [setup-python](./actions/setup-python/) | Sets up Python and Poetry. |
 
+### Utilities
+
+| **Action Name**                                     | **Description**                                           |
+|-----------------------------------------------------|-----------------------------------------------------------|
+| [pr-changed-files](./actions/pr-changed-files/)     | Retrieves a list of changed files in a pull request (PR). |
 
 ## Workflows
 
