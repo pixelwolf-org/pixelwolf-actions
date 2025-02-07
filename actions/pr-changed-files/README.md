@@ -38,7 +38,12 @@ jobs:
         uses: pixelwolf-org/pixelwolf-actions/actions/pr-changed-files@main
         id: changed-files
         with:
-          filter: '*.py'
+          filter: '*.html'
+      
+      - name: Print Changed Files
+        shell: bash
+        run: |
+          echo "Changed Files: ${{ steps.changed-files.outputs.changed-files }}"
 ```
 
 > ⚠️ This action is designed to work exclusively with workflows triggered by the `on: pull_request` configuration. Additionally, setting `fetch-depth: 0` during the checkout step is essential for the action to function correctly.
