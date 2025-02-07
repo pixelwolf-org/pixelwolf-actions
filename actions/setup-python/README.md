@@ -11,11 +11,30 @@ Sets up Python and Poetry with optional caching for dependencies.
 ## Usage
 
 ```yaml
-- uses: pixelwolf-org/pixelwolf-actions/actions/setup-python@main
-  with:
-    python-version: "3.10"
-    poetry-version: "1.8.4"
-    use-cache: "true"
+name: 'My Workflow'
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: ['*']
+
+jobs:
+
+  my-job:
+    name: My Job
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.12']
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python Environment
+      - uses: pixelwolf-org/pixelwolf-actions/actions/setup-python@main
+        with:
+          python-version: ${{ matrix.python-version }}
 ```
 
 ## Inputs
