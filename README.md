@@ -1,6 +1,30 @@
 # Pixelwolf Actions
 
-Welcome to the **Pixelwolf Actions** repository! This repository serves as the centralized hub for all custom GitHub Actions utilized across our organization. By consolidating reusable actions in one place, we streamline pipeline development, ensure consistency, and enhance the scalability of our CI/CD workflows.
+
+Welcome to the **Pixelwolf Actions** repository! This repository serves as the centralized hub for all custom GitHub Actions utilized across our organization.
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Purpose](#purpose)
+3. [Actions](#actions)
+   - [Deployment](#deployment)
+   - [Python](#python)
+   - [Utilities](#utilities)
+4. [Workflows](#workflows)
+5. [Contributing](#contributing)
+   - [Repository Structure](#repository-structure)
+   - [Adding a New Action](#adding-a-new-action)
+   - [Updating an Existing Action](#updating-an-existing-action)
+   - [Guidelines](#guidelines)
+6. [Notes](#notes)
+
+## Overview
+
+The **Pixelwolf Actions** repository is built to enhance reusability, standardize pipelines, and simplify maintenance. By sharing custom GitHub Actions across projects, we eliminate redundant code and logic, enforce best practices, and enable seamless improvements across multiple projects. 
+
+This documentation provides an overview of the available actions, example workflows, and guidelines for contributing to the repository.
+
 
 ## Purpose
 
@@ -12,13 +36,24 @@ The **Pixelwolf Actions** repository is built to:
 
 ## Actions
 
+### Deployment
+
+| **Action Name**                                     | **Description**                                   |
+|-----------------------------------------------------|---------------------------------------------------|
+| [ecr-build-and-push](./actions/ecr-build-and-push/) | Builds and pushes Docker images to AWS ECR.       |
+| [ecs-deploy](./actions/ecs-deploy/)                 | Deploys an Amazon ECR image to an ECS cluster.    |
+| [lambda-deploy](./actions/lambda-deploy/)           | Deploys an Amazon ECR image to a Lambda Function. |
+
+### Python
+
+| **Action Name**                         | **Description**            |
+|-----------------------------------------|----------------------------|
+| [setup-python](./actions/setup-python/) | Sets up Python and Poetry. |
+
+### Utilities
+
 | **Action Name**                                     | **Description**                                           |
 |-----------------------------------------------------|-----------------------------------------------------------|
-| [ruff-lint](./actions/ruff-lint/)                   | Runs the Ruff linter to identify coding issues.           |
-| [ruff-format](./actions/ruff-format/)               | Ensures consistent code formatting with Ruff.             |
-| [ecr-build-and-push](./actions/ecr-build-and-push/) | Builds and pushes Docker images to AWS ECR.               |
-| [ecs-deploy](./actions/ecs-deploy/)                 | Deploys an Amazon ECR image to an ECS cluster.            |
-| [lambda-deploy](./actions/lambda-deploy/)           | Deploys an Amazon ECR image to a Lambda Function.         |
 | [pr-changed-files](./actions/pr-changed-files/)     | Retrieves a list of changed files in a pull request (PR). |
 
 ## Workflows
