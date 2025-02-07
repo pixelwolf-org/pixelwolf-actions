@@ -20,7 +20,13 @@ The **Pixelwolf Actions** repository is built to:
 | [ecs-deploy](./actions/ecs-deploy/)                 | Deploys an Amazon ECR image to an ECS cluster.    |
 | [lambda-deploy](./actions/lambda-deploy/)           | Deploys an Amazon ECR image to a Lambda Function. |
 
+
 ## Workflows
+
+| **Workflow Name**                                     | **Description**                                   |
+|-----------------------------------------------------|---------------------------------------------------|
+| [next-js-ci](./workflows/next-js-ci/)               | CI workflow for Next.js applications with testing, linting, and building. |
+
 
 ### [Deploy a Docker Image to ECS](./examples/ecs-deploy)
 This example demonstrates how to use the `ecr-build-and-push` and `ecs-deploy` actions to build, push, and deploy a Docker image to an ECS cluster.
@@ -45,6 +51,10 @@ pixelwolf-actions/
 │   ├── my-example/ 
 │   │   ├── workflow.yml 
 │   │   └── README.md 
+├── workflows/
+│   ├── my-workflow/
+│   │   ├── workflow.yml
+│   │   └── README.md
 ```
 
 **Key Components**
@@ -58,6 +68,10 @@ pixelwolf-actions/
   - **`my-example/`**: Each example folder includes:
     - **`workflow.yml`**: Demonstrates how to implement a complete workflow by using the actions.
     - **`README.md`**: Provides workflow documentation, including placeholder, used actions and configurations.
+- **`workflows/`**: Contains reusable workflow templates that can be referenced across projects:
+  - **`my-workflow/`**: Each workflow folder includes:
+    - **`workflow.yml`**: Defines the reusable workflow configuration.
+    - **`README.md`**: Documents the workflow's purpose, inputs, and implementation details.
 
 We welcome contributions to improve and expand our custom actions. Follow these guidelines when contributing:
 
@@ -68,11 +82,22 @@ We welcome contributions to improve and expand our custom actions. Follow these 
 3. Include a `README.md` with clear documentation for inputs, outputs, and usage examples.  
 4. Test the action in a sample workflow before pushing changes to the repository.  
 
-### Updating an Existing Action
+### Adding a New Workflow
 
-1. Update the relevant files in the action's directory.  
-2. Test your changes in a workflow to ensure they work as expected.  
-3. Revise the action's documentation (`README.md`) if necessary.
+1. Create a new folder under `./workflows/` with the workflow name (e.g., `new-workflow`).
+2. Add a `workflow.yml` file to define the reusable workflow configuration.
+3. Include a `README.md` with comprehensive documentation covering:
+   - Purpose and use cases
+   - Required inputs and configurations
+   - Implementation examples
+4. Test the workflow in a sample project before committing.
+
+### Updating an Existing Action or Workflow
+
+1. Update the relevant files in the action's or workflow's directory.  
+2. Test your changes thoroughly to ensure they work as expected.  
+3. Revise the documentation (`README.md`) to reflect any modifications.
+4. If updating a workflow, verify compatibility with existing implementations.
 
 ### Guidelines
 

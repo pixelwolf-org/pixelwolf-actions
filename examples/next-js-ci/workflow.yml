@@ -1,0 +1,12 @@
+name: Next.js CI
+
+on:
+  pull_request:
+    branches: [main, stage]
+
+jobs:
+  ci:
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: pixelwolf-org/pixelwolf-actions/workflows/next-ci-workflow.yml
