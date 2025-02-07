@@ -12,13 +12,14 @@ The **Pixelwolf Actions** repository is built to:
 
 ## Actions
 
-| **Action Name**                                     | **Description**                                   |
-|-----------------------------------------------------|---------------------------------------------------|
-| [ruff-lint](./actions/ruff-lint/)                   | Runs the Ruff linter to identify coding issues.   |
-| [ruff-format](./actions/ruff-format/)               | Ensures consistent code formatting with Ruff.     |
-| [ecr-build-and-push](./actions/ecr-build-and-push/) | Builds and pushes Docker images to AWS ECR.       |
-| [ecs-deploy](./actions/ecs-deploy/)                 | Deploys an Amazon ECR image to an ECS cluster.    |
-| [lambda-deploy](./actions/lambda-deploy/)           | Deploys an Amazon ECR image to a Lambda Function. |
+| **Action Name**                                     | **Description**                                           |
+|-----------------------------------------------------|-----------------------------------------------------------|
+| [ruff-lint](./actions/ruff-lint/)                   | Runs the Ruff linter to identify coding issues.           |
+| [ruff-format](./actions/ruff-format/)               | Ensures consistent code formatting with Ruff.             |
+| [ecr-build-and-push](./actions/ecr-build-and-push/) | Builds and pushes Docker images to AWS ECR.               |
+| [ecs-deploy](./actions/ecs-deploy/)                 | Deploys an Amazon ECR image to an ECS cluster.            |
+| [lambda-deploy](./actions/lambda-deploy/)           | Deploys an Amazon ECR image to a Lambda Function.         |
+| [pr-changed-files](./actions/pr-changed-files/)     | Retrieves a list of changed files in a pull request (PR). |
 
 ## Workflows
 
