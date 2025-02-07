@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 0
       
       - name: Get Changed Python Files
-        uses: pixelwolf-org/pixelwolf-actions/actions/ecs-deploy@main
+        uses: pixelwolf-org/pixelwolf-actions/actions/pr-changed-files@main
         id: changed-files
         with:
           filter: '*.py'
