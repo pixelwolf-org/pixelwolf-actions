@@ -1,0 +1,45 @@
+name: Production CI/CD
+description: A CI/CD that runs whenever a pull request to main is closed
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  ci:
+    uses: pixelwolf-org/pixelwolf-actions/workflows/web-ci@main
+
+  deploy-prod:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to AWS Amplify
+        uses: pixelwolf-org/pixelwolf-actions/actions/amplify-deploy@main
+        with:
+          app-id: ${{ secrets.AWS_PROD_AMPLIFY_APP_ID }}
+          branch-name: 'main'
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-arn: ${{ secrets.AWS_PROD_DEPLOY_OIDC_ROLE_ARN }}
+          create-branch: 'false'
+
+  clean-up:
+    runs-on: ubuntu-latest
+    needs: deploy-prod
+    if: github.head_ref != 'stage' && github.head_ref != 'main' && github.ref_name != 'stage' && github.ref_name != 'main'
+    steps:
+      - name: Delete Feature Amplify Branch
+        uses: pixelwolf-org/pixelwolf-actions/actions/amplify-branch-delete@main
+        with:
+          branch-name: ${{ github.head_ref || github.ref_name }}
+          app-id: ${{ secrets.AWS_STAGE_AMPLIFY_APP_ID }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-arn: ${{ secrets.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
