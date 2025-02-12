@@ -13,4 +13,5 @@ permissions:
 
 jobs:
   prod-ci-cd:
-    uses: pixelwolf-org/pixelwolf-actions/workflows/web-prod-ci-cd@main
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-prod-ci-cd.yml@main
+    secrets: inherit

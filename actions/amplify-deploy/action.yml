@@ -8,9 +8,6 @@ inputs:
   branch-name:
     description: 'Branch name to deploy'
     required: true
-  aws-region:
-    description: 'AWS Region'
-    required: true
   role-arn:
     description: 'AWS OIDC Role ARN'
     required: true
@@ -18,15 +15,13 @@ inputs:
     description: "Create branch if it doesn't exist"
     required: false
     default: 'false'
+  access-token:
+    description: "GitHub Access Token"
+    required: true
 
 runs:
   using: 'composite'
   steps:
-    - name: Setup AWS credentials with OIDC
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ inputs.role-arn }}
-        aws-region: ${{ inputs.aws-region }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -37,6 +32,11 @@ runs:
       shell: bash
       run: |
         npm install -g @aws-amplify/cli
+    
+    - name: Update token
+      shell: bash
+      run: |
+        aws amplify update-app --access-token=${{ inputs.access-token }}
 
     - name: Create AWS Amplify Feature Branch
       if: ${{ inputs.create-branch == 'true' }}

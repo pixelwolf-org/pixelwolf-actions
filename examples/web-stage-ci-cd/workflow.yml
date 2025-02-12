@@ -4,7 +4,7 @@ description: A CI/CD workflow for staging and feature preview environments
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-  
+
 permissions:
   id-token: write
   contents: write
@@ -12,4 +12,5 @@ permissions:
 
 jobs:
   stage-ci-cd:
-    uses: pixelwolf-org/pixelwolf-actions/workflows/web-stage-ci-cd@main
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-stage-ci-cd.yml@main
+    secrets: inherit

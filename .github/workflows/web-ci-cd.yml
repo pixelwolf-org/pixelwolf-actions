@@ -1,10 +1,13 @@
 name: Production CI/CD
-description: A CI/CD that runs whenever a pull request to main is closed
+description: A CI/CD that should run whenever a pull request to main is closed
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      branch-name:
+        required: false
+        type: string
+        description: "stage"
 
 permissions:
   id-token: write
@@ -25,11 +28,11 @@ jobs:
       - name: Deploy to AWS Amplify
         uses: pixelwolf-org/pixelwolf-actions/actions/amplify-deploy@main
         with:
-          app-id: ${{ secrets.AWS_PROD_AMPLIFY_APP_ID }}
-          branch-name: 'main'
+          app-id: ${{ inputs.branch-name == 'stage' && secrets.AWS_STAGE_AMPLIFY_APP_ID || secrets.AWS_PROD_AMPLIFY_APP_ID }}
+          branch-name: ${{ inputs.branch-name }}
           aws-region: ${{ secrets.AWS_REGION }}
-          role-arn: ${{ secrets.AWS_PROD_DEPLOY_OIDC_ROLE_ARN }}
-          create-branch: 'false'
+          role-arn: ${{ inputs.branch-name == 'stage' && secrets.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN || secrets.AWS_PROD_DEPLOY_OIDC_ROLE_ARN }}
+          create-branch: "false"
 
   clean-up:
     runs-on: ubuntu-latest
