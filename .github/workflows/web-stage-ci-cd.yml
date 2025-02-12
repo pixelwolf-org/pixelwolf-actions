@@ -2,8 +2,7 @@ name: Web Stage CI/CD
 description: A CI/CD that runs on Stage and Feature previews enviroments.
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_call:
 
 permissions:
   id-token: write
