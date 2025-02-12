@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy to AWS Amplify
-        uses: ./.github/actions/amplify-deploy
+        uses: pixelwolf-org/pixelwolf-actions/actions/amplify-deploy@feature/web-ci-cd
         with:
           app-id: ${{ secrets.AWS_STAGE_AMPLIFY_APP_ID }}
           branch-name: ${{ github.head_ref || github.ref_name }}
