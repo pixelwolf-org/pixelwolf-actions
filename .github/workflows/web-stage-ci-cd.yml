@@ -3,6 +3,19 @@ description: A CI/CD that runs on Stage and Feature previews enviroments.
 
 on:
   workflow_call:
+    inputs:
+      app-id:
+        description: "AWS Amplify App ID"
+        required: true
+        type: string
+      aws-region:
+        description: "AWS Region"
+        required: true
+        type: string
+      role-arn:
+        description: "AWS OIDC Role ARN"
+        required: true
+        type: string
 
 permissions:
   id-token: write
@@ -23,8 +36,8 @@ jobs:
       - name: Deploy to AWS Amplify
         uses: pixelwolf-org/pixelwolf-actions/actions/amplify-deploy@feature/web-ci-cd
         with:
-          app-id: ${{ secrets.AWS_STAGE_AMPLIFY_APP_ID }}
+          app-id: ${{ inputs.app-id }}
           branch-name: ${{ github.head_ref || github.ref_name }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-arn: ${{ secrets.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
+          aws-region: ${{ inputs.aws-region }}
+          role-arn: ${{ inputs.role-arn }}
           create-branch: "true"
