@@ -8,9 +8,6 @@ inputs:
   branch-name:
     description: 'Branch name to deploy'
     required: true
-  role-arn:
-    description: 'AWS OIDC Role ARN'
-    required: true
   create-branch:
     description: "Create branch if it doesn't exist"
     required: false
