@@ -8,21 +8,10 @@ inputs:
   branch-name:
     description: "Branch name to delete"
     required: true
-  aws-region:
-    description: "AWS Region"
-    required: true
-  role-arn:
-    description: "AWS OIDC Role ARN"
-    required: true
 
 runs:
   using: "composite"
   steps:
-    - name: Setup AWS credentials with OIDC
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ inputs.role-arn }}
-        aws-region: ${{ inputs.aws-region }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v4

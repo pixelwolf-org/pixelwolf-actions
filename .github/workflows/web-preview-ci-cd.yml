@@ -20,11 +20,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup AWS credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Deploy to AWS Amplify
         uses: pixelwolf-org/pixelwolf-actions/actions/amplify-deploy@feature/web-ci-cd
         with:
           app-id: ${{ secrets.AWS_STAGE_AMPLIFY_APP_ID }}
           branch-name: ${{ github.head_ref || github.ref_name }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-arn: ${{ secrets.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
           create-branch: "true"

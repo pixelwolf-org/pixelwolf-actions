@@ -4,10 +4,21 @@ description: A CI/CD that should run whenever a pull request to main is closed
 on:
   workflow_call:
     inputs:
+      app-id:
+        required: true
+        type: string
       branch-name:
         required: false
         type: string
         description: "stage"
+      aws-region:
+        required: true
+        type: string
+        description: "AWS Region"
+      role-arn:
+        required: true
+        type: string
+        description: "AWS OIDC Role ARN"
 
 permissions:
   id-token: write
@@ -18,31 +29,39 @@ jobs:
   ci:
     uses: pixelwolf-org/pixelwolf-actions/workflows/web-ci@feature/web-ci-cd
 
-  deploy-prod:
+  deploy:
     needs: ci
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup AWS credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ inputs.role-arn }}
+          aws-region: ${{ inputs.aws-region }}
+
       - name: Deploy to AWS Amplify
         uses: pixelwolf-org/pixelwolf-actions/actions/amplify-deploy@main
         with:
-          app-id: ${{ inputs.branch-name == 'stage' && secrets.AWS_STAGE_AMPLIFY_APP_ID || secrets.AWS_PROD_AMPLIFY_APP_ID }}
+          app-id: ${{ inputs.app-id }}
           branch-name: ${{ inputs.branch-name }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-arn: ${{ inputs.branch-name == 'stage' && secrets.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN || secrets.AWS_PROD_DEPLOY_OIDC_ROLE_ARN }}
           create-branch: "false"
 
   clean-up:
     runs-on: ubuntu-latest
-    needs: deploy-prod
+    needs: deploy
     if: github.head_ref != 'stage' && github.head_ref != 'main' && github.ref_name != 'stage' && github.ref_name != 'main'
     steps:
+      - name: Setup AWS credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ inputs.role-arn }}
+          aws-region: ${{ inputs.aws-region }}
+
       - name: Delete Feature Amplify Branch
         uses: pixelwolf-org/pixelwolf-actions/actions/amplify-branch-delete@main
         with:
           branch-name: ${{ github.head_ref || github.ref_name }}
-          app-id: ${{ secrets.AWS_STAGE_AMPLIFY_APP_ID }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-arn: ${{ secrets.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
+          app-id: ${{ inputs.app-id }}
