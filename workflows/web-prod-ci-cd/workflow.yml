@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   ci:
-    uses: pixelwolf-org/pixelwolf-actions/workflows/web-ci@main
+    uses: pixelwolf-org/pixelwolf-actions/workflows/web-ci@feature/web-ci-cd
 
   deploy-prod:
     needs: ci
