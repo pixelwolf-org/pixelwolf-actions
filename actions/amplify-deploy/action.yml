@@ -17,7 +17,8 @@ inputs:
     default: 'false'
   access-token:
     description: "GitHub Access Token"
-    required: true
+    required: false
+    default: ''
 
 runs:
   using: 'composite'
@@ -35,6 +36,7 @@ runs:
     
     - name: Update token
       shell: bash
+      if: ${{ inputs.access-token != '' }}
       run: |
         aws amplify update-app --access-token=${{ inputs.access-token }}
 
