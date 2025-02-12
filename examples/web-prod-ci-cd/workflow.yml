@@ -1,0 +1,16 @@
+name: Production CI/CD
+description: A CI/CD workflow for production environments
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  prod-ci-cd:
+    uses: pixelwolf-org/pixelwolf-actions/workflows/web-prod-ci-cd@main
