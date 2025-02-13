@@ -26,10 +26,10 @@ runs:
       with:
         node-version: 'latest'
 
-    - name: Install AWS Amplify CLI
-      shell: bash
-      run: |
-        npm install -g @aws-amplify/cli
+    # - name: Install AWS Amplify CLI
+    #   shell: bash
+    #   run: |
+    #     npm install -g @aws-amplify/cli
     
     - name: Update token
       shell: bash

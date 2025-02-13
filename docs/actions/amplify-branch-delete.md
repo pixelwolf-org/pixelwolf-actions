@@ -25,7 +25,7 @@ jobs:
       - name: Delete Amplify Branch
         uses: pixelwolf-org/pixelwolf-actions/actions/amplify-branch-delete@main
         with:
-          app-id: ${{ secrets.AWS_AMPLIFY_APP_ID }}
+          app-id: 'app-id'
           branch-name: 'feature-branch-to-delete'
 ```
 
@@ -46,5 +46,3 @@ This action does not produce explicit outputs.
 - Description : Installs the AWS Amplify CLI globally to manage branches.
 ### Delete Branch
 - Description : Executes the command to delete the specified branch from the AWS Amplify application.
-## Notes
-This action is part of a suite of tools designed to manage AWS Amplify applications efficiently. Ensure that the necessary AWS credentials are configured in your GitHub repository secrets to allow this action to authenticate and perform operations on your AWS account.
