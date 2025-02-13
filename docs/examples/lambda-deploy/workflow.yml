@@ -31,7 +31,7 @@ jobs:
           repository: "<ecr-repository-name>"
 
       - name: Deploy Lambda Function
-        uses: pixelwolf-org/pixelwolf-actions/actions/lambda-deploy@feat/deploy-lambda-action
+        uses: pixelwolf-org/pixelwolf-actions/actions/lambda-deploy@main
         with:
           function-name: "<function-name>"
           image: ${{ steps.build-and-push.outputs.image }}
