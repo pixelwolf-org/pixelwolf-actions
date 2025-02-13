@@ -1,0 +1,23 @@
+name: 'Generate JWT Token'
+description: 'Generates a JWT token with a specified issuer, private key, and optional expiration time.'
+author: 'Pixelwolf <tech@pixelwolf.com.br>'
+
+inputs:
+  iss:
+    description: 'Issuer of the JWT (e.g., your organization or app name)'
+    required: true
+  private-key:
+    description: 'Private key used to sign the JWT. Ensure this is kept secure.'
+    required: true
+  expires-in:
+    description: 'Expiration time for the JWT in seconds (e.g., "1h", "30m"). Defaults to 1 hour if not specified.'
+    required: false
+    default: '1h'
+
+outputs:
+  token:
+    description: 'The generated JWT token that can be used for authentication or authorization.'
+
+runs:
+  using: 'node20'
+  main: 'action/index.js'
