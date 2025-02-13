@@ -49,7 +49,7 @@ jobs:
       
       - name: 'Generate Token'
         id: gh-app-token
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/gh-app-access-token@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/gh-app-access-token.yml@feature/web-ci-cd
         with:
           app-id: '1141682'
           installation-id: '60963877'
