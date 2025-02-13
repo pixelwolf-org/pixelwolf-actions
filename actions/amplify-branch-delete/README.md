@@ -1,51 +1,50 @@
-# AWS Amplify Branch Delete
+# AWS Amplify Branch Delete Action
 
-A GitHub Action to automate the deletion of branches in AWS Amplify applications. This action safely removes specified branches using the AWS Amplify CLI.
+A GitHub Action to delete a branch from an AWS Amplify application. This action is useful for cleaning up branches that are no longer needed in your Amplify environment.
 
 ## Features
 
-- Automated branch deletion in AWS Amplify
-- Uses AWS OIDC for secure authentication
-- Simple integration with existing workflows
-
-## Inputs
-
-### `app-id`
-- **Description**: The ID of your AWS Amplify application
-- **Required**: Yes
-
-### `branch-name`
-- **Description**: The name of the branch to delete
-- **Required**: Yes
-
-### `aws-region`
-- **Description**: The AWS region where your Amplify app is located
-- **Required**: Yes
-
-### `role-arn`
-- **Description**: The AWS IAM Role ARN for OIDC authentication
-- **Required**: Yes
-
-## Outputs
-
-No explicit outputs are provided. The action logs deletion progress to the console.
+- Deletes a specified branch from an AWS Amplify application
+- Utilizes the AWS Amplify CLI for branch management
+- Configurable via inputs for flexibility
 
 ## Usage
 
-### Basic Example
+This action can be used in any GitHub workflow where you need to manage branches in AWS Amplify.
 
 ```yaml
+name: Delete Amplify Branch
+
+on:
+  workflow_dispatch:
+
 jobs:
-  cleanup:
+  delete-branch:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     steps:
       - name: Delete Amplify Branch
         uses: pixelwolf-org/pixelwolf-actions/actions/amplify-branch-delete@main
         with:
-          app-id: 'd1234567890'
-          branch-name: 'feature/old-feature'
-          aws-region: 'us-east-1'
-          role-arn: ${{ secrets.AWS_ROLE_ARN }}
+          app-id: ${{ secrets.AWS_AMPLIFY_APP_ID }}
+          branch-name: 'feature-branch-to-delete'
+```
+
+## Inputs
+### app-id
+- Description : The ID of your AWS Amplify application.
+- Required : Yes
+### branch-name
+- Description : The name of the branch to delete.
+- Required : Yes
+## Outputs
+This action does not produce explicit outputs.
+
+## Steps
+### Setup Node.js
+- Description : Sets up the latest Node.js environment to run the AWS Amplify CLI.
+### Install AWS Amplify CLI
+- Description : Installs the AWS Amplify CLI globally to manage branches.
+### Delete Branch
+- Description : Executes the command to delete the specified branch from the AWS Amplify application.
+## Notes
+This action is part of a suite of tools designed to manage AWS Amplify applications efficiently. Ensure that the necessary AWS credentials are configured in your GitHub repository secrets to allow this action to authenticate and perform operations on your AWS account.
