@@ -43,24 +43,24 @@ The **Pixelwolf Actions** repository is built to:
 
 | **Action Name**                                     | **Description**                                   |
 |-----------------------------------------------------|---------------------------------------------------|
-| [ecr-build-and-push](./actions/ecr-build-and-push/) | Builds and pushes Docker images to AWS ECR.       |
-| [ecs-deploy](./actions/ecs-deploy/)                 | Deploys an Amazon ECR image to an ECS cluster.    |
-| [lambda-deploy](./actions/lambda-deploy/)           | Deploys an Amazon ECR image to a Lambda Function. |
-| [amplify-branch-delete](./actions/amplify-branch-delete/) | Deletes an AWS Amplify branch. |
-| [amplify-deploy](./actions/amplify-deploy/)         | Deploys to AWS Amplify.                           |
+| [ecr-build-and-push](./docs/actions/ecr-build-and-push.md) | Builds and pushes Docker images to AWS ECR.       |
+| [ecs-deploy](./docs/actions/ecs-deploy.md)                 | Deploys an Amazon ECR image to an ECS cluster.    |
+| [lambda-deploy](./docs/actions/lambda-deploy.md)           | Deploys an Amazon ECR image to a Lambda Function. |
+| [amplify-branch-delete](./docs/actions/amplify-branch-delete.md) | Deletes an AWS Amplify branch. |
+| [amplify-deploy](./docs/actions/amplify-deploy.md)         | Deploys to AWS Amplify.                           |
 
 
 ### Python
 
 | **Action Name**                         | **Description**            |
 |-----------------------------------------|----------------------------|
-| [setup-python](./actions/setup-python/) | Sets up Python and Poetry. |
+| [setup-python](./docs/actions/setup-python.md) | Sets up Python and Poetry. |
 
 ### Utilities
 
 | **Action Name**                                       | **Description**                                                              |
 |-------------------------------------------------------|------------------------------------------------------------------------------|
-| [gh-app-access-token](./actions/gh-app-access-token/) | Generates GitHub App Short Lived access-token.                               |
+| [gh-app-access-token](./docs/actions/gh-app-access-token.md) | Generates GitHub App Short Lived access-token.                               |
 | [jwt](./actions/jwt/)                                 | Generates a JWT using the specified issuer and private key.                  |
 | [pr-changed-files](./actions/pr-changed-files/)       | Retrieves a list of changed files in a pull request (PR).                    |
 
@@ -68,8 +68,8 @@ The **Pixelwolf Actions** repository is built to:
 
 | **Workflow Name**                                     | **Description**                                   |
 |-----------------------------------------------------|---------------------------------------------------|
-| [web-ci](./workflows/web-ci.yml)                    | Web CI Workflow for continuous integration.       |
-| [web-ci-cd](./workflows/web-ci-cd.yml)              | Production CI/CD that runs when a pull request to main is closed. |
+| [web-ci](./docs/workflows/web-ci.md)                    | Web CI Workflow for continuous integration.       |
+| [web-ci-cd](./docs/workflows/web-ci-cd.md)              | Production CI/CD that runs when a pull request to main is closed. |
 
 
 ## Contributing
@@ -83,7 +83,8 @@ All custom actions are organized under the `./actions` directory to maintain a c
 └── pixelwolf-actions/
     ├── .github/
     │   ├── actions/
-    │   │   └── action-name.yml
+    │   │   └── action-name/
+    │   │       └── action-name.yml
     │   └── workflows/
     │       └── workflow-name.yml
     └── docs/
@@ -99,7 +100,7 @@ All custom actions are organized under the `./actions` directory to maintain a c
 
 - **`README.md`**: High-level documentation for the repository.  
 - **`.github/actions/`**: Contains subdirectories for each action. 
-  - **`action-name.yml`**: Defines the action's metadata and functionality.  
+  - **`action-name/action.yml`**: Defines the action's metadata and functionality.  
 - **`.github/workflows/`**: Contains reusable workflow templates that can be referenced across projects:
   - **`workflow-name.yml`**: Defines the reusable workflow configuration.
 - **`docs/`**: Includes documentation for actions, workflows, and examples:
@@ -114,7 +115,7 @@ We welcome contributions to improve and expand our custom actions. Follow these 
 
 ### Adding a New Action
 
-1. Create a new file under `.github/actions/` with the action name (e.g., `new-action.yml`).  
+1. Create a new file under `.github/actions/action-name/` with the action name (e.g., `action.yml`).  
 2. Include a `action-name.md` readme file in `docs/actions/` with clear documentation for inputs, outputs, and usage examples.  
 3. Test the action in a sample workflow before pushing changes to the repository.  
 
