@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: 'Generate Token'
         id: gh-app-token
-        uses: pixelwolf-org/pixelwolf-actions/actions/gh-app-token@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/gh-app-token@feature/web-ci-cd
         with:
           app-id: your-app-id
           installation-id: your-app-installation-id

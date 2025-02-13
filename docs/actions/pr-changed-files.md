@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 0
       
       - name: Get Changed Python Files
-        uses: pixelwolf-org/pixelwolf-actions/actions/pr-changed-files@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/pr-changed-files@feature/web-ci-cd
         id: changed-files
         with:
           filter: '*.html'

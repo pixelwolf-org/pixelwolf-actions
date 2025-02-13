@@ -20,7 +20,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy Lambda Function
-        uses: pixelwolf-org/pixelwolf-actions/actions/lambda-deploy@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/lambda-deploy@feature/web-ci-cd
         with:
           function-name: "my-lambda-function"
           image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-repo:latest"

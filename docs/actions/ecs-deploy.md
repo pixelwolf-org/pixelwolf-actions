@@ -52,7 +52,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Deploy to ECS
-        uses: pixelwolf-org/pixelwolf-actions/actions/ecs-deploy@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/ecs-deploy@feature/web-ci-cd
         with:
           ecr-image: my-account-id.dkr.ecr.us-east-1.amazonaws.com/my-image:latest
           ecs-cluster: my-cluster
