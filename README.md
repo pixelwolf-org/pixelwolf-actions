@@ -52,9 +52,10 @@ The **Pixelwolf Actions** repository is built to:
 
 ### Utilities
 
-| **Action Name**                                     | **Description**                                           |
-|-----------------------------------------------------|-----------------------------------------------------------|
-| [pr-changed-files](./actions/pr-changed-files/)     | Retrieves a list of changed files in a pull request (PR). |
+| **Action Name**                                       | **Description**                                           |
+|-------------------------------------------------------|-----------------------------------------------------------|
+| [pr-changed-files](./actions/pr-changed-files/)       | Retrieves a list of changed files in a pull request (PR). |
+| [gh-app-access-token](./actions/gh-app-access-token/) | Generates GitHub App Short Lived access-token.            |
 
 ## Workflows
 

@@ -1,0 +1,48 @@
+name: 'GitHub App Token Generator'
+description: 'Generates GitHub App Short Lived access-token'
+author: 'Pixelwolf <tech@pixelwolf.com.br>'
+
+inputs:
+  app-id:
+    description: 'GitHub App ID (Issuer of JWT)'
+    required: true
+  installation-id:
+    description: 'GitHub App Installation ID'
+    required: true
+  private-key:
+    description: 'GitHub App private key (PEM format)'
+    required: true
+
+outputs:
+  access-token:
+    description: 'The GitHub App installation access token'
+    value: ${{ steps.access-token.outputs.access-token }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Generate JWT Token'
+      id: jwt-token
+      uses: pixelwolf-org/pixelwolf-actions/actions/jwt@main
+      with:
+        iss: ${{ inputs.app-id }}
+        private-key: ${{ inputs.private-key }}
+        expires-in: '10m'
+
+    - name: 'Exchange JWT for Short Time Live Access Token'
+      id: access-token
+      shell: bash
+      run: |
+        set -e
+        access_token_uri="https://api.github.com/app/installations/${{ inputs.installation-id }}/access_tokens"
+        
+        response=$(curl -s -X POST "$access_token_uri" \
+          -H "Authorization: Bearer ${{ steps.jwt-token.outputs.token }}" \
+          -H "Accept: application/vnd.github+json")
+
+        if echo "$response" | jq -e '.token' > /dev/null; then
+          echo "access-token=$(echo "$response" | jq -r '.token')" >> $GITHUB_OUTPUT
+        else
+          echo "Error: Failed to obtain access token. Response: $response" >&2
+          exit 1
+        fi
