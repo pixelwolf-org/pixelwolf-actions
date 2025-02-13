@@ -19,20 +19,17 @@ The **Pixelwolf Actions** repository is built to:
 | [ecr-build-and-push](./actions/ecr-build-and-push/) | Builds and pushes Docker images to AWS ECR.       |
 | [ecs-deploy](./actions/ecs-deploy/)                 | Deploys an Amazon ECR image to an ECS cluster.    |
 | [lambda-deploy](./actions/lambda-deploy/)           | Deploys an Amazon ECR image to a Lambda Function. |
+| [amplify-branch-delete](./actions/amplify-branch-delete/) | Deletes an AWS Amplify branch. |
+| [amplify-deploy](./actions/amplify-deploy/)         | Deploys to AWS Amplify.                           |
 
 
 ## Workflows
 
 | **Workflow Name**                                     | **Description**                                   |
 |-----------------------------------------------------|---------------------------------------------------|
-| [next-js-ci](./workflows/next-js-ci/)               | CI workflow for Next.js applications with testing, linting, and building. |
+| [web-ci](./workflows/web-ci.yml)                    | Web CI Workflow for continuous integration.       |
+| [web-ci-cd](./workflows/web-ci-cd.yml)              | Production CI/CD that runs when a pull request to main is closed. |
 
-
-### [Deploy a Docker Image to ECS](./examples/ecs-deploy)
-This example demonstrates how to use the `ecr-build-and-push` and `ecs-deploy` actions to build, push, and deploy a Docker image to an ECS cluster.
-
-### [Deploy a Docker Image to Lambda Function](./examples/lambda-deploy)
-This example demonstrates how to use the `ecr-build-and-push` and `lambda-deploy` actions to build, push, and deploy a Docker image to a Lambda Function.
 
 ## Contributing
 
@@ -41,20 +38,20 @@ This example demonstrates how to use the `ecr-build-and-push` and `lambda-deploy
 All custom actions are organized under the `./actions` directory to maintain a consistent structure:  
 
 ```
-pixelwolf-actions/ 
-├── README.md 
-├── actions/ 
-│   ├── my-action/ 
-│   │   ├── action.yml 
-│   │   └── README.md 
-├── examples/ 
-│   ├── my-example/ 
-│   │   ├── workflow.yml 
-│   │   └── README.md 
-├── workflows/
-│   ├── my-workflow/
-│   │   ├── workflow.yml
-│   │   └── README.md
+.
+└── pixelwolf-actions/
+    ├── .github/
+    │   ├── actions/
+    │   │   └── action-name.yml
+    │   └── workflows/
+    │       └── workflow-name.yml
+    └── docs/
+        ├── actions/
+        │   └── action-name.md
+        ├── workflows/
+        │   └── workflow-name.md
+        └── examples/
+            └── examples-docs.md
 ```
 
 **Key Components**

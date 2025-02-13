@@ -56,7 +56,7 @@ jobs:
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
 
       - name: Deploy to AWS Amplify
-        uses: pixelwolf-org/pixelwolf-actions/actions/amplify-deploy@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-deploy.yml@feature/web-ci-cd
         with:
           app-id: ${{ inputs.app-id }}
           branch-name: ${{ inputs.branch-name }}
