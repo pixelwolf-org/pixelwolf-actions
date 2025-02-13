@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.3"
+  },
+  "scripts": {
+    "build": "ncc build -o ./action/ ./index.js"
+  }
+}
