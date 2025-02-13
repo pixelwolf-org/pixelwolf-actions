@@ -50,8 +50,7 @@ jobs:
 ## Steps
 ### Setup Node.js
 - Description : Sets up the latest Node.js environment to run the AWS Amplify CLI.
-### Install AWS Amplify CLI
-- Description : Installs the AWS Amplify CLI globally using npm.
+
 ### Update Token
 - Description : Updates the AWS Amplify app with the provided GitHub access token if specified.
 
