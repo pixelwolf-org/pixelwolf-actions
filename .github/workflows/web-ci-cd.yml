@@ -32,7 +32,7 @@ permissions:
 
 jobs:
   ci:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@feature/web-ci-cd
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@main
 
   deploy:
     needs: ci
@@ -56,7 +56,7 @@ jobs:
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
 
       - name: Deploy to AWS Amplify
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-deploy.yml@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-deploy.yml@main
         with:
           app-id: ${{ inputs.app-id }}
           branch-name: ${{ inputs.branch-name }}
@@ -75,7 +75,7 @@ jobs:
           aws-region: ${{ inputs.aws-region }}
 
       - name: Delete Feature Amplify Branch
-        uses: pixelwolf-org/pixelwolf-actions/actions/amplify-branch-delete@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/actions/amplify-branch-delete@main
         with:
           branch-name: ${{ github.head_ref || github.ref_name }}
           app-id: ${{ inputs.app-id }}
