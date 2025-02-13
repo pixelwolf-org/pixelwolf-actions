@@ -52,10 +52,11 @@ The **Pixelwolf Actions** repository is built to:
 
 ### Utilities
 
-| **Action Name**                                 | **Description**                                                              |
-|-------------------------------------------------|------------------------------------------------------------------------------|
-| [pr-changed-files](./actions/pr-changed-files/) | Retrieves a list of changed files in a pull request (PR).                    |
-| [jwt](./actions/jwt/)                           | Generates a JSON Web Token (JWT) using the specified issuer and private key. |
+| **Action Name**                                       | **Description**                                                              |
+|-------------------------------------------------------|------------------------------------------------------------------------------|
+| [gh-app-access-token](./actions/gh-app-access-token/) | Generates GitHub App Short Lived access-token.                               |
+| [jwt](./actions/jwt/)                                 | Generates a JWT using the specified issuer and private key.                  |
+| [pr-changed-files](./actions/pr-changed-files/)       | Retrieves a list of changed files in a pull request (PR).                    |
 
 ## Workflows
 
