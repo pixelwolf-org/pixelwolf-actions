@@ -47,13 +47,13 @@ jobs:
           role-to-assume: ${{ inputs.role-arn }}
           aws-region: ${{ inputs.aws-region }}
       
-      # - name: 'Generate Token'
-      #   id: gh-app-token
-      #   uses: pixelwolf-org/pixelwolf-actions/.github/actions/gh-app-access-token@feature/web-ci-cd
-      #   with:
-      #     app-id: '1141682'
-      #     installation-id: '60963877'
-      #     private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+      - name: 'Generate Token'
+        id: gh-app-token
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/gh-app-access-token@feature/web-ci-cd
+        with:
+          app-id: '1141682'
+          installation-id: '60963877'
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
 
       - name: Deploy to AWS Amplify
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-deploy@feature/web-ci-cd
@@ -61,7 +61,7 @@ jobs:
           app-id: ${{ inputs.app-id }}
           branch-name: ${{ inputs.branch-name }}
           create-branch: ${{ inputs.branch-name != 'stage' || inputs.branch-name != 'main' }}
-          # access-token: ${{ steps.gh-app-token.outputs.access-token }}
+          access-token: ${{ steps.gh-app-token.outputs.access-token }}
 
   clean-up:
     runs-on: ubuntu-latest
