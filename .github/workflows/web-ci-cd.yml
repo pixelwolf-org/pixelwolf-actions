@@ -61,6 +61,7 @@ jobs:
           app-id: ${{ inputs.app-id }}
           branch-name: ${{ inputs.branch-name }}
           create-branch: ${{ inputs.branch-name != 'stage' || inputs.branch-name != 'main' }}
+          access-token: ${{ steps.gh-app-token.outputs.access-token }}
 
   clean-up:
     runs-on: ubuntu-latest
