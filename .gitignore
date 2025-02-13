@@ -10,3 +10,6 @@ bin/
 *.pyproj
 *.pyproj.user
 *.sln
+
+**/dist/
+**/node_modules/
