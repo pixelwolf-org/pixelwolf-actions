@@ -5,19 +5,22 @@ Welcome to the **Pixelwolf Actions** repository! This repository serves as the c
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Purpose](#purpose)
-3. [Actions](#actions)
-   - [Deployment](#deployment)
-   - [Python](#python)
-   - [Utilities](#utilities)
-4. [Workflows](#workflows)
-5. [Contributing](#contributing)
-   - [Repository Structure](#repository-structure)
-   - [Adding a New Action](#adding-a-new-action)
-   - [Updating an Existing Action](#updating-an-existing-action)
-   - [Guidelines](#guidelines)
-6. [Notes](#notes)
+- [Pixelwolf Actions](#pixelwolf-actions)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Purpose](#purpose)
+  - [Actions](#actions)
+    - [Deployment](#deployment)
+    - [Python](#python)
+    - [Utilities](#utilities)
+  - [Workflows](#workflows)
+  - [Contributing](#contributing)
+    - [Repository Structure](#repository-structure)
+    - [Adding a New Action](#adding-a-new-action)
+    - [Adding a New Workflow](#adding-a-new-workflow)
+    - [Updating an Existing Action or Workflow](#updating-an-existing-action-or-workflow)
+    - [Guidelines](#guidelines)
+  - [Notes](#notes)
 
 ## Overview
 
@@ -95,43 +98,40 @@ All custom actions are organized under the `./actions` directory to maintain a c
 **Key Components**
 
 - **`README.md`**: High-level documentation for the repository.  
-- **`actions/`**: Contains subdirectories for each action. 
-  - **`my-action/`**: Each action folder includes:
-    - **`action.yml`**: Defines the action's metadata and functionality.  
-    - **`README.md`**: Provides action-specific documentation, including input parameters, output details, and usage examples.  
-- **`examples/`**: Includes example workflows and related documentation for better understanding and usage:
-  - **`my-example/`**: Each example folder includes:
-    - **`workflow.yml`**: Demonstrates how to implement a complete workflow by using the actions.
-    - **`README.md`**: Provides workflow documentation, including placeholder, used actions and configurations.
-- **`workflows/`**: Contains reusable workflow templates that can be referenced across projects:
-  - **`my-workflow/`**: Each workflow folder includes:
-    - **`workflow.yml`**: Defines the reusable workflow configuration.
-    - **`README.md`**: Documents the workflow's purpose, inputs, and implementation details.
+- **`.github/actions/`**: Contains subdirectories for each action. 
+  - **`action-name.yml`**: Defines the action's metadata and functionality.  
+- **`.github/workflows/`**: Contains reusable workflow templates that can be referenced across projects:
+  - **`workflow-name.yml`**: Defines the reusable workflow configuration.
+- **`docs/`**: Includes documentation for actions, workflows, and examples:
+  - **`actions/`**: Contains documentation for each action.
+    - **`action-name.md`**: Provides action-specific documentation, including input parameters, output details, and usage examples.
+  - **`workflows/`**: Contains documentation for each workflow.
+    - **`workflow-name.md`**: Documents the workflow's purpose, inputs, and implementation details.
+  - **`examples/`**: Includes example workflows and related documentation for better understanding and usage.
+    - **`examples-docs.md`**: Provides workflow documentation, including placeholder, used actions, and configurations.
 
 We welcome contributions to improve and expand our custom actions. Follow these guidelines when contributing:
 
 ### Adding a New Action
 
-1. Create a new folder under `./actions/` with the action name (e.g., `new-action`).  
-2. Add an `action.yml` file to define the action's functionality.  
-3. Include a `README.md` with clear documentation for inputs, outputs, and usage examples.  
-4. Test the action in a sample workflow before pushing changes to the repository.  
+1. Create a new file under `.github/actions/` with the action name (e.g., `new-action.yml`).  
+2. Include a `action-name.md` readme file in `docs/actions/` with clear documentation for inputs, outputs, and usage examples.  
+3. Test the action in a sample workflow before pushing changes to the repository.  
 
 ### Adding a New Workflow
 
-1. Create a new folder under `./workflows/` with the workflow name (e.g., `new-workflow`).
-2. Add a `workflow.yml` file to define the reusable workflow configuration.
-3. Include a `README.md` with comprehensive documentation covering:
+1. Create a new file under `.github/workflows/` with the workflow name (e.g., `new-workflow.yml`).
+2. Include a `workflow-name.md` readme in `docs/workflows/` with comprehensive documentation covering:
    - Purpose and use cases
    - Required inputs and configurations
    - Implementation examples
-4. Test the workflow in a sample project before committing.
+3. Test the workflow in a sample project before committing.
 
 ### Updating an Existing Action or Workflow
 
 1. Update the relevant files in the action's or workflow's directory.  
 2. Test your changes thoroughly to ensure they work as expected.  
-3. Revise the documentation (`README.md`) to reflect any modifications.
+3. Revise the documentation (`readme.md`) to reflect any modifications.
 4. If updating a workflow, verify compatibility with existing implementations.
 
 ### Guidelines
@@ -145,4 +145,3 @@ We welcome contributions to improve and expand our custom actions. Follow these 
 This repository is **internal** and must not be shared publicly.  
 
 All actions are tailored to work seamlessly with our organization's standard CI/CD pipelines. If you encounter issues or have suggestions, please send a pull request.
-
