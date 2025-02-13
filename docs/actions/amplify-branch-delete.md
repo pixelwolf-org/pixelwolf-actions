@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete Amplify Branch
-        uses: pixelwolf-org/pixelwolf-actions/actions/amplify-branch-delete@main
+        uses: pixelwolf-org/pixelwolf-actions/actions/amplify-branch-delete@feature/web-ci-cd
         with:
           app-id: 'app-id'
           branch-name: 'feature-branch-to-delete'

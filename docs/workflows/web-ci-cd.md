@@ -27,7 +27,7 @@ permissions:
 
 jobs:
   web-ci-cd:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@feature/web-ci-cd
     with:
       app-id: ${{ vars.AWS_PROD_AMPLIFY_APP_ID }}
       branch-name: 'prod'
@@ -51,7 +51,7 @@ permissions:
 
 jobs:
   web-ci-cd:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@feature/web-ci-cd
     with:
       app-id: ${{ vars.AWS_STAGE_AMPLIFY_APP_ID }}
       branch-name: 'stage'
@@ -74,7 +74,7 @@ permissions:
 
 jobs:
   web-ci-cd:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@feature/web-ci-cd
     with:
       app-id: ${{ vars.AWS_STAGE_AMPLIFY_APP_ID }}
       branch-name: ${{ github.head_ref }}

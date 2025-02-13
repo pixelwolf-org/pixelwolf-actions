@@ -26,12 +26,12 @@ jobs:
 
       - name: Build and Push Docker Image
         id: build
-        uses: pixelwolf-org/pixelwolf-actions/actions/ecr-build-and-push@main
+        uses: pixelwolf-org/pixelwolf-actions/actions/ecr-build-and-push@feature/web-ci-cd
         with:
           repository: <ecr-repository-name>
 
       - name: Deploy Image to ECS
-        uses: pixelwolf-org/pixelwolf-actions/actions/ecs-deploy@main
+        uses: pixelwolf-org/pixelwolf-actions/actions/ecs-deploy@feature/web-ci-cd
         with:
           ecr-image: ${{ steps.build.outputs.image }}
           ecs-cluster: <ecs-cluster>
