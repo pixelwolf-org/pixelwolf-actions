@@ -51,8 +51,8 @@ jobs:
         id: gh-app-token
         uses: pixelwolf-org/pixelwolf-actions/actions/gh-app-access-token@feat/github-app-auth
         with:
-          app-id: '60963877'
-          installation-id: '1141682'
+          app-id: '1141682'
+          installation-id: '60963877'
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
 
       - name: Deploy to AWS Amplify
