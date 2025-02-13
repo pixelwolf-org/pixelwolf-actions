@@ -1,0 +1,37 @@
+name: 'Get Changed Files'
+description: 'Retrieves a list of changed files in a pull request, with optional filtering by file extensions or patterns.'
+
+inputs:
+  filter:
+    description: 'A space-separated list of file extensions or patterns to include (e.g., "*.py *.html"). If empty, all changed files are returned.'
+    required: false
+
+outputs:
+  changed-files:
+    description: 'A space-separated list of changed files matching the specified filters.'
+    value: ${{ steps.get-changed-files.outputs.changed-files }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get Changed Files
+      id: get-changed-files
+      shell: bash
+      run: |
+        filter="${{ inputs.filter }}"
+        changed_files=""
+
+        if [[ -n "$filter" ]]; then
+          changed_files=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- $filter | xargs)
+        else
+          changed_files=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)
+        fi
+
+        if [[ -n "$changed_files" ]]; then
+          echo "Found changed files:"
+          echo "$changed_files" | tr " " "\n"
+        else
+          echo "No changed files found."
+        fi
+
+        echo "changed-files=${changed_files}" >> "$GITHUB_OUTPUT"
