@@ -40,9 +40,6 @@ jobs:
 This action does not produce explicit outputs.
 
 ## Steps
-### Setup Node.js
-- Description : Sets up the latest Node.js environment to run the AWS Amplify CLI.
-### Install AWS Amplify CLI
-- Description : Installs the AWS Amplify CLI globally to manage branches.
+
 ### Delete Branch
 - Description : Executes the command to delete the specified branch from the AWS Amplify application.

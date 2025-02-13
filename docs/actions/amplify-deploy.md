@@ -48,8 +48,6 @@ jobs:
 - **Default**: ''
 
 ## Steps
-### Setup Node.js
-- Description : Sets up the latest Node.js environment to run the AWS Amplify CLI.
 
 ### Update Token
 - Description : Updates the AWS Amplify app with the provided GitHub access token if specified.

@@ -12,17 +12,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 'latest'
-
-    - name: Install AWS Amplify CLI
-      shell: bash
-      run: |
-        npm install -g @aws-amplify/cli
-
+  
     - name: Delete Branch
       shell: bash
       run: |
