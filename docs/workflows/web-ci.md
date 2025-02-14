@@ -53,17 +53,6 @@ This workflow does not require any specific inputs as it is designed to run stan
 
 ## Outputs
 This workflow does not produce explicit outputs.
-
-## Jobs
-### CI
-Runs a series of steps to ensure code quality:
-
-- Checkout : Retrieves the latest code from the repository.
-- Setup Node.js : Configures the environment with the latest Node.js version.
-- Install Dependencies : Installs all necessary packages.
-- Format Code : Ensures code is formatted according to project standards.
-- Lint : Checks the code for potential errors and enforces coding standards.
-- Build : Compiles the application to ensure it builds correctly.
   
 ## Notes
 
