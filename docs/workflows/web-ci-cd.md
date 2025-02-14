@@ -12,6 +12,18 @@ A reusable GitHub Actions workflow for web applications that handles CI checks a
 
 ## Usage
 
+### Production Pipeline Setup
+
+For production deployments, create a file named `.github/workflows/web-prod-ci-cd.yml` with the following workflow configuration. This workflow:
+
+- Triggers on pushes to the main branch
+- Uses AWS production role and Amplify app ID
+- Deploys the application to AWS Amplify
+- Cleans up preview branches after successful deployment
+
+Here's the workflow configuration:
+
+
 ```yaml
 name: Production CI/CD
 
@@ -36,6 +48,17 @@ jobs:
       clean-up: 'true'
 ```
 
+### Stage Pipeline Setup
+
+For stage deployments, create a file named `.github/workflows/web-stage-ci-cd.yml` with the following workflow configuration. This workflow:
+
+- Triggers on pushes to the stage branch
+- Uses AWS stage role and Amplify app ID
+- Deploys the application to AWS Amplify
+- Cleans up preview branches after successful deployment
+
+Here's the workflow configuration:
+
 ```yaml
 name: Stage CI/CD
 
@@ -59,6 +82,16 @@ jobs:
       role-arn: ${{ vars.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
       clean-up: 'true'
 ```
+
+### Previews Pipeline Setup
+
+For preview deployments, create a file named `.github/workflows/web-preview-ci-cd.yml` with the following workflow configuration. This workflow:
+
+- Triggers on pull-requests
+- Uses AWS stage role and Amplify app ID
+- Deploys the application to AWS Amplify
+
+Here's the workflow configuration:
 
 ```yaml
 name: Preview CI/CD
