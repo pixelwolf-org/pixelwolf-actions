@@ -1,0 +1,94 @@
+name: 'Terraform Apply'
+description: 'Executes Terraform to apply infrastructure changes. Requires AWS credentials configured in the workflow.'
+author: 'Pixelwolf <tech@pixelwolf.com.br>'
+
+inputs:
+  customer-name:
+    description: 'Customer identifier for managing the infrastructure.'
+    required: true
+  project-name:
+    description: 'Project name within the customer environment.'
+    required: true
+  access-token:
+    description: 'GitHub access token for module repository access.'
+    required: true
+  aws-region:
+    description: 'AWS region for infrastructure deployment.'
+    required: false
+    default: 'us-east-1'
+  environment:
+    description: 'Deployment environment (e.g., stage, prod).'
+    required: false
+    default: 'stage'
+  working-directory:
+    description: 'Path to the Terraform configuration files.'
+    required: false
+    default: './terraform'
+
+runs:
+  using: composite
+  steps:
+    - name: 'Setup Terraform'
+      uses: hashicorp/setup-terraform@v3
+
+    - name: 'Configure Git Access for Pixelwolf Terraform Modules'
+      shell: bash
+      run: |
+        echo "Configuring access to Pixelwolf Terraform modules..."
+        git config --global url."https://x-access-token:${{ inputs.access-token }}@github.com/".insteadOf "https://github.com/"
+
+    - name: 'Define Terraform S3 Backend Bucket'
+      id: terraform-s3-bucket
+      shell: bash
+      run: |
+        BUCKET_NAME="pixelwolf-$(echo '${{ inputs.environment }}' | awk '{print tolower($0)}')-terraform"
+        echo "Terraform S3 Bucket: $BUCKET_NAME"
+        echo "value=$BUCKET_NAME" >> $GITHUB_OUTPUT
+
+    - name: 'Set Project Identifier'
+      id: project-identifier
+      shell: bash
+      run: |
+        IDENTIFIER="${{ inputs.customer-name }}/${{ inputs.project-name }}"
+        echo "Project Identifier: $IDENTIFIER"
+        echo "value=$IDENTIFIER" >> $GITHUB_OUTPUT
+
+    - name: 'Download Terraform Variables File'
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        echo "Fetching Terraform variables for ${{ inputs.environment }} environment..."
+        aws s3 cp s3://${{ steps.terraform-s3-bucket.outputs.value }}/${{ steps.project-identifier.outputs.value }}.tfvars ./terraform.tfvars \
+          || { echo "Failed to download Terraform tfvars file"; exit 1; }
+
+    - name: 'Initialize Terraform'
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        echo "Initializing Terraform with S3 backend..."
+        terraform init \
+          -backend-config="bucket=${{ steps.terraform-s3-bucket.outputs.value }}" \
+          -backend-config="key=${{ steps.project-identifier.outputs.value }}.tfstate" \
+          -backend-config="region=${{ inputs.aws-region }}" \
+          -backend-config="dynamodb_table=pixelwolf-terraform-lock"
+
+    - name: 'Validate Terraform Configuration'
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        echo "Validating Terraform configuration..."
+        terraform validate || { echo "Terraform validation failed"; exit 1; }
+
+    - name: 'Generate Terraform Plan'
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        echo "Generating Terraform execution plan..."
+        terraform plan -out=plan.tfplan || { echo "Terraform plan failed"; exit 1; }
+
+    - name: 'Apply Terraform Changes'
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        echo "Applying Terraform changes..."
+        terraform apply -auto-approve plan.tfplan || { echo "Terraform apply failed"; exit 1; }
