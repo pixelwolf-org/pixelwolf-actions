@@ -132,8 +132,7 @@ Optional job that removes feature preview branches:
 
 ## Notes
 
-Important:
-Ensure that you add the `GH_APP_PRIVATE_KEY` secret to your repository. This is crucial for the pipeline as it is a dependency for the access token generation action.
+> Important: Ensure that you add the `GH_APP_PRIVATE_KEY` secret to your repository. This is crucial for the pipeline as it is a dependency for the access token generation action.
 
 
 Create 3 different files for CI/CD workflows inside your project:
