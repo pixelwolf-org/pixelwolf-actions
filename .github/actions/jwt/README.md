@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: 'Generate JWT Token'
         id: jwt-token
-        uses: pixelwolf-org/pixelwolf-actions/actions/jwt@main
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/jwt@main
         with:
           iss: 'issuer'
           private-key: 'private-key-pem'

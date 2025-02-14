@@ -5,19 +5,22 @@ Welcome to the **Pixelwolf Actions** repository! This repository serves as the c
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Purpose](#purpose)
-3. [Actions](#actions)
-   - [Deployment](#deployment)
-   - [Python](#python)
-   - [Utilities](#utilities)
-4. [Workflows](#workflows)
-5. [Contributing](#contributing)
-   - [Repository Structure](#repository-structure)
-   - [Adding a New Action](#adding-a-new-action)
-   - [Updating an Existing Action](#updating-an-existing-action)
-   - [Guidelines](#guidelines)
-6. [Notes](#notes)
+- [Pixelwolf Actions](#pixelwolf-actions)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Purpose](#purpose)
+  - [Actions](#actions)
+    - [Deployment](#deployment)
+    - [Python](#python)
+    - [Utilities](#utilities)
+  - [Workflows](#workflows)
+  - [Contributing](#contributing)
+    - [Repository Structure](#repository-structure)
+    - [Adding a New Action](#adding-a-new-action)
+    - [Adding a New Workflow](#adding-a-new-workflow)
+    - [Updating an Existing Action or Workflow](#updating-an-existing-action-or-workflow)
+    - [Guidelines](#guidelines)
+  - [Notes](#notes)
 
 ## Overview
 
@@ -40,31 +43,34 @@ The **Pixelwolf Actions** repository is built to:
 
 | **Action Name**                                     | **Description**                                   |
 |-----------------------------------------------------|---------------------------------------------------|
-| [ecr-build-and-push](./actions/ecr-build-and-push/) | Builds and pushes Docker images to AWS ECR.       |
-| [ecs-deploy](./actions/ecs-deploy/)                 | Deploys an Amazon ECR image to an ECS cluster.    |
-| [lambda-deploy](./actions/lambda-deploy/)           | Deploys an Amazon ECR image to a Lambda Function. |
+| [ecr-build-and-push](./docs/actions/ecr-build-and-push.md) | Builds and pushes Docker images to AWS ECR.       |
+| [ecs-deploy](./docs/actions/ecs-deploy.md)                 | Deploys an Amazon ECR image to an ECS cluster.    |
+| [lambda-deploy](./docs/actions/lambda-deploy.md)           | Deploys an Amazon ECR image to a Lambda Function. |
+| [amplify-branch-delete](./docs/actions/amplify-branch-delete.md) | Deletes an AWS Amplify branch. |
+| [amplify-deploy](./docs/actions/amplify-deploy.md)         | Deploys to AWS Amplify.                           |
+
 
 ### Python
 
 | **Action Name**                         | **Description**            |
 |-----------------------------------------|----------------------------|
-| [setup-python](./actions/setup-python/) | Sets up Python and Poetry. |
+| [setup-python](./docs/actions/setup-python.md) | Sets up Python and Poetry. |
 
 ### Utilities
 
 | **Action Name**                                       | **Description**                                                              |
 |-------------------------------------------------------|------------------------------------------------------------------------------|
-| [gh-app-access-token](./actions/gh-app-access-token/) | Generates GitHub App Short Lived access-token.                               |
+| [gh-app-access-token](./docs/actions/gh-app-access-token.md) | Generates GitHub App Short Lived access-token.                               |
 | [jwt](./actions/jwt/)                                 | Generates a JWT using the specified issuer and private key.                  |
 | [pr-changed-files](./actions/pr-changed-files/)       | Retrieves a list of changed files in a pull request (PR).                    |
 
 ## Workflows
 
-### [Deploy a Docker Image to ECS](./examples/ecs-deploy)
-This example demonstrates how to use the `ecr-build-and-push` and `ecs-deploy` actions to build, push, and deploy a Docker image to an ECS cluster.
+| **Workflow Name**                                     | **Description**                                   |
+|-----------------------------------------------------|---------------------------------------------------|
+| [web-ci](./docs/workflows/web-ci.md)                    | Web CI Workflow for continuous integration.       |
+| [web-ci-cd](./docs/workflows/web-ci-cd.md)              | Production CI/CD that runs when a pull request to main is closed. |
 
-### [Deploy a Docker Image to Lambda Function](./examples/lambda-deploy)
-This example demonstrates how to use the `ecr-build-and-push` and `lambda-deploy` actions to build, push, and deploy a Docker image to a Lambda Function.
 
 ## Contributing
 
@@ -73,44 +79,61 @@ This example demonstrates how to use the `ecr-build-and-push` and `lambda-deploy
 All custom actions are organized under the `./actions` directory to maintain a consistent structure:  
 
 ```
-pixelwolf-actions/ 
-├── README.md 
-├── actions/ 
-│   ├── my-action/ 
-│   │   ├── action.yml 
-│   │   └── README.md 
-├── examples/ 
-│   ├── my-example/ 
-│   │   ├── workflow.yml 
-│   │   └── README.md 
+.
+└── pixelwolf-actions/
+    ├── .github/
+    │   ├── actions/
+    │   │   └── action-name/
+    │   │       └── action-name.yml
+    │   └── workflows/
+    │       └── workflow-name.yml
+    └── docs/
+        ├── actions/
+        │   └── action-name.md
+        ├── workflows/
+        │   └── workflow-name.md
+        └── examples/
+            └── examples-docs.md
 ```
 
 **Key Components**
 
 - **`README.md`**: High-level documentation for the repository.  
-- **`actions/`**: Contains subdirectories for each action. 
-  - **`my-action/`**: Each action folder includes:
-    - **`action.yml`**: Defines the action's metadata and functionality.  
-    - **`README.md`**: Provides action-specific documentation, including input parameters, output details, and usage examples.  
-- **`examples/`**: Includes example workflows and related documentation for better understanding and usage:
-  - **`my-example/`**: Each example folder includes:
-    - **`workflow.yml`**: Demonstrates how to implement a complete workflow by using the actions.
-    - **`README.md`**: Provides workflow documentation, including placeholder, used actions and configurations.
+- **`.github/actions/`**: Contains subdirectories for each action. 
+  - **`action-name/action.yml`**: Defines the action's metadata and functionality.  
+- **`.github/workflows/`**: Contains reusable workflow templates that can be referenced across projects:
+  - **`workflow-name.yml`**: Defines the reusable workflow configuration.
+- **`docs/`**: Includes documentation for actions, workflows, and examples:
+  - **`actions/`**: Contains documentation for each action.
+    - **`action-name.md`**: Provides action-specific documentation, including input parameters, output details, and usage examples.
+  - **`workflows/`**: Contains documentation for each workflow.
+    - **`workflow-name.md`**: Documents the workflow's purpose, inputs, and implementation details.
+  - **`examples/`**: Includes example workflows and related documentation for better understanding and usage.
+    - **`examples-docs.md`**: Provides workflow documentation, including placeholder, used actions, and configurations.
 
 We welcome contributions to improve and expand our custom actions. Follow these guidelines when contributing:
 
 ### Adding a New Action
 
-1. Create a new folder under `./actions/` with the action name (e.g., `new-action`).  
-2. Add an `action.yml` file to define the action's functionality.  
-3. Include a `README.md` with clear documentation for inputs, outputs, and usage examples.  
-4. Test the action in a sample workflow before pushing changes to the repository.  
+1. Create a new file under `.github/actions/action-name/` with the action name (e.g., `action.yml`).  
+2. Include a `action-name.md` readme file in `docs/actions/` with clear documentation for inputs, outputs, and usage examples.  
+3. Test the action in a sample workflow before pushing changes to the repository.  
 
-### Updating an Existing Action
+### Adding a New Workflow
 
-1. Update the relevant files in the action's directory.  
-2. Test your changes in a workflow to ensure they work as expected.  
-3. Revise the action's documentation (`README.md`) if necessary.
+1. Create a new file under `.github/workflows/` with the workflow name (e.g., `new-workflow.yml`).
+2. Include a `workflow-name.md` readme in `docs/workflows/` with comprehensive documentation covering:
+   - Purpose and use cases
+   - Required inputs and configurations
+   - Implementation examples
+3. Test the workflow in a sample project before committing.
+
+### Updating an Existing Action or Workflow
+
+1. Update the relevant files in the action's or workflow's directory.  
+2. Test your changes thoroughly to ensure they work as expected.  
+3. Revise the documentation (`readme.md`) to reflect any modifications.
+4. If updating a workflow, verify compatibility with existing implementations.
 
 ### Guidelines
 

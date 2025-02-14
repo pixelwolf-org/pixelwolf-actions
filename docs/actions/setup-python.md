@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Python Environment
-        uses: pixelwolf-org/pixelwolf-actions/actions/setup-python@main
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-python@feature/web-ci-cd
         with:
           python-version: ${{ matrix.python-version }}
 ```

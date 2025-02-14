@@ -1,0 +1,23 @@
+name: 'AWS Amplify Branch Delete'
+description: 'Delete an AWS Amplify Branch'
+
+inputs:
+  app-id:
+    description: 'Amplify app ID'
+    required: true
+  branch-name:
+    description: 'Branch name to delete'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Delete Branch'
+      shell: bash
+      run: |
+        aws amplify delete-branch --app-id ${{ inputs.app-id }} \
+            --branch-name ${{ inputs.branch-name }}
+
+branding:
+  icon: 'upload-cloud'
+  color: 'purple'

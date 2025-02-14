@@ -23,7 +23,7 @@ runs:
   steps:
     - name: 'Generate JWT Token'
       id: jwt-token
-      uses: pixelwolf-org/pixelwolf-actions/actions/jwt@main
+      uses: pixelwolf-org/pixelwolf-actions/.github/actions/jwt@main
       with:
         iss: ${{ inputs.app-id }}
         private-key: ${{ inputs.private-key }}
