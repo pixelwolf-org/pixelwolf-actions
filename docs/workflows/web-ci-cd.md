@@ -112,24 +112,6 @@ jobs:
 
 This action does not produce explicit outputs.
 
-## Jobs
-
-### CI
-Runs the web-ci workflow for code quality checks
-
-### Deploy
-Deploys the application to AWS Amplify with the following features:
-- Configures AWS credentials using OIDC
-- Creates feature branches automatically (except for 'stage' and 'main')
-- Deploys to specified branch
-
-### Clean-up
-Optional job that removes feature preview branches:
-- Only runs when clean-up input is 'true'
-- Uses same AWS credentials as deployment
-- Recommended to set as 'true' for preview ci-cd workflows on pull requests close, to maintain clean environments
-
-
 ## Notes
 
 > Important: Ensure that you add the `GH_APP_PRIVATE_KEY` secret to your repository. This is crucial for the pipeline as it is a dependency for the access token generation action.
