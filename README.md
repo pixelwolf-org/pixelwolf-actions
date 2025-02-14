@@ -43,12 +43,11 @@ The **Pixelwolf Actions** repository is built to:
 
 | **Action Name**                                     | **Description**                                   |
 |-----------------------------------------------------|---------------------------------------------------|
+| [amplify-branch-delete](./docs/actions/amplify-branch-delete.md) | Deletes an AWS Amplify branch. |
+| [amplify-deploy](./docs/actions/amplify-deploy.md)         | Deploys to AWS Amplify.                           |
 | [ecr-build-and-push](./docs/actions/ecr-build-and-push.md) | Builds and pushes Docker images to AWS ECR.       |
 | [ecs-deploy](./docs/actions/ecs-deploy.md)                 | Deploys an Amazon ECR image to an ECS cluster.    |
 | [lambda-deploy](./docs/actions/lambda-deploy.md)           | Deploys an Amazon ECR image to a Lambda Function. |
-| [amplify-branch-delete](./docs/actions/amplify-branch-delete.md) | Deletes an AWS Amplify branch. |
-| [amplify-deploy](./docs/actions/amplify-deploy.md)         | Deploys to AWS Amplify.                           |
-
 
 ### Python
 
@@ -116,24 +115,32 @@ We welcome contributions to improve and expand our custom actions. Follow these 
 ### Adding a New Action
 
 1. Create a new file under `.github/actions/action-name/` with the action name (e.g., `action.yml`).  
-2. Include a `action-name.md` readme file in `docs/actions/` with clear documentation for inputs, outputs, and usage examples.  
+2. Include an `action-name.md` readme in `docs/actions/` with comprehensive documentation covering:
+   - **Comprehensive Action Description**: Explain the purpose of the action and provide a step-by-step overview of how it operates.
+   - **Feature List**: Highlight the key functionalities and capabilities offered by the action.  
+   - **Usage Guide**: Provide detailed instructions on how to set up and execute the action.  
+   - **Inputs Reference**: Document all input parameters, including descriptions, expected values, and defaults.
+   - **Outputs Reference**: List and explain the action outputs, detailing their format and usage.
+   - **Important Notes & Requirements**: Include any prerequisites, warnings, or special configurations necessary for proper action execution. 
 3. Test the action in a sample workflow before pushing changes to the repository.  
 
 ### Adding a New Workflow
 
 1. Create a new file under `.github/workflows/` with the workflow name (e.g., `new-workflow.yml`).
 2. Include a `workflow-name.md` readme in `docs/workflows/` with comprehensive documentation covering:
-   - Purpose and use cases
-   - Required inputs and configurations
-   - Implementation examples
-3. Test the workflow in a sample project before committing.
+   - **Comprehensive Workflow Description**: Explain the purpose of the workflow and provide a step-by-step overview of how it operates.  
+   - **Feature List**: Highlight the key functionalities and capabilities offered by the workflow.
+   - **Usage Guide**: Provide detailed instructions on how to set up and execute the workflow, including code examples.
+   - **Inputs Reference**: Document all input parameters, including descriptions, expected values, and defaults.
+   - **Outputs Reference**: List and explain the workflow outputs, detailing their format and usage.
+   - **Important Notes & Requirements**: Include any prerequisites, warnings, or special configurations necessary for proper workflow execution.
 
 ### Updating an Existing Action or Workflow
 
 1. Update the relevant files in the action's or workflow's directory.  
 2. Test your changes thoroughly to ensure they work as expected.  
-3. Revise the documentation (`readme.md`) to reflect any modifications.
-4. If updating a workflow, verify compatibility with existing implementations.
+3. Revise the documentation to reflect any changes.
+4. Verify compatibility with existing implementations.
 
 ### Guidelines
 

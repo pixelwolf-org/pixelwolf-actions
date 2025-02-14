@@ -47,15 +47,5 @@ jobs:
 - **Required**: No
 - **Default**: ''
 
-## Steps
-
-### Update Token
-- Description : Updates the AWS Amplify app with the provided GitHub access token if specified.
-
-### Create AWS Amplify Feature Branch
-- Description : Creates a new branch in AWS Amplify if the create-branch input is set to 'true'.
-### Deploy to AWS Amplify
-- Description : Initiates a deployment job to AWS Amplify for the specified branch.
-
 ## Notes
 - Ensure the provided GitHub access token has the necessary permissions to interact with AWS Amplify.
