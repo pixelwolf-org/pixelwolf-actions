@@ -9,11 +9,11 @@ inputs:
     description: 'Branch name to deploy'
     required: true
   create-branch:
-    description: "Create branch if it doesn't exist"
+    description: 'Create branch if it doesn\'t exist'
     required: false
     default: 'false'
   access-token:
-    description: "GitHub Access Token"
+    description: 'GitHub Access Token'
     required: false
     default: ''
 
