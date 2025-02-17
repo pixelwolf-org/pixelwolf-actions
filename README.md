@@ -41,34 +41,36 @@ The **Pixelwolf Actions** repository is built to:
 
 ### Deployment
 
-| **Action Name**                                     | **Description**                                   |
-|-----------------------------------------------------|---------------------------------------------------|
-| [amplify-branch-delete](./docs/actions/amplify-branch-delete.md) | Deletes an AWS Amplify branch. |
-| [amplify-deploy](./docs/actions/amplify-deploy.md)         | Deploys to AWS Amplify.                           |
-| [ecr-build-and-push](./docs/actions/ecr-build-and-push.md) | Builds and pushes Docker images to AWS ECR.       |
-| [ecs-deploy](./docs/actions/ecs-deploy.md)                 | Deploys an Amazon ECR image to an ECS cluster.    |
-| [lambda-deploy](./docs/actions/lambda-deploy.md)           | Deploys an Amazon ECR image to a Lambda Function. |
+| **Action Name**                                                  | **Description**                                   |
+|------------------------------------------------------------------|---------------------------------------------------|
+| [amplify-branch-delete](./docs/actions/amplify-branch-delete.md) | Deletes an AWS Amplify branch.                    |
+| [amplify-deploy](./docs/actions/amplify-deploy.md)               | Deploys to AWS Amplify.                           |
+| [ecr-build-and-push](./docs/actions/ecr-build-and-push.md)       | Builds and pushes Docker images to AWS ECR.       |
+| [ecs-deploy](./docs/actions/ecs-deploy.md)                       | Deploys an Amazon ECR image to an ECS cluster.    |
+| [lambda-deploy](./docs/actions/lambda-deploy.md)                 | Deploys an Amazon ECR image to a Lambda Function. |
+| [terraform-apply](./docs/actions/terraform-apply.md)             | Applies Terraform changes for infrastructure.     |
+
 
 ### Python
 
-| **Action Name**                         | **Description**            |
-|-----------------------------------------|----------------------------|
+| **Action Name**                                | **Description**            |
+|------------------------------------------------|----------------------------|
 | [setup-python](./docs/actions/setup-python.md) | Sets up Python and Poetry. |
 
 ### Utilities
 
-| **Action Name**                                       | **Description**                                                              |
-|-------------------------------------------------------|------------------------------------------------------------------------------|
-| [gh-app-access-token](./docs/actions/gh-app-access-token.md) | Generates GitHub App Short Lived access-token.                               |
-| [jwt](./actions/jwt/)                                 | Generates a JWT using the specified issuer and private key.                  |
-| [pr-changed-files](./actions/pr-changed-files/)       | Retrieves a list of changed files in a pull request (PR).                    |
+| **Action Name**                                              | **Description**                                             |
+|--------------------------------------------------------------|-------------------------------------------------------------|
+| [gh-app-access-token](./docs/actions/gh-app-access-token.md) | Generates GitHub App Short Lived access-token.              |
+| [jwt](./docs/actions/)                                       | Generates a JWT using the specified issuer and private key. |
+| [pr-changed-files](./actions/pr-changed-files/)              | Retrieves a list of changed files in a pull request (PR).   |
 
 ## Workflows
 
-| **Workflow Name**                                     | **Description**                                   |
-|-----------------------------------------------------|---------------------------------------------------|
-| [web-ci](./docs/workflows/web-ci.md)                    | Web CI Workflow for continuous integration.       |
-| [web-ci-cd](./docs/workflows/web-ci-cd.md)              | Production CI/CD that runs when a pull request to main is closed. |
+| **Workflow Name**                          | **Description**                                                   |
+|--------------------------------------------|-------------------------------------------------------------------|
+| [web-ci](./docs/workflows/web-ci.md)       | Web CI Workflow for continuous integration.                       |
+| [web-ci-cd](./docs/workflows/web-ci-cd.md) | Production CI/CD that runs when a pull request to main is closed. |
 
 
 ## Contributing
