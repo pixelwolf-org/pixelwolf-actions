@@ -9,7 +9,7 @@ inputs:
     description: 'Branch name to deploy'
     required: true
   create-branch:
-    description: 'Create branch if it doesn\'t exist'
+    description: 'Create branch if it doesnt exist'
     required: false
     default: 'false'
   access-token:

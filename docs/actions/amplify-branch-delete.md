@@ -23,23 +23,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete Amplify Branch
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-branch-delete@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-branch-delete@main
         with:
           app-id: 'app-id'
           branch-name: 'feature-branch-to-delete'
 ```
 
 ## Inputs
-### app-id
+
+### `app-id`
 - Description : The ID of your AWS Amplify application.
 - Required : Yes
-### branch-name
+### `branch-name`
 - Description : The name of the branch to delete.
 - Required : Yes
+  
 ## Outputs
 This action does not produce explicit outputs.
-
-## Steps
-
-### Delete Branch
-- Description : Executes the command to delete the specified branch from the AWS Amplify application.

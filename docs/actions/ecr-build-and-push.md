@@ -66,7 +66,7 @@ jobs:
 
       - name: Build and Push Docker Image
         id: build
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/ecr-build-and-push@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/ecr-build-and-push@main
         with:
           repository: my-ecr-repo
           tag: v1.0.0
