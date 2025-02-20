@@ -6,8 +6,9 @@ A GitHub Actions workflow for continuous integration (CI) of web applications. T
 
 - Checks out the code from the repository
 - Sets up the latest Node.js environment
+- Generate access token for private NPM packages
 - Installs dependencies
-- Formats the code
+- Runs format check
 - Lints the code
 - Builds the application
 
@@ -36,11 +37,22 @@ jobs:
         with:
           node-version: 'latest'
 
+      - name: 'Generate Token'
+        id: gh-app-token
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/gh-app-access-token@main
+        with:
+          app-id: '1141682'
+          installation-id: '60963877'
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+      
+      - name: Authenticate with private NPM package
+        run: echo "//registry.npmjs.org/:_authToken=${{ steps.gh-app-token.outputs.access-token }}" > ~/.npmrc
+
       - name: Install dependencies
         run: npm install
 
-      - name: Format code
-        run: npm run format
+      - name: 'Run format (Prettier) check'
+        run: npm run format-check
 
       - name: Lint
         run: npm run lint
