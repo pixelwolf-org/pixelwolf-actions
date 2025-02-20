@@ -17,6 +17,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
+          cache: npm
+          registry-url: "https://npm.pkg.github.com"
 
       - name: 'Generate Token'
         id: gh-app-token
@@ -25,12 +27,16 @@ jobs:
           app-id: '1141682'
           installation-id: '60963877'
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-      
-      - name: Authenticate with private NPM package
-        run: echo "//registry.npmjs.org/:_authToken=${{ steps.gh-app-token.outputs.access-token }}" > ~/.npmrc
 
       - name: 'Install dependencies'
-        run: npm install
+        run: npm ci --ignore-scripts
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ steps.gh-app-token.outputs.access-token }}
+
+      - name: Run post-install scripts
+        run: "npm rebuild && npm run prepare --if-present"
+        shell: bash
 
       - name: 'Run format (Prettier) check'
         run: npm run format-check
