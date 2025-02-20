@@ -5,8 +5,8 @@ A GitHub Actions workflow for continuous integration (CI) of web applications. T
 ## Features
 
 - Checks out the code from the repository
-- Sets up the latest Node.js environment
-- Generate access token for private NPM packages
+- Sets up the latest Node.js environment with npm caching
+- Configures GitHub Package Registry access
 - Installs dependencies
 - Runs format check
 - Lints the code
@@ -32,24 +32,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 'Setup Node.js'
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
+          cache: npm
+          registry-url: "https://npm.pkg.github.com"
 
-      - name: 'Generate Token'
-        id: gh-app-token
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/gh-app-access-token@main
-        with:
-          app-id: '1141682'
-          installation-id: '60963877'
-          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-      
-      - name: Authenticate with private NPM package
-        run: echo "//registry.npmjs.org/:_authToken=${{ steps.gh-app-token.outputs.access-token }}" > ~/.npmrc
-
-      - name: Install dependencies
+      - name: 'Install dependencies'
         run: npm install
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
       - name: 'Run format (Prettier) check'
         run: npm run format-check
