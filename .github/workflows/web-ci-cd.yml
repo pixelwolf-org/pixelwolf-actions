@@ -33,7 +33,7 @@ permissions:
 
 jobs:
   ci:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@feature/web-ci-cd)
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@feature/web-ci-cd
 
   deploy:
     needs: ci
