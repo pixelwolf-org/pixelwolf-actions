@@ -14,30 +14,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: 'Setup Node.js'
-        uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 'latest'
-          cache: npm
-          registry-url: "https://npm.pkg.github.com"
+          bun-version: latest
+          registry-url: "https://npm.pkg.github.com/"
+          scope: "@pixelwolf-org"
 
       - name: 'Install dependencies'
-        run: npm ci --ignore-scripts
+        run: bun install --frozen-lockfile
         shell: bash
         env:
-          NODE_AUTH_TOKEN: ${{ github.token }}
-
-      - name: Run post-install scripts
-        run: "npm rebuild && npm run prepare --if-present"
-        shell: bash
+          BUN_AUTH_TOKEN: ${{ github.token }}
 
       - name: 'Run format (Prettier) check'
-        run: npm run format-check
+        run: bun run format-check
 
       - name: 'Lint'
-        run: npm run lint
+        run: bun run lint
 
       - name: 'Build'
-        run: npm run build
+        run: bun run build
 
         
