@@ -16,21 +16,22 @@ inputs:
     description: 'GitHub Access Token'
     required: false
     default: ''
-  build-spec:
-    description: 'Build spec file'
-    required: false 
-    default: ''
 
 runs:
   using: 'composite'
   steps:
+    - name: 'Setup build spec'
+      shell: bash
+      run: |
+        sed -i 's|<NPM_TOKEN>|${{ inputs.access-token }}|g' buldspec.yml
+
     - name: 'Update token'
       shell: bash
       if: ${{ inputs.access-token != '' }}
       run: |
         aws amplify update-app \
             --app-id ${{ inputs.app-id }} \
-            --build-spec "${{ inputs.build-spec }}"
+            --build-spec "$(cat buildspec.yml)"
 
     # - name: 'Create AWS Amplify Feature Branch'
     #   if: ${{ inputs.create-branch == 'true' }}
