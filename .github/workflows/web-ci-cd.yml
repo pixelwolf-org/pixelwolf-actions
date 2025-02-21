@@ -39,6 +39,8 @@ jobs:
   deploy:
     # needs: ci
     runs-on: ubuntu-latest
+    permissions: 
+      packages: read
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v4
