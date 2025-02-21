@@ -33,21 +33,21 @@ runs:
             --app-id ${{ inputs.app-id }} \
             --build-spec "$(cat ./buildspec.yml)"
 
-    - name: 'Create AWS Amplify Feature Branch'
-      if: ${{ inputs.create-branch == 'true' }}
-      shell: bash
-      run: |
-        aws amplify create-branch --app-id ${{ inputs.app-id }} \
-            --branch-name ${{ inputs.branch-name }} \
-            --no-enable-auto-build \
-            --enable-pull-request-preview || true
+    # - name: 'Create AWS Amplify Feature Branch'
+    #   if: ${{ inputs.create-branch == 'true' }}
+    #   shell: bash
+    #   run: |
+    #     aws amplify create-branch --app-id ${{ inputs.app-id }} \
+    #         --branch-name ${{ inputs.branch-name }} \
+    #         --no-enable-auto-build \
+    #         --enable-pull-request-preview || true
 
-    - name: 'Deploy to AWS Amplify'
-      shell: bash
-      run: |
-        aws amplify start-job --app-id ${{ inputs.app-id }} \
-            --branch-name ${{ inputs.branch-name }} \
-            --job-type RELEASE
+    # - name: 'Deploy to AWS Amplify'
+    #   shell: bash
+    #   run: |
+    #     aws amplify start-job --app-id ${{ inputs.app-id }} \
+    #         --branch-name ${{ inputs.branch-name }} \
+    #         --job-type RELEASE
 
 branding:
   icon: 'upload-cloud'
