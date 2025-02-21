@@ -28,22 +28,22 @@ runs:
             --app-id ${{ inputs.app-id }} \
             --environment-variables "NPM_TOKEN=${{ inputs.access-token }}"
 
-    - name: 'Create AWS Amplify Feature Branch'
-      if: ${{ inputs.create-branch == 'true' }}
-      shell: bash
-      run: |
-        aws amplify create-branch --app-id ${{ inputs.app-id }} \
-            --branch-name ${{ inputs.branch-name }} \
-            --no-enable-auto-build \
-            --enable-pull-request-preview || true
+    # - name: 'Create AWS Amplify Feature Branch'
+    #   if: ${{ inputs.create-branch == 'true' }}
+    #   shell: bash
+    #   run: |
+    #     aws amplify create-branch --app-id ${{ inputs.app-id }} \
+    #         --branch-name ${{ inputs.branch-name }} \
+    #         --no-enable-auto-build \
+    #         --enable-pull-request-preview || true
 
-    - name: 'Deploy to AWS Amplify'
-      shell: bash
-      run: |
-        aws amplify start-job --app-id ${{ inputs.app-id }} \
-            --branch-name ${{ inputs.branch-name }} \
-            --job-type RELEASE \
-            --environment-variables '{"NPM_TOKEN":"${{ inputs.access-token }}"}'
+    # - name: 'Deploy to AWS Amplify'
+    #   shell: bash
+    #   run: |
+    #     aws amplify start-job --app-id ${{ inputs.app-id }} \
+    #         --branch-name ${{ inputs.branch-name }} \
+    #         --job-type RELEASE \
+    #         --environment-variables '{"NPM_TOKEN":"${{ inputs.access-token }}"}'
 
 branding:
   icon: 'upload-cloud'
