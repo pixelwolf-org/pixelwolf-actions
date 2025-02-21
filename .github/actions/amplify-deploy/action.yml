@@ -16,6 +16,10 @@ inputs:
     description: 'GitHub Access Token'
     required: false
     default: ''
+  build-spec:
+    description: 'Build spec file'
+    required: false 
+    default: ''
 
 runs:
   using: 'composite'
@@ -26,7 +30,7 @@ runs:
       run: |
         aws amplify update-app \
             --app-id ${{ inputs.app-id }} \
-            --environment-variables "NPM_TOKEN=${{ inputs.access-token }}"
+            --build-spec "${{ inputs.build-spec }}"
 
     # - name: 'Create AWS Amplify Feature Branch'
     #   if: ${{ inputs.create-branch == 'true' }}

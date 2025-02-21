@@ -57,6 +57,11 @@ jobs:
           installation-id: '60963877'
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
 
+      - name: 'Buildspec to variable'
+        id: buildspec
+        run: |
+          echo "buildspec_content=$(sed 's|<NPM_TOKEN>|${{steps.gh-app-token.outputs.access-token}}|g' ./buildspec.yml)" >> $GITHUB_OUTPUT
+
       - name: 'Deploy to AWS Amplify'
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-deploy@feature/web-ci-cd
         with:
@@ -64,6 +69,7 @@ jobs:
           branch-name: ${{ inputs.branch-name }}
           create-branch: ${{ inputs.branch-name != 'stage' || inputs.branch-name != 'main' }}
           access-token: ${{ steps.gh-app-token.outputs.access-token }}
+          build-spec: ${{ steps.buildspec.outputs.buildspec_content }}
 
   clean-up:
     needs: deploy
