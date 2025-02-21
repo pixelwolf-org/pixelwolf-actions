@@ -26,7 +26,7 @@ runs:
       run: |
         aws amplify update-app \
             --app-id ${{ inputs.app-id }} \
-            --environment-variables "{\"NPM_TOKEN\":\"${{ inputs.access-token }}\"}"
+            --environment-variables "NPM_TOKEN=${{ inputs.access-token }}"
 
     - name: 'Create AWS Amplify Feature Branch'
       if: ${{ inputs.create-branch == 'true' }}
