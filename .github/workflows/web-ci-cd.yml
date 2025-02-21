@@ -60,6 +60,7 @@ jobs:
       - name: 'Buildspec to variable'
         id: buildspec
         run: |
+          cat buildspec.yml
           echo "buildspec_content=$(sed 's|<NPM_TOKEN>|${{steps.gh-app-token.outputs.access-token}}|g' ./buildspec.yml)" >> $GITHUB_OUTPUT
 
       - name: 'Deploy to AWS Amplify'
