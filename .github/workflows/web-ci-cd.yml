@@ -60,8 +60,19 @@ jobs:
       - name: 'Buildspec to variable'
         id: buildspec
         run: |
-          cat buildspec.yml
-          echo "buildspec_content=$(sed 's|<NPM_TOKEN>|${{steps.gh-app-token.outputs.access-token}}|g' ./buildspec.yml)" >> $GITHUB_OUTPUT
+          # Read buildspec file content
+          BUILDSPEC_CONTENT=$(cat buildspec.yml)
+          
+          # Escape special characters to prevent GitHub Actions issues
+          BUILDSPEC_CONTENT="${BUILDSPEC_CONTENT//'%'/'%25'}"
+          BUILDSPEC_CONTENT="${BUILDSPEC_CONTENT//$'\n'/'%0A'}"
+          BUILDSPEC_CONTENT="${BUILDSPEC_CONTENT//$'\r'/'%0D'}"
+          
+          # Replace NPM_TOKEN placeholder with actual token
+          BUILDSPEC_CONTENT="${BUILDSPEC_CONTENT//<NPM_TOKEN>/${{steps.gh-app-token.outputs.access-token}}}"
+          
+          # Set output variable
+          echo "buildspec_content=$BUILDSPEC_CONTENT" >> $GITHUB_OUTPUT
 
       - name: 'Deploy to AWS Amplify'
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-deploy@feature/web-ci-cd
