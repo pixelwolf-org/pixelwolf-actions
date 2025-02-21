@@ -47,8 +47,7 @@ runs:
       run: |
         aws amplify start-job --app-id ${{ inputs.app-id }} \
             --branch-name ${{ inputs.branch-name }} \
-            --job-type RELEASE \
-            --environment-variables '{"NPM_TOKEN":"${{ inputs.access-token }}"}'
+            --job-type RELEASE
 
 branding:
   icon: 'upload-cloud'
