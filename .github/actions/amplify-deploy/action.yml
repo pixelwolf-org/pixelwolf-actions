@@ -23,7 +23,7 @@ runs:
     - name: 'Setup build spec'
       shell: bash
       run: |
-        sed -i 's|<NPM_TOKEN>|${{ inputs.access-token }}|g' buldspec.yml
+        sed -i 's|<NPM_TOKEN>|${{ inputs.access-token }}|g' ./buldspec.yml
 
     - name: 'Update token'
       shell: bash
@@ -31,7 +31,7 @@ runs:
       run: |
         aws amplify update-app \
             --app-id ${{ inputs.app-id }} \
-            --build-spec "$(cat buildspec.yml)"
+            --build-spec "$(cat ./buildspec.yml)"
 
     # - name: 'Create AWS Amplify Feature Branch'
     #   if: ${{ inputs.create-branch == 'true' }}
