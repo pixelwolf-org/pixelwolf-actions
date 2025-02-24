@@ -23,7 +23,7 @@ runs:
     - name: 'Setup build spec'
       shell: bash
       run: |
-        sed -i 's|<NPM_TOKEN>|${{ github.token }}|g' ./buildspec.yml
+        sed -i 's|<NPM_TOKEN>|${{ inputs.access-token }}|g' ./buildspec.yml
 
     - name: 'Update token'
       shell: bash
