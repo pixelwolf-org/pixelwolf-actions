@@ -4,10 +4,6 @@ description: "A CI/CD that should run whenever a pull request to main is closed"
 on:
   workflow_call:
     inputs:
-      vercel-token:
-        description: "Vercel Token"
-        required: true
-        type: "string"
       environment:
         description: "Environment to deploy (e.g., preview, production)"
         default: "preview"
@@ -39,7 +35,7 @@ jobs:
       - name: "Vercel Deploy"
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@main
         with:
-          vercel-token: ${{ inputs.vercel-token }}
+          vercel-token: ${{ secrets.vercel-token }}
           environment: ${{ inputs.environment }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
