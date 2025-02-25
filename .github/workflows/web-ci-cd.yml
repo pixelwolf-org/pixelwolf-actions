@@ -4,27 +4,20 @@ description: "A CI/CD that should run whenever a pull request to main is closed"
 on:
   workflow_call:
     inputs:
-      app-id:
-        description: "GitHub App ID"
+      vercel-token:
+        description: "Vercel Token"
         required: true
+        type: "string"
+      environment:
+        description: "Environment to deploy (e.g., preview, production)"
+        default: "preview"
         type: string
-      branch-name:
-        description: "Branch to deploy (default: `stage`)"
         required: false
-        type: string
-      aws-region:
-        description: "AWS Region"
-        required: true
-        type: string
-      role-arn:
-        description: "AWS OIDC Role ARN"
-        required: true
-        type: string
-      clean-up:
-        description: "Flag to control if preview branches should be deleted after the deployments"
+      prod:
+        description: "Should build production build"
         required: false
-        type: string
         default: "false"
+        type: string
 
 permissions:
   id-token: write
@@ -33,60 +26,21 @@ permissions:
   packages: read
 
 jobs:
-  # ci:
-  #   uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@feature/web-ci-cd
+  ci:
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@feature/web-ci-cd
 
-  deploy:
-    # needs: ci
+  cd:
+    needs: ci
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
 
-      - name: "Setup AWS credentials with OIDC"
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: "Vercel Deploy"
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@main
         with:
-          role-to-assume: ${{ inputs.role-arn }}
-          aws-region: ${{ inputs.aws-region }}
-
-      # - name: "Generate Token"
-      #   id: gh-app-token
-      #   uses: pixelwolf-org/pixelwolf-actions/.github/actions/gh-app-access-token@main
-      #   with:
-      #     app-id: "1141682"
-      #     installation-id: "60963877"
-      #     private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: "Update Vercel NPM RC Variable"
-        run: |
-          echo '@pixelwolf-org:registry=https://npm.pkg.github.com' >> .npmrc && echo '//npm.pkg.github.com/:_authToken=${{ github.token }}' >> .npmrc
-          vc env add NPM_RC preview < .npmrc --force --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Build Project Artifacts
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
-
-  clean-up:
-    needs: deploy
-    runs-on: ubuntu-latest
-    if: ${{ inputs.clean-up == 'true' }}
-    steps:
-      - name: "Setup AWS credentials with OIDC"
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ inputs.role-arn }}
-          aws-region: ${{ inputs.aws-region }}
-
-      - name: "Delete Feature Amplify Branch"
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-branch-delete@main
-        with:
-          branch-name: ${{ github.head_ref || github.ref_name }}
-          app-id: ${{ inputs.app-id }}
+          vercel-token: ${{ inputs.vercel-token }}
+          environment: ${{ inputs.environment }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
