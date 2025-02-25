@@ -33,7 +33,7 @@ runs:
 
     - name: 'Build Project Artifacts'
       shell: bash
-      run: vercel build --token=${{ inputs.vercel-token }}
+      run: vercel build --token=${{ inputs.vercel-token }} --prod=${{ inputs.prod }}
 
     - name: 'Deploy to Vercel'
       shell: bash
