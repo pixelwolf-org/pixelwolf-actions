@@ -35,7 +35,7 @@ jobs:
       - name: "Vercel Deploy"
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@feature/web-ci-cd
         with:
-          vercel-token: ${{ secrets.vercel-token }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
           environment: ${{ inputs.environment }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
