@@ -33,12 +33,12 @@ runs:
 
     - name: 'Build Project Artifacts'
       shell: bash
-      run: vercel build --token=${{ inputs.vercel-token }} --prod=${{ inputs.prod }}
+      run: vercel build --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }}
 
     - name: 'Deploy to Vercel'
       shell: bash
       run: |
-        vercel deploy --prebuilt --token=${{ inputs.vercel-token }} --prod=${{ inputs.prod }}
+        vercel deploy --prebuilt --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }}
 
 branding:
   icon: 'upload-cloud'
