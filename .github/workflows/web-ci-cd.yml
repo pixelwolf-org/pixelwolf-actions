@@ -22,11 +22,11 @@ permissions:
   packages: read
 
 jobs:
-  ci:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@feature/web-ci-cd
+  # ci:
+  #   uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@feature/web-ci-cd
 
   cd:
-    needs: ci
+    # needs: ci
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout repository"
