@@ -20,11 +20,18 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: 'Setup build spec'
+      shell: bash
+      run: |
+        sed -i 's|<NPM_TOKEN>|${{ inputs.access-token }}|g' ./buildspec.yml
+
     - name: 'Update token'
       shell: bash
       if: ${{ inputs.access-token != '' }}
       run: |
-        aws amplify update-app --app-id ${{ inputs.app-id }} --access-token=${{ inputs.access-token }}
+        aws amplify update-app \
+            --app-id ${{ inputs.app-id }} \
+            --build-spec "$(cat ./buildspec.yml)"
 
     - name: 'Create AWS Amplify Feature Branch'
       if: ${{ inputs.create-branch == 'true' }}

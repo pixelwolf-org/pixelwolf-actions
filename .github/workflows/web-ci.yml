@@ -9,6 +9,7 @@ jobs:
     permissions:
       pull-requests: write
       contents: write
+      packages: read
 
     steps:
       - uses: actions/checkout@v4
@@ -17,17 +18,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
+          cache: npm
+          registry-url: 'https://npm.pkg.github.com'
 
       - name: 'Install dependencies'
         run: npm install
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
-      - name: 'Format code'
-        run: npm run format
+      - name: 'Run format (Prettier) check'
+        run: npm run format-check
 
       - name: 'Lint'
         run: npm run lint
 
       - name: 'Build'
         run: npm run build
-
-        

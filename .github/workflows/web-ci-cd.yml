@@ -4,79 +4,46 @@ description: 'A CI/CD that should run whenever a pull request to main is closed'
 on:
   workflow_call:
     inputs:
-      app-id:
-        description: 'GitHub App ID'
+      org-id:
+        description: 'Vercel Organization ID'
         required: true
         type: string
-      branch-name:
-        description: 'Branch to deploy (default: `stage`)'
+      project-id:
+        description: 'Vercel Project ID'
+        required: true
+        type: string
+      environment:
+        description: 'Environment to deploy (e.g., preview, production)'
+        default: 'preview'
+        type: string
         required: false
-        type: string
-      aws-region:
-        description: 'AWS Region'
-        required: true
-        type: string
-      role-arn:
-        description: 'AWS OIDC Role ARN'
-        required: true
-        type: string
-      clean-up:
-        description: 'Flag to control if preview branches should be deleted after the deployments'
+      prod:
+        description: 'Should build production build'
         required: false
-        type: string
         default: 'false'
+        type: string
 
 permissions:
   id-token: write
   contents: write
   pull-requests: write
+  packages: read
 
 jobs:
   ci:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@main
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@feature/web-ci-cd
 
-  deploy:
+  cd:
     needs: ci
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v4
 
-      - name: 'Setup AWS credentials with OIDC'
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: 'Vercel Deploy'
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@feature/web-ci-cd
         with:
-          role-to-assume: ${{ inputs.role-arn }}
-          aws-region: ${{ inputs.aws-region }}
-      
-      - name: 'Generate Token'
-        id: gh-app-token
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/gh-app-access-token@main
-        with:
-          app-id: '1141682'
-          installation-id: '60963877'
-          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-
-      - name: 'Deploy to AWS Amplify'
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-deploy@main
-        with:
-          app-id: ${{ inputs.app-id }}
-          branch-name: ${{ inputs.branch-name }}
-          create-branch: ${{ inputs.branch-name != 'stage' || inputs.branch-name != 'main' }}
-          access-token: ${{ steps.gh-app-token.outputs.access-token }}
-
-  clean-up:
-    needs: deploy
-    runs-on: ubuntu-latest
-    if: ${{ inputs.clean-up == 'true' }}
-    steps:
-      - name: 'Setup AWS credentials with OIDC'
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ inputs.role-arn }}
-          aws-region: ${{ inputs.aws-region }}
-
-      - name: 'Delete Feature Amplify Branch'
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/amplify-branch-delete@main
-        with:
-          branch-name: ${{ github.head_ref || github.ref_name }}
-          app-id: ${{ inputs.app-id }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          org-id: ${{ inputs.org-id }}
+          project-id: ${{ inputs.project-id }}
+          environment: ${{ inputs.environment }}

@@ -5,9 +5,10 @@ A GitHub Actions workflow for continuous integration (CI) of web applications. T
 ## Features
 
 - Checks out the code from the repository
-- Sets up the latest Node.js environment
+- Sets up the latest Node.js environment with npm caching
+- Configures GitHub Package Registry access
 - Installs dependencies
-- Formats the code
+- Runs format check
 - Lints the code
 - Builds the application
 
@@ -31,16 +32,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 'Setup Node.js'
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
+          cache: npm
+          registry-url: 'https://npm.pkg.github.com'
 
-      - name: Install dependencies
+      - name: 'Install dependencies'
         run: npm install
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
 
-      - name: Format code
-        run: npm run format
+      - name: 'Run format (Prettier) check'
+        run: npm run format-check
 
       - name: Lint
         run: npm run lint
@@ -48,12 +54,15 @@ jobs:
       - name: Build
         run: npm run build
 ```
+
 ## Inputs
+
 This workflow does not require any specific inputs as it is designed to run standard CI checks.
 
 ## Outputs
+
 This workflow does not produce explicit outputs.
-  
+
 ## Notes
 
 Important: to run this workflow successfully, make sure to implement the format, lint and build scripts inside your package.json

@@ -1,0 +1,56 @@
+name: 'Vercel Deploy'
+description: 'Deploy to Vercel'
+
+inputs:
+  vercel-token:
+    description: 'Vercel Token'
+    required: true
+  org-id:
+    description: 'Vercel Organization ID'
+    required: true
+  project-id:
+    description: 'Vercel Project ID'
+    required: true
+  environment:
+    description: 'Environment to deploy (e.g., preview, production)'
+    required: true
+  prod:
+    description: 'Should build production build'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+
+    - name: 'Export input into env variables'
+      shell: bash
+      run: echo "VERCEL_ORG_ID=${{ inputs.org-id }}" >> $GITHUB_ENV && echo "VERCEL_PROJECT_ID=${{ inputs.project-id }}" >> $GITHUB_ENV
+
+    - name: 'Install Vercel CLI'
+      shell: bash
+      run: npm install --global vercel@latest
+
+    - name: 'Pull Vercel Environment Information'
+      shell: bash
+      run: vercel pull --yes --environment=preview --token=${{ inputs.vercel-token }}
+
+    - name: 'Update Vercel NPM RC Variable for private packages installation'
+      shell: bash
+      run: |
+        echo '@pixelwolf-org:registry=https://npm.pkg.github.com' >> .npmrc
+        echo '//npm.pkg.github.com/:_authToken=${{ github.token }}' >> .npmrc
+        vc env add NPM_RC preview < .npmrc --force --token=${{ inputs.vercel-token }}
+
+    - name: 'Build Project Artifacts'
+      shell: bash
+      run: vercel build --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }}
+
+    - name: 'Deploy to Vercel'
+      shell: bash
+      run: |
+        vercel deploy --prebuilt --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }}
+
+branding:
+  icon: 'upload-cloud'
+  color: 'blue'

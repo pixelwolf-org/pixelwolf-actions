@@ -1,13 +1,12 @@
 # Web CI/CD Workflow
 
-A reusable GitHub Actions workflow for web applications that handles CI checks and deployment to AWS Amplify. This workflow can be used for both staging and production environments.
+A reusable GitHub Actions workflow for web applications that handles CI checks and deployment to Vercel. This workflow can be used for both staging and production environments.
 
 ## Features
 
 - Runs automated CI checks using web-ci workflow
-- Deploys applications to AWS Amplify
-- Uses AWS OIDC for secure authentication
-- Optional cleanup of feature preview branches
+- Deploys applications to Vercel
+- Uses Vercel OIDC for secure authentication
 - Configurable for different environments
 
 ## Usage
@@ -17,12 +16,10 @@ A reusable GitHub Actions workflow for web applications that handles CI checks a
 For production deployments, create a file named `.github/workflows/web-prod-ci-cd.yml` with the following workflow configuration. This workflow:
 
 - Triggers on pushes to the main branch
-- Uses AWS production role and Amplify app ID
-- Deploys the application to AWS Amplify
-- Cleans up preview branches after successful deployment
+- Uses Vercel organization ID and project ID
+- Deploys the application to Vercel
 
 Here's the workflow configuration:
-
 
 ```yaml
 name: Production CI/CD
@@ -30,7 +27,7 @@ name: Production CI/CD
 on:
   push:
     branches:
-      - prod
+      - main
 
 permissions:
   id-token: write
@@ -41,11 +38,11 @@ jobs:
   web-ci-cd:
     uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
     with:
-      app-id: ${{ vars.AWS_PROD_AMPLIFY_APP_ID }}
-      branch-name: 'prod'
-      aws-region: ${{ vars.AWS_REGION }}
-      role-arn: ${{ vars.AWS_PROD_DEPLOY_OIDC_ROLE_ARN }}
-      clean-up: 'true'
+      org-id: ${{ vars.VERCEL_ORG_ID }}
+      project-id: ${{ vars.VERCEL_PROJECT_ID }}
+      environment: 'production'
+      prod: 'true'
+    secrets: inherit
 ```
 
 ### Stage Pipeline Setup
@@ -53,9 +50,8 @@ jobs:
 For stage deployments, create a file named `.github/workflows/web-stage-ci-cd.yml` with the following workflow configuration. This workflow:
 
 - Triggers on pushes to the stage branch
-- Uses AWS stage role and Amplify app ID
-- Deploys the application to AWS Amplify
-- Cleans up preview branches after successful deployment
+- Uses Vercel organization ID and project ID
+- Deploys the application to Vercel
 
 Here's the workflow configuration:
 
@@ -76,20 +72,20 @@ jobs:
   web-ci-cd:
     uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
     with:
-      app-id: ${{ vars.AWS_STAGE_AMPLIFY_APP_ID }}
-      branch-name: 'stage'
-      aws-region: ${{ vars.AWS_REGION }}
-      role-arn: ${{ vars.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
-      clean-up: 'true'
+      org-id: ${{ vars.VERCEL_ORG_ID }}
+      project-id: ${{ vars.VERCEL_PROJECT_ID }}
+      environment: 'development'
+      prod: 'true'
+    secrets: inherit
 ```
 
 ### Previews Pipeline Setup
 
 For preview deployments, create a file named `.github/workflows/web-preview-ci-cd.yml` with the following workflow configuration. This workflow:
 
-- Triggers on pull-requests
-- Uses AWS stage role and Amplify app ID
-- Deploys the application to AWS Amplify
+- Triggers on pull requests
+- Uses Vercel organization ID and project ID
+- Deploys the application to Vercel
 
 Here's the workflow configuration:
 
@@ -107,39 +103,49 @@ permissions:
 
 jobs:
   web-ci-cd:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@feature/web-ci-cd
     with:
-      app-id: ${{ vars.AWS_STAGE_AMPLIFY_APP_ID }}
-      branch-name: ${{ github.head_ref }}
-      aws-region: ${{ vars.AWS_REGION }}
-      role-arn: ${{ vars.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
-      clean-up: 'false'
+      org-id: ${{ vars.VERCEL_ORG_ID }}
+      project-id: ${{ vars.VERCEL_PROJECT_ID }}
+      environment: 'preview'
+      prod: 'false'
+    secrets: inherit
 ```
-
 
 ## Inputs
 
-### `app-id`
-- **Description**: The ID of your AWS Amplify application
+### `org-id`
+
+- **Description**: The ID of your Vercel organization.
 - **Required**: Yes
 
-### `branch-name`
-- **Description**: The branch name to deploy (e.g., 'stage', 'main')
+### `project-id`
+
+- **Description**: The ID of your Vercel project.
+- **Required**: Yes
+
+### `environment`
+
+- **Description**: The environment to deploy (e.g., preview, production).
 - **Required**: No
-- **Default**: Current branch name
+- **Default**: 'preview'
 
-### `aws-region`
-- **Description**: The AWS region where your Amplify app is located
-- **Required**: Yes
+### `prod`
 
-### `role-arn`
-- **Description**: The AWS IAM Role ARN for OIDC authentication
-- **Required**: Yes
-
-### `clean-up`
-- **Description**: Flag to control if preview branches should be deleted after deployments
+- **Description**: Flag to indicate if a production build should be created.
 - **Required**: No
 - **Default**: 'false'
+
+## Required Variables and Secrets
+
+> Important: Ensure that you add the following variables to your repository:
+>
+> - `VERCEL_ORG_ID`: The ID of your Vercel organization.
+> - `VERCEL_PROJECT_ID`: The ID of your Vercel project.
+
+> Important: Ensure that you add the following secrets to your repository:
+>
+> - `VERCEL_TOKEN`: This token is required for authentication with Vercel.
 
 ## Outputs
 
@@ -147,8 +153,7 @@ This action does not produce explicit outputs.
 
 ## Notes
 
-> Important: Ensure that you add the `GH_APP_PRIVATE_KEY` secret to your repository. This is crucial for the pipeline as it is a dependency for the access token generation action.
-
+- Ensure that the provided Vercel token has the necessary permissions to deploy to your Vercel project.
 
 Create 3 different files for CI/CD workflows inside your project:
 

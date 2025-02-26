@@ -1,0 +1,4 @@
+node_modules
+.husky
+.prettierignore
+lint-staged.config.js

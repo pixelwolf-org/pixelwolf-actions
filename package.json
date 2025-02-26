@@ -1,0 +1,24 @@
+{
+  "name": "pixelwolf-actions",
+  "version": "1.0.0",
+  "description": "Pixelwolf's Reusable Github Actions and Workflows",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format-check": "prettier --check '**/*.{js,ts,md,yml}'",
+    "format": "prettier --write '**/*.{js,ts,md,yml}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pixelwolf-org/pixelwolf-actions.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/pixelwolf-org/pixelwolf-actions#readme"
+}
