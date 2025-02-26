@@ -1,26 +1,26 @@
-name: "Production CI/CD"
-description: "A CI/CD that should run whenever a pull request to main is closed"
+name: 'Production CI/CD'
+description: 'A CI/CD that should run whenever a pull request to main is closed'
 
 on:
   workflow_call:
     inputs:
       org-id:
-        description: "Vercel Organization ID"
+        description: 'Vercel Organization ID'
         required: true
         type: string
       project-id:
-        description: "Vercel Project ID"
+        description: 'Vercel Project ID'
         required: true
         type: string
       environment:
-        description: "Environment to deploy (e.g., preview, production)"
-        default: "preview"
+        description: 'Environment to deploy (e.g., preview, production)'
+        default: 'preview'
         type: string
         required: false
       prod:
-        description: "Should build production build"
+        description: 'Should build production build'
         required: false
-        default: "false"
+        default: 'false'
         type: string
 
 permissions:
@@ -37,10 +37,10 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout repository"
+      - name: 'Checkout repository'
         uses: actions/checkout@v4
 
-      - name: "Vercel Deploy"
+      - name: 'Vercel Deploy'
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@feature/web-ci-cd
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}

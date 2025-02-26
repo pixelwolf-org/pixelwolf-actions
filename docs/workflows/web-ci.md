@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: 'latest'
           cache: npm
-          registry-url: "https://npm.pkg.github.com"
+          registry-url: 'https://npm.pkg.github.com'
 
       - name: 'Install dependencies'
         run: npm install
@@ -54,12 +54,15 @@ jobs:
       - name: Build
         run: npm run build
 ```
+
 ## Inputs
+
 This workflow does not require any specific inputs as it is designed to run standard CI checks.
 
 ## Outputs
+
 This workflow does not produce explicit outputs.
-  
+
 ## Notes
 
 Important: to run this workflow successfully, make sure to implement the format, lint and build scripts inside your package.json
