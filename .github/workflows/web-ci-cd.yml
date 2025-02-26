@@ -4,6 +4,14 @@ description: "A CI/CD that should run whenever a pull request to main is closed"
 on:
   workflow_call:
     inputs:
+      org-id:
+        description: "Vercel Organization ID"
+        required: true
+        type: string
+      project-id:
+        description: "Vercel Project ID"
+        required: true
+        type: string
       environment:
         description: "Environment to deploy (e.g., preview, production)"
         default: "preview"
@@ -37,5 +45,5 @@ jobs:
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           environment: ${{ inputs.environment }}
-          org-id: ${{ secrets.VERCEL_ORG_ID }}
-          project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          org-id: ${{ inputs.org-id }}
+          project-id: ${{ inputs.project-id }}
