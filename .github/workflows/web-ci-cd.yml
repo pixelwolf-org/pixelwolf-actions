@@ -28,6 +28,7 @@ permissions:
   contents: write
   pull-requests: write
   packages: read
+  issues: write
 
 jobs:
   # ci:
@@ -51,9 +52,6 @@ jobs:
   deploy-comment:
     runs-on: ubuntu-latest
     needs: cd
-    permissions:
-      issues: write
-      pull-requests: write
     steps:
       - name: Comment URL to PR
         env:
