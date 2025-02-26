@@ -22,7 +22,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-
     - name: 'Export input into env variables'
       shell: bash
       run: echo "VERCEL_ORG_ID=${{ inputs.org-id }}" >> $GITHUB_ENV && echo "VERCEL_PROJECT_ID=${{ inputs.project-id }}" >> $GITHUB_ENV
@@ -49,7 +48,8 @@ runs:
     - name: 'Deploy to Vercel'
       shell: bash
       run: |
-        vercel deploy --prebuilt --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }}
+        vercel deploy --prebuilt --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }} >url.txt
+          echo "deployment-url=$(cat url.txt)" >> $GITHUB_OUTPUT
 
 branding:
   icon: 'upload-cloud'
