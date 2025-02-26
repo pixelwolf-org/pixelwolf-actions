@@ -22,18 +22,20 @@ jobs:
       - name: Deploy Lambda Function
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/lambda-deploy@main
         with:
-          function-name: "my-lambda-function"
-          image: "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-repo:latest"
+          function-name: 'my-lambda-function'
+          image: '123456789012.dkr.ecr.us-east-1.amazonaws.com/my-repo:latest'
 ```
 
 ## Inputs
 
 ### `function-name`
+
 - **Description**: The name of the AWS Lambda function to update.
 - **Type**: `string`
 - **Required**: Yes
 
 ### `image`
+
 - **Description**: The URI of the new container image to deploy to the Lambda function.
 - **Type**: `string`
 - **Required**: Yes

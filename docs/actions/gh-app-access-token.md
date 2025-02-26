@@ -59,4 +59,3 @@ jobs:
 
 - **Private Key**: Ensure that you have created the secret `GH_APP_PRIVATE_KEY` or are using an existing organization secret. This private key is essential for generating the JWT token for your GitHub App.
 - **JWT Action Dependency**: This action requires the use of the GitHub Action JWT to function properly.
-

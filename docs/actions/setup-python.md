@@ -19,7 +19,6 @@ on:
     branches: ['*']
 
 jobs:
-
   my-job:
     name: My Job
     runs-on: ubuntu-latest
@@ -40,16 +39,19 @@ jobs:
 ## Inputs
 
 ### `python-version`
+
 - **Description**: Python version to install. Example: `"3.12"`
 - **Type**: string
 - **Required**: Yes
 
 ### `poetry-version`
+
 - **Description**: Poetry version to install. Leave empty for the latest version.
 - **Type**: string
 - **Required**: No
 
 ### `use-cache`
+
 - **Description**: Enable caching for Poetry and pip dependencies.
 - **Type**: boolean
 - **Default**: "true"

@@ -1,20 +1,20 @@
-name: "Setup Python Environment"
-description: "Sets up Python and Poetry with optional caching for dependencies."
+name: 'Setup Python Environment'
+description: 'Sets up Python and Poetry with optional caching for dependencies.'
 
 inputs:
   python-version:
     description: "Python version to install. Example: '3.12'"
     required: true
   poetry-version:
-    description: "Poetry version to install. Leave empty to install the latest version."
+    description: 'Poetry version to install. Leave empty to install the latest version.'
     required: false
   use-cache:
-    description: "Enable caching for Poetry and pip dependencies."
-    default: "true"
+    description: 'Enable caching for Poetry and pip dependencies.'
+    default: 'true'
     required: false
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Set up Python
       uses: actions/setup-python@v4

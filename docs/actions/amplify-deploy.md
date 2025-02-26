@@ -30,22 +30,27 @@ jobs:
 ## Inputs
 
 ### `app-id`
+
 - **Description**: The ID of your AWS Amplify application.
 - **Required**: Yes
 
 ### `branch-name`
+
 - **Description**: The branch name to deploy.
 - **Required**: Yes
 
 ### `create-branch`
+
 - **Description**: Flag to create the branch if it doesn't exist.
 - **Required**: No
 - **Default**: 'false'
 
 ### `access-token`
+
 - **Description**: GitHub Access Token for authentication.
 - **Required**: No
 - **Default**: ''
 
 ## Notes
+
 - Ensure the provided GitHub access token has the necessary permissions to interact with AWS Amplify.

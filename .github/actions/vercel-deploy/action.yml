@@ -22,7 +22,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-
     - name: 'Export input into env variables'
       shell: bash
       run: echo "VERCEL_ORG_ID=${{ inputs.org-id }}" >> $GITHUB_ENV && echo "VERCEL_PROJECT_ID=${{ inputs.project-id }}" >> $GITHUB_ENV

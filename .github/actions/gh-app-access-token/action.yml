@@ -35,7 +35,7 @@ runs:
       run: |
         set -e
         access_token_uri="https://api.github.com/app/installations/${{ inputs.installation-id }}/access_tokens"
-        
+
         response=$(curl -s -X POST "$access_token_uri" \
           -H "Authorization: Bearer ${{ steps.jwt-token.outputs.token }}" \
           -H "Accept: application/vnd.github+json")
