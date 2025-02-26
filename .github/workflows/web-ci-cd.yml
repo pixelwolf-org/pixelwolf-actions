@@ -31,11 +31,11 @@ permissions:
   issues: write
 
 jobs:
-  # ci:
-  #   uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@main
+  ci:
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@main
 
   cd:
-    # needs: ci
+    needs: ci
     runs-on: ubuntu-latest
     outputs:
       deployment-url: ${{ steps.vercel-deploy.outputs.deployment-url }}
@@ -45,7 +45,7 @@ jobs:
 
       - name: 'Vercel Deploy'
         id: vercel-deploy
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@main
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           org-id: ${{ inputs.org-id }}
