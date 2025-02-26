@@ -27,41 +27,36 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    # - name: 'Export input into env variables'
-    #   shell: bash
-    #   run: echo "VERCEL_ORG_ID=${{ inputs.org-id }}" >> $GITHUB_ENV && echo "VERCEL_PROJECT_ID=${{ inputs.project-id }}" >> $GITHUB_ENV
+    - name: 'Export input into env variables'
+      shell: bash
+      run: echo "VERCEL_ORG_ID=${{ inputs.org-id }}" >> $GITHUB_ENV && echo "VERCEL_PROJECT_ID=${{ inputs.project-id }}" >> $GITHUB_ENV
 
-    # - name: 'Install Vercel CLI'
-    #   shell: bash
-    #   run: npm install --global vercel@latest
+    - name: 'Install Vercel CLI'
+      shell: bash
+      run: npm install --global vercel@latest
 
-    # - name: 'Pull Vercel Environment Information'
-    #   shell: bash
-    #   run: vercel pull --yes --environment=${{ inputs.environment }} --token=${{ inputs.vercel-token }}
+    - name: 'Pull Vercel Environment Information'
+      shell: bash
+      run: vercel pull --yes --environment=${{ inputs.environment }} --token=${{ inputs.vercel-token }}
 
-    # - name: 'Update Vercel NPM RC Variable for private packages installation'
-    #   shell: bash
-    #   run: |
-    #     echo '@pixelwolf-org:registry=https://npm.pkg.github.com' >> .npmrc
-    #     echo '//npm.pkg.github.com/:_authToken=${{ github.token }}' >> .npmrc
-    #     vc env add NPM_RC ${{ inputs.environment }} < .npmrc --force --token=${{ inputs.vercel-token }}
+    - name: 'Update Vercel NPM RC Variable for private packages installation'
+      shell: bash
+      run: |
+        echo '@pixelwolf-org:registry=https://npm.pkg.github.com' >> .npmrc
+        echo '//npm.pkg.github.com/:_authToken=${{ github.token }}' >> .npmrc
+        vc env add NPM_RC ${{ inputs.environment }} < .npmrc --force --token=${{ inputs.vercel-token }}
 
-    # - name: 'Build Project Artifacts'
-    #   shell: bash
-    #   run: vercel build --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }}
-
-    # - name: 'Deploy to Vercel'
-    #   id: deploy
-    #   shell: bash
-    #   run: |
-    #     vercel deploy --prebuilt --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }} > deploy.log
-    #     URL=$(cat deploy.log | grep -o 'https://[^ ]*.vercel.app' | head -n1)
-    #     echo "deployment-url=$URL" >> $GITHUB_OUTPUT
+    - name: 'Build Project Artifacts'
+      shell: bash
+      run: vercel build --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }}
 
     - name: 'Deploy to Vercel'
       id: deploy
       shell: bash
-      run: echo "deployment-url=https://dummy-url.vercel.app" >> $GITHUB_OUTPUT
+      run: |
+        vercel deploy --prebuilt --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }} > deploy.log
+        URL=$(cat deploy.log | grep -o 'https://[^ ]*.vercel.app' | head -n1)
+        echo "deployment-url=$URL" >> $GITHUB_OUTPUT
 
 branding:
   icon: 'upload-cloud'
