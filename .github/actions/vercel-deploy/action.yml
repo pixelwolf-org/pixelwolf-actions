@@ -48,8 +48,9 @@ runs:
     - name: 'Deploy to Vercel'
       shell: bash
       run: |
-        vercel deploy --prebuilt --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }} >url.txt
-          echo "deployment-url=$(cat url.txt)" >> $GITHUB_OUTPUT
+        vercel deploy --prebuilt --token=${{ inputs.vercel-token }} ${{ inputs.prod == 'true' && ' --prod' || '' }} > deploy.log
+          URL=$(cat deploy.log | grep -o 'https://[^ ]*.vercel.app' | head -n1)
+          echo "deploymentUrl=$URL" >> $GITHUB_OUTPUT
 
 branding:
   icon: 'upload-cloud'
