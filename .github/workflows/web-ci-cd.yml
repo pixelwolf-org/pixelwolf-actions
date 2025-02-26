@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 'Vercel Deploy'
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@main
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@feature/web-ci-cd
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           org-id: ${{ inputs.org-id }}
