@@ -103,7 +103,7 @@ permissions:
 
 jobs:
   web-ci-cd:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@feature/web-ci-cd
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
     with:
       org-id: ${{ vars.VERCEL_ORG_ID }}
       project-id: ${{ vars.VERCEL_PROJECT_ID }}

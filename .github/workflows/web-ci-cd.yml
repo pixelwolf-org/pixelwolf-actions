@@ -31,7 +31,7 @@ permissions:
 
 jobs:
   ci:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@feature/web-ci-cd
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@main
 
   cd:
     needs: ci
@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 'Vercel Deploy'
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@main
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           org-id: ${{ inputs.org-id }}
