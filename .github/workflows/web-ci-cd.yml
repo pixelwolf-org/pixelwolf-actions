@@ -37,6 +37,8 @@ jobs:
   cd:
     # needs: ci
     runs-on: ubuntu-latest
+    outputs:
+      deployment-url: ${{ steps.vercel-deploy.outputs.deployment-url }}
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v4
@@ -63,5 +65,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "🎉 Your deployment is live! Check it out at: ${{ steps.vercel-deploy.outputs.deployment-url }} 🚀"
+              body: "🎉 Your deployment is live! Check it out at: ${{ needs.cd.outputs.deployment-url }} 🚀"
             })
