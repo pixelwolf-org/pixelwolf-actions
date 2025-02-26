@@ -8,7 +8,7 @@ A reusable GitHub Actions workflow for web applications that handles CI checks a
 - Deploys applications to Vercel
 - Uses Vercel OIDC for secure authentication
 - Configurable for different environments
-- Comments the deployment URL on the pull request
+- Comments the deployment URL on the pull request for preview environments
 
 ## Usage
 
