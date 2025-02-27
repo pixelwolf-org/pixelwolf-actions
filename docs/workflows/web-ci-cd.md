@@ -8,6 +8,7 @@ A reusable GitHub Actions workflow for web applications that handles CI checks a
 - Deploys applications to Vercel
 - Uses Vercel OIDC for secure authentication
 - Configurable for different environments
+- Comments the deployment URL on the pull request for preview environments
 
 ## Usage
 
@@ -33,6 +34,7 @@ permissions:
   id-token: write
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   web-ci-cd:
@@ -67,6 +69,7 @@ permissions:
   id-token: write
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   web-ci-cd:
@@ -100,10 +103,11 @@ permissions:
   id-token: write
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   web-ci-cd:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@feature/web-ci-cd
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
     with:
       org-id: ${{ vars.VERCEL_ORG_ID }}
       project-id: ${{ vars.VERCEL_PROJECT_ID }}
@@ -149,14 +153,18 @@ jobs:
 
 ## Outputs
 
-This action does not produce explicit outputs.
+### `deployment-url`
+
+- **Description**: The URL of the deployed application.
+- **Produced by**: The `cd` job in the workflow.
 
 ## Notes
 
 - Ensure that the provided Vercel token has the necessary permissions to deploy to your Vercel project.
+- The deployment URL will be commented on the pull request after a successful deployment.
 
 Create 3 different files for CI/CD workflows inside your project:
 
 1. Create `.github/workflows/prod-ci-cd.yml` for production deployments.
 2. Create `.github/workflows/stage-ci-cd.yml` for stage deployments.
-3. Create `.github/workflows/preview-ci-cd.yml` for previews deployments.
+3. Create `.github/workflows/preview-ci-cd.yml` for preview deployments.
