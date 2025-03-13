@@ -35,6 +35,9 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 'latest'
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@pixelwolf-org'
+          BUN_AUTH_TOKEN: ${{ github.token }}
 
       - name: 'Install dependencies'
         run: bun install
