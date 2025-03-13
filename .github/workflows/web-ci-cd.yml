@@ -22,6 +22,24 @@ on:
         required: false
         default: 'false'
         type: string
+      supabase-url:
+        description: 'Supabase URL'
+        required: false
+        type: string
+      supabase-anon-key:
+        description: 'Supabase Anon Key'
+        required: false
+        type: string
+      should-run-unit-tests:
+        description: 'Should run unit tests'
+        required: false
+        default: 'true'
+        type: string
+      should-run-e2e-tests:
+        description: 'Should run E2E tests'
+        required: false
+        default: 'false'
+        type: string
 
 permissions:
   id-token: write
@@ -30,9 +48,16 @@ permissions:
   packages: read
   issues: write
 
+env:
+  NEXT_PUBLIC_SUPABASE_URL: ${{ inputs.supabase-url }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ inputs.supabase-anon-key }}
+
 jobs:
   ci:
     uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@main
+    with:
+      should-run-unit-tests: ${{ inputs.should-run-unit-tests }}
+      should-run-e2e-tests: ${{ inputs.should-run-e2e-tests }}
 
   cd:
     needs: ci
