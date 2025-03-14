@@ -48,7 +48,7 @@ jobs:
         shell: bash
 
       - name: 'Setup Bun'
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-bun@main
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-bun@feature/web-ci-cd
         with:
           github-token: ${{ github.token }}
 
