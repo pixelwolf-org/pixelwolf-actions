@@ -47,6 +47,8 @@ jobs:
         shell: bash
         env:
           BUN_AUTH_TOKEN: ${{ github.token }}
+          NPM_CONFIG_REGISTRY: 'https://npm.pkg.github.com/'
+          NPM_CONFIG_SCOPE: '@pixelwolf-org'
 
       - name: 'Run format (Prettier) check'
         run: bun run format-check
