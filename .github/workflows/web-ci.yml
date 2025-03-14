@@ -32,12 +32,15 @@ jobs:
       #     # cache: npm
       #     registry-url: 'https://npm.pkg.github.com'
 
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 'latest'
-          registry-url: 'https://npm.pkg.github.com/'
-          scope: '@pixelwolf-org'
+      - name: Install Bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          echo "$HOME/.bun/bin" >> $GITHUB_PATH
+        shell: bash
+        env:
           BUN_AUTH_TOKEN: ${{ github.token }}
+          NPM_CONFIG_REGISTRY: 'https://npm.pkg.github.com/'
+          NPM_CONFIG_SCOPE: '@pixelwolf-org'
 
       - name: 'Install dependencies'
         run: bun install
