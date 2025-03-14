@@ -46,7 +46,7 @@ jobs:
         run: bun install
         shell: bash
         env:
-          NODE_AUTH_TOKEN: ${{ github.token }}
+          BUN_AUTH_TOKEN: ${{ github.token }}
 
       - name: 'Run format (Prettier) check'
         run: bun run format-check
