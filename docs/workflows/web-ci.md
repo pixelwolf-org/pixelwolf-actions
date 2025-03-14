@@ -5,12 +5,14 @@ A GitHub Actions workflow for continuous integration (CI) of web applications. T
 ## Features
 
 - Checks out the code from the repository
-- Sets up the latest Node.js environment with npm caching
+- Sets up Bun environment with dependency caching
 - Configures GitHub Package Registry access
 - Installs dependencies
 - Runs format check
 - Lints the code
 - Builds the application
+- Runs unit tests (optional)
+- Runs E2E tests with Playwright (optional)
 
 ## Usage
 
@@ -21,6 +23,17 @@ name: Web CI Workflow
 
 on:
   workflow_call:
+    inputs:
+      should-run-unit-tests:
+        description: 'Should run unit tests'
+        required: false
+        default: 'true'
+        type: string
+      should-run-e2e-tests:
+        description: 'Should run E2E tests'
+        required: false
+        default: 'false'
+        type: string
 
 jobs:
   ci:
@@ -28,41 +41,71 @@ jobs:
     permissions:
       pull-requests: write
       contents: write
+      packages: read
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: 'Setup Node.js'
-        uses: actions/setup-node@v4
+      - name: 'Setup Bun'
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-bun@main
         with:
-          node-version: 'latest'
-          cache: npm
-          registry-url: 'https://npm.pkg.github.com'
+          github-token: ${{ github.token }}
 
       - name: 'Install dependencies'
-        run: npm install
+        run: bun install --frozen-lockfile
         shell: bash
-        env:
-          NODE_AUTH_TOKEN: ${{ github.token }}
 
       - name: 'Run format (Prettier) check'
-        run: npm run format-check
+        run: bun run format-check
 
-      - name: Lint
-        run: npm run lint
+      - name: 'Lint'
+        run: bun run lint
 
-      - name: Build
-        run: npm run build
+      - name: 'Build web app'
+        run: bun run build:ci
+
+      - name: 'Run unit tests'
+        if: ${{ inputs.should-run-unit-tests == 'true' }}
+        run: bun run test
+
+      - name: 'Install Playwright Chromium browser'
+        if: ${{ inputs.should-run-e2e-tests == 'true' }}
+        run: bunx playwright install chromium --with-deps
+
+      - name: 'Run Playwright tests'
+        if: ${{ inputs.should-run-e2e-tests == 'true' }}
+        run: bunx playwright test
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.supabase-url }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.supabase-anon-key }}
+
+      - name: 'Upload Playwright report'
+        if: ${{ inputs.should-run-e2e-tests == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 ```
 
 ## Inputs
 
-This workflow does not require any specific inputs as it is designed to run standard CI checks.
+| Name                    | Description               | Required | Default |
+| ----------------------- | ------------------------- | -------- | ------- |
+| `should-run-unit-tests` | Whether to run unit tests | No       | `true`  |
+| `should-run-e2e-tests`  | Whether to run E2E tests  | No       | `false` |
 
 ## Outputs
 
-This workflow does not produce explicit outputs.
+This workflow does not produce explicit outputs, but when E2E tests are run, it uploads the Playwright report as an artifact that can be downloaded from the GitHub Actions UI.
 
 ## Notes
 
-Important: to run this workflow successfully, make sure to implement the format, lint and build scripts inside your package.json
+Important: to run this workflow successfully, make sure to implement the following scripts in your package.json:
+
+- `format-check`: For checking code formatting (typically using Prettier)
+- `lint`: For linting the code
+- `build:ci`: For building the application in CI environment
+- `test`: For running unit tests (if enabled)
+
+Additionally, if E2E tests are enabled, ensure you have Playwright configured properly in your project.

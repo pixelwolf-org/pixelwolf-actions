@@ -1,0 +1,29 @@
+name: 'Setup Bun'
+description: 'Installs Bun and configures it for use with GitHub Packages'
+
+inputs:
+  github-token:
+    description: 'GitHub token for accessing GitHub Packages'
+    required: false
+    default: ${{ github.token }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install Bun
+      shell: bash
+      run: |
+        curl -fsSL https://bun.sh/install | bash
+        echo "$HOME/.bun/bin" >> $GITHUB_PATH
+
+    - name: 'Create bunfig.toml file'
+      shell: bash
+      run: |
+        cat > bunfig.toml << EOF
+        [install.scopes]
+        pixelwolf-org = { url = "https://npm.pkg.github.com", token = "${{ inputs.github-token }}" }
+        EOF
+
+branding:
+  icon: 'package'
+  color: 'purple'
