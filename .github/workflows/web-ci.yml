@@ -14,6 +14,11 @@ on:
         required: false
         default: 'false'
         type: string
+      env-file-path:
+        description: 'Path to the environment file'
+        required: false
+        default: '.env.production'
+        type: string
 
 jobs:
   ci:
@@ -25,6 +30,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup aws credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - uses: someimportantcompany/github-actions-aws-s3-env@v1
+        with:
+          from: s3://pixelwolf/${{ inputs.env-file-path }}
+
+      - name: 'Log environment variables'
+        run: |
+          echo "Environment variables loaded from S3:"
+          env | sort
+        shell: bash
 
       - name: 'Setup Bun'
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-bun@main

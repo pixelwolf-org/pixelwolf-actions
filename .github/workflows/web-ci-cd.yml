@@ -46,6 +46,7 @@ jobs:
     with:
       should-run-unit-tests: ${{ inputs.should-run-unit-tests }}
       should-run-e2e-tests: ${{ inputs.should-run-e2e-tests }}
+    secrets: inherit
 
   cd:
     needs: ci
