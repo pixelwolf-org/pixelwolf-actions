@@ -34,7 +34,7 @@ jobs:
       - name: Setup aws credentials with OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: 'Download environment file from S3'
