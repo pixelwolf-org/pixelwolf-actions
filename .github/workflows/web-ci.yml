@@ -37,9 +37,10 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - uses: someimportantcompany/github-actions-aws-s3-env@v1
+      - name: 'Download environment file from S3'
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/s3-to-env@feature/web-ci-cd
         with:
-          from: s3://pixelwolf/${{ inputs.env-file-path }}
+          file-path: ${{ inputs.env-file-path }}
 
       - name: 'Log environment variables'
         run: |
