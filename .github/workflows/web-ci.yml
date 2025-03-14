@@ -14,10 +14,9 @@ on:
         required: false
         default: 'false'
         type: string
-      env-file-path:
-        description: 'Path to the environment file'
-        required: false
-        default: '.env.production'
+      env-s3-path:
+        description: 'Path to the environment file in S3 bucket'
+        required: true
         type: string
 
 jobs:
@@ -40,7 +39,7 @@ jobs:
       - name: 'Download environment file from S3'
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/s3-to-env@feature/web-ci-cd
         with:
-          file-path: ${{ inputs.env-file-path }}
+          env-s3-path: ${{ inputs.env-s3-path }}
 
       - name: 'Log environment variables'
         run: |
