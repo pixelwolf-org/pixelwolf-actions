@@ -21,6 +21,11 @@ on:
         required: false
         default: 'preview'
         type: string
+      prod:
+        description: 'Should build production build'
+        required: false
+        default: 'false'
+        type: string
     outputs:
       deployment-url:
         description: 'URL of the deployed application'
@@ -61,6 +66,7 @@ jobs:
           org-id: ${{ inputs.org-id }}
           project-id: ${{ inputs.project-id }}
           environment: ${{ inputs.environment }}
+          prod: ${{ inputs.prod }}
 
   deploy-comment:
     runs-on: ubuntu-latest
