@@ -54,13 +54,13 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: 'Download environment file from S3'
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/s3-to-env@main
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/s3-to-env@feature/web-ci-cd
         with:
           env-s3-path: ${{ inputs.env-s3-path }}
 
       - name: 'Vercel Deploy'
         id: vercel-deploy
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@main
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@feature/web-ci-cd
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           org-id: ${{ inputs.org-id }}
