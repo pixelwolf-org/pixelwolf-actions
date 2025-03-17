@@ -77,9 +77,6 @@ jobs:
       - name: 'Run Playwright tests'
         if: ${{ inputs.should-run-e2e-tests == 'true' }}
         run: bunx playwright test
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.supabase-url }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.supabase-anon-key }}
 
       - name: 'Upload Playwright report'
         if: ${{ inputs.should-run-e2e-tests == 'true' }}
