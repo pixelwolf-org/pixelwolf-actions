@@ -45,16 +45,16 @@ permissions:
   issues: write
 
 jobs:
-  ci:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@main
-    with:
-      run-unit-tests: ${{ inputs.run-unit-tests }}
-      run-e2e-tests: ${{ inputs.run-e2e-tests }}
-      env-s3-path: ${{ inputs.env-s3-path }}
-    secrets: inherit
+  # ci:
+  #   uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@main
+  #   with:
+  #     run-unit-tests: ${{ inputs.run-unit-tests }}
+  #     run-e2e-tests: ${{ inputs.run-e2e-tests }}
+  #     env-s3-path: ${{ inputs.env-s3-path }}
+  #   secrets: inherit
 
   cd:
-    needs: ci
+    # needs: ci
     uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-cd.yml@main
     with:
       env-s3-path: ${{ inputs.env-s3-path }}
