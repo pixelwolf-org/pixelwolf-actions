@@ -21,7 +21,6 @@ on:
       - main
 
 jobs:
-
   my-job:
     name: 'My Job'
     runs-on: ubuntu-latest
@@ -46,44 +45,50 @@ jobs:
       - name: 'Run Terraform Apply'
         uses: pixelwolf-org/pixelwolf-actions/actions/terraform-apply@main
         with:
-          customer-name: "pixelwolf"
-          project-name: "example-project"
+          customer-name: 'pixelwolf'
+          project-name: 'example-project'
           access-token: ${{ steps.gh-app-token.outputs.access-token }}
           aws-region: ${{ secrets.AWS_REGION }}
-          environment: "stage"
-          working-directory: "./terraform"
+          environment: 'stage'
+          working-directory: './terraform'
 ```
 
 ## Inputs
 
 ### `customer-name`
+
 - **Description**: Unique customer identifier for managing infrastructure.
 - **Type**: `string`
 - **Required**: Yes
 
 ### `project-name`
+
 - **Description**: Project name within the customer environment.
 - **Type**: `string`
 - **Required**: Yes
 
 ### `access-token`
+
 - **Description**: GitHub access token for authenticating Pixelwolf Terraform module access.
 - **Type**: `string`
 - **Required**: Yes
 
 ### `aws-region`
+
 - **Description**: AWS region where the infrastructure will be deployed.
 - **Type**: `string`
 - **Default**: `us-east-1`
 - **Required**: No
 
 ### `environment`
+
 - **Description**: Deployment environment (e.g., stage, prod).
 - **Type**: `string`
 - **Default**: `stage`
 - **Required**: No
 
 ### `working-directory`
+
 - **Description**: Path to the Terraform configuration files.
 - **Type**: `string`
 - **Default**: `./terraform`

@@ -33,13 +33,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Get Changed Python Files
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/pr-changed-files@main
         id: changed-files
         with:
           filter: '*.html'
-      
+
       - name: Print Changed Files
         shell: bash
         run: |
@@ -51,6 +51,7 @@ jobs:
 ## Inputs
 
 ### `filter`
+
 - **Description**: A space-separated list of file extensions or patterns to include in the output (e.g., `*.py *.html`). If not specified, all changed files will be returned.
 - **Type**: String
 - **Required**: No
@@ -58,15 +59,18 @@ jobs:
 ## Outputs
 
 ### `changed-files`
+
 - **Description**: A space-separated list of changed files that match the specified filters.
 
 ## Notes
 
 - **Filtering Options**: You can filter specific files or extensions and exclude others:
+
   - **Exclude**: Use `':(exclude)path'` or `':(exclude)*.py'`
   - **Include**: Use `'path/to/file.txt'` or `'*.txt'`
-  
+
   **Examples**:
+
   - Include only Python files while excluding a specific file: `'*.py :(exclude)src/config.py'`
   - Exclude multiple extensions: `':(exclude)*.json :(exclude)*.md'`
 

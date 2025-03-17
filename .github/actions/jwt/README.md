@@ -68,6 +68,7 @@ jobs:
 We welcome contributions that enhance the functionality and usability of this action. Please follow the steps below to get started:
 
 1. **Prepare Your Local Environment**:
+
    - Navigate to the action folder:
      ```bash
      cd ./actions/jwt/
@@ -78,27 +79,30 @@ We welcome contributions that enhance the functionality and usability of this ac
      ```
 
 2. **Make Your Changes**:
+
    - Modify the action code as needed. Ensure you add appropriate comments and documentation for clarity.
 
 3. **Review the Action Documentation**:
+
    - Take a moment to review the action's `./actions/jwt/README.md` file and ensure it is updated with any new features or changes you've made.
 
 4. **Build the Action**:
+
    - Before committing your changes, build the action to ensure everything is set up correctly:
      ```bash
      npm run build
      ```
 
 5. **Testing**:
+
    - Test your changes locally to ensure the action works as expected.
 
 6. **Submit a Pull Request**:
-   - When you are ready, submit a pull request with a clear description of the changes made and the rationale behind them. 
- 
+   - When you are ready, submit a pull request with a clear description of the changes made and the rationale behind them.
 
 ### Contribution Guidelines
+
 - Please adhere to our coding standards and style guide.
 - Ensure that your code is well-documented and includes comments where necessary.
 - Follow the existing naming conventions and patterns used in the codebase.
 - Review your code for any potential errors or issues before submitting the pull request.
-

@@ -7,15 +7,13 @@ try {
   const expiresIn = core.getInput('expires-in');
 
   const payload = {
-    iss: iss
+    iss: iss,
   };
 
-  const token = jwt.sign(
-    payload, privateKey, {
-      algorithm: 'RS256',
-      expiresIn
-    }
-  );
+  const token = jwt.sign(payload, privateKey, {
+    algorithm: 'RS256',
+    expiresIn,
+  });
 
   core.setOutput('token', token);
 } catch (error) {

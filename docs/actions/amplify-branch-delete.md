@@ -32,11 +32,15 @@ jobs:
 ## Inputs
 
 ### `app-id`
+
 - Description : The ID of your AWS Amplify application.
 - Required : Yes
+
 ### `branch-name`
+
 - Description : The name of the branch to delete.
 - Required : Yes
-  
+
 ## Outputs
+
 This action does not produce explicit outputs.

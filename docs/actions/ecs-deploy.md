@@ -11,22 +11,27 @@ A GitHub Action to automate the deployment of an Amazon ECR image to Amazon ECS.
 ## Inputs
 
 ### `ecr-image`
+
 - **Description**: The URI of the Amazon ECR image to deploy.
 - **Required**: Yes
 
 ### `ecs-cluster`
+
 - **Description**: The name of the Amazon ECS cluster.
 - **Required**: Yes
 
 ### `ecs-service`
+
 - **Description**: The name of the Amazon ECS service.
 - **Required**: Yes
 
 ### `ecs-container`
+
 - **Description**: The name of the container in the ECS task definition to update.
 - **Required**: Yes
 
 ### `ecs-task-definition`
+
 - **Description**: The family name of the Amazon ECS task definition.
 - **Required**: Yes
 
