@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Bun
-        uses: ./.github/actions/setup-bun
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-bun@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```

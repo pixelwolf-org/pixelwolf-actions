@@ -22,15 +22,19 @@ on:
         required: false
         default: 'false'
         type: string
-      should-run-unit-tests:
+      run-unit-tests:
         description: 'Should run unit tests'
         required: false
         default: 'true'
         type: string
-      should-run-e2e-tests:
+      run-e2e-tests:
         description: 'Should run E2E tests'
         required: false
         default: 'false'
+        type: string
+      env-s3-path:
+        description: 'Path to the environment file in S3 bucket'
+        required: true
         type: string
 
 permissions:
@@ -44,41 +48,18 @@ jobs:
   ci:
     uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci.yml@main
     with:
-      should-run-unit-tests: ${{ inputs.should-run-unit-tests }}
-      should-run-e2e-tests: ${{ inputs.should-run-e2e-tests }}
+      run-unit-tests: ${{ inputs.run-unit-tests }}
+      run-e2e-tests: ${{ inputs.run-e2e-tests }}
+      env-s3-path: ${{ inputs.env-s3-path }}
     secrets: inherit
 
   cd:
     needs: ci
-    runs-on: ubuntu-latest
-    outputs:
-      deployment-url: ${{ steps.vercel-deploy.outputs.deployment-url }}
-    steps:
-      - name: 'Checkout repository'
-        uses: actions/checkout@v4
-
-      - name: 'Vercel Deploy'
-        id: vercel-deploy
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@main
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          org-id: ${{ inputs.org-id }}
-          project-id: ${{ inputs.project-id }}
-          environment: ${{ inputs.environment }}
-
-  deploy-comment:
-    runs-on: ubuntu-latest
-    needs: cd
-    if: ${{ inputs.environment == 'preview' }}
-    steps:
-      - name: Comment URL to PR
-        uses: actions/github-script@v6
-        id: add-preview-url-comment
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "🎉 Your deployment is live! Check it out at: ${{ needs.cd.outputs.deployment-url }} 🚀"
-            })
+    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-cd.yml@main
+    with:
+      env-s3-path: ${{ inputs.env-s3-path }}
+      org-id: ${{ inputs.org-id }}
+      project-id: ${{ inputs.project-id }}
+      environment: ${{ inputs.environment }}
+      prod: ${{ inputs.prod }}
+    secrets: inherit
