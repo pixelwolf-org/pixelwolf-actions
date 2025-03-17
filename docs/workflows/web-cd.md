@@ -35,12 +35,13 @@ jobs:
 
 ## Inputs
 
-| Name          | Description                                  | Required | Default   |
-| ------------- | -------------------------------------------- | -------- | --------- |
-| `env-s3-path` | Path to the environment file in S3 bucket    | Yes      | -         |
-| `org-id`      | Vercel organization ID                       | Yes      | -         |
-| `project-id`  | Vercel project ID                            | Yes      | -         |
-| `environment` | Deployment environment (preview, production) | No       | `preview` |
+| Name          | Description                                               | Required | Default   |
+| ------------- | --------------------------------------------------------- | -------- | --------- |
+| `env-s3-path` | Path to the environment file in S3 bucket                 | Yes      | -         |
+| `org-id`      | Vercel organization ID                                    | Yes      | -         |
+| `project-id`  | Vercel project ID                                         | Yes      | -         |
+| `environment` | Deployment environment (preview, production)              | No       | `preview` |
+| `prod`        | Flag to indicate if a production build should be created. | No       | `false`   |
 
 ## Outputs
 

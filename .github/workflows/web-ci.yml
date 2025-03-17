@@ -38,7 +38,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: 'Download environment file from S3'
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/s3-to-env@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/s3-to-env@main
         with:
           env-s3-path: ${{ inputs.env-s3-path }}
 
@@ -49,7 +49,7 @@ jobs:
         shell: bash
 
       - name: 'Setup Bun'
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-bun@feature/web-ci-cd
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-bun@main
         with:
           github-token: ${{ github.token }}
 
