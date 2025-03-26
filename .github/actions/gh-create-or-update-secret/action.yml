@@ -1,0 +1,22 @@
+name: 'Create or Update Repository Secret'
+description: 'A GitHub Action to create or update a repository secret via the GitHub API'
+author: 'Pixelwolf <tech@pixelwolf.com.br>'
+
+inputs:
+  secret-name:
+    description: 'The name of the secret to be created or updated in the repository.'
+    required: true
+  secret-value:
+    description: 'The value to be stored in the secret.'
+    required: true
+  secret-type:
+    description: 'The type of secret to be created or updated (e.g., repository).'
+    required: true
+    default: 'repository'
+  github-token:
+    description: 'A Personal Access Token or GitHub Actions token with sufficient permissions to manage secrets in the repository.'
+    required: true
+
+runs:
+  using: 'node20'
+  main: 'action/index.js'
