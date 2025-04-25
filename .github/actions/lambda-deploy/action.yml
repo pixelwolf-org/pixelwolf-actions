@@ -16,7 +16,7 @@ runs:
       shell: bash
       run: |
         echo "Deploying AWS Lambda function: ${{ inputs.function-name }}"
-        
+
         aws lambda update-function-code \
           --function-name "${{ inputs.function-name }}" \
           --image-uri "${{ inputs.image }}"

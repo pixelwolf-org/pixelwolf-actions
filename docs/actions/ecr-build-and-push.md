@@ -12,22 +12,26 @@ A GitHub Action to build a Docker image and push it to an Amazon Elastic Contain
 ## Inputs
 
 ### `repository`
+
 - **Description**: The name of the ECR repository to push the Docker image to.
 - **Type**: `string`
 - **Required**: Yes
 
 ### `tag`
+
 - **Description**: The Docker image tag. If not provided, defaults to the GitHub commit hash.
 - **Type**: `string`
 - **Required**: No
 
 ### `context`
+
 - **Description**: The build context for the Docker image. Can be a path or URL.
 - **Type**: `string`
 - **Default**: .
 - **Required**: No
 
 ### `dockerfile`
+
 - **Description**: The path to the Dockerfile.
 - **Type**: `string`
 - **Default**: `./Dockerfile`
@@ -36,6 +40,7 @@ A GitHub Action to build a Docker image and push it to an Amazon Elastic Contain
 ## Outputs
 
 ### `image`
+
 - **Description**: The full URI of the Docker image pushed to the ECR repository.
 
 ## Usage
