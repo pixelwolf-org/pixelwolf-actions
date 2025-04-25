@@ -1,170 +1,107 @@
-# Web CI/CD Workflow
+# Production CI/CD Workflow
 
-A reusable GitHub Actions workflow for web applications that handles CI checks and deployment to Vercel. This workflow can be used for both staging and production environments.
+A GitHub Actions workflow that combines continuous integration (CI) and continuous deployment (CD) for web applications. This workflow runs tests and validation checks on your codebase and then deploys the application to Vercel if all checks pass.
 
 ## Features
 
-- Runs automated CI checks using web-ci workflow
-- Deploys applications to Vercel
-- Uses Vercel OIDC for secure authentication
-- Configurable for different environments
-- Comments the deployment URL on the pull request for preview environments
+- Complete CI/CD pipeline in a single workflow
+- Runs all CI checks (formatting, linting, building, testing)
+- Deploys to Vercel after successful CI
+- Configurable test options (unit tests, E2E tests)
+- Environment variables loaded securely from AWS S3
+- Production or preview deployment options
 
 ## Usage
 
-### Production Pipeline Setup
-
-For production deployments, create a file named `.github/workflows/web-prod-ci-cd.yml` with the following workflow configuration. This workflow:
-
-- Triggers on pushes to the main branch
-- Uses Vercel organization ID and project ID
-- Deploys the application to Vercel
-
-Here's the workflow configuration:
+This workflow is triggered by a workflow call and is designed to be reusable across different projects or branches.
 
 ```yaml
 name: Production CI/CD
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - main
 
-permissions:
-  id-token: write
-  contents: write
-  pull-requests: write
-  issues: write
-
 jobs:
-  web-ci-cd:
+  deploy:
+    if: github.event.pull_request.merged == true
     uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
     with:
-      org-id: ${{ vars.VERCEL_ORG_ID }}
-      project-id: ${{ vars.VERCEL_PROJECT_ID }}
+      env-s3-path: 's3://your-bucket/path/to/env-file'
+      org-id: 'your-vercel-org-id'
+      project-id: 'your-vercel-project-id'
       environment: 'production'
       prod: 'true'
-    secrets: inherit
-```
-
-### Stage Pipeline Setup
-
-For stage deployments, create a file named `.github/workflows/web-stage-ci-cd.yml` with the following workflow configuration. This workflow:
-
-- Triggers on pushes to the stage branch
-- Uses Vercel organization ID and project ID
-- Deploys the application to Vercel
-
-Here's the workflow configuration:
-
-```yaml
-name: Stage CI/CD
-
-on:
-  push:
-    branches:
-      - stage
-
-permissions:
-  id-token: write
-  contents: write
-  pull-requests: write
-  issues: write
-
-jobs:
-  web-ci-cd:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
-    with:
-      org-id: ${{ vars.VERCEL_ORG_ID }}
-      project-id: ${{ vars.VERCEL_PROJECT_ID }}
-      environment: 'development'
-      prod: 'true'
-    secrets: inherit
-```
-
-### Previews Pipeline Setup
-
-For preview deployments, create a file named `.github/workflows/web-preview-ci-cd.yml` with the following workflow configuration. This workflow:
-
-- Triggers on pull requests
-- Uses Vercel organization ID and project ID
-- Deploys the application to Vercel
-
-Here's the workflow configuration:
-
-```yaml
-name: Preview CI/CD
-
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-
-permissions:
-  id-token: write
-  contents: write
-  pull-requests: write
-  issues: write
-
-jobs:
-  web-ci-cd:
-    uses: pixelwolf-org/pixelwolf-actions/.github/workflows/web-ci-cd.yml@main
-    with:
-      org-id: ${{ vars.VERCEL_ORG_ID }}
-      project-id: ${{ vars.VERCEL_PROJECT_ID }}
-      environment: 'preview'
-      prod: 'false'
+      run-unit-tests: 'true'
+      run-e2e-tests: 'false'
     secrets: inherit
 ```
 
 ## Inputs
 
-### `org-id`
+| Name             | Description                                  | Required | Default   |
+| ---------------- | -------------------------------------------- | -------- | --------- |
+| `env-s3-path`    | Path to the environment file in S3 bucket    | Yes      | -         |
+| `org-id`         | Vercel organization ID                       | Yes      | -         |
+| `project-id`     | Vercel project ID                            | Yes      | -         |
+| `environment`    | Deployment environment (preview, production) | No       | `preview` |
+| `prod`           | Should build production build                | No       | `false`   |
+| `run-unit-tests` | Whether to run unit tests                    | No       | `true`    |
+| `run-e2e-tests`  | Whether to run E2E tests                     | No       | `false`   |
 
-- **Description**: The ID of your Vercel organization.
-- **Required**: Yes
+## Required Secrets
 
-### `project-id`
+The workflow requires the following secrets to be set in your GitHub repository:
 
-- **Description**: The ID of your Vercel project.
-- **Required**: Yes
+- `AWS_STAGE_DEPLOY_OIDC_ROLE_ARN`: The ARN of the AWS IAM role to assume for OIDC authentication
+- `AWS_REGION`: The AWS region where your S3 bucket is located
+- `VERCEL_TOKEN`: Your Vercel API token for authentication
 
-### `environment`
+## Workflow Structure
 
-- **Description**: The environment to deploy (e.g., preview, production).
-- **Required**: No
-- **Default**: 'preview'
+This workflow consists of two main jobs that run sequentially:
 
-### `prod`
+1. **CI Job**: Runs all continuous integration checks
+2. **CD Job**: Deploys the application to Vercel if CI passes
 
-- **Description**: Flag to indicate if a production build should be created.
-- **Required**: No
-- **Default**: 'false'
+### CI Job Steps
 
-## Required Variables and Secrets
+1. Checkout repository
+2. Setup AWS credentials using OIDC
+3. Download environment variables from S3
+4. Setup Bun environment
+5. Install dependencies
+6. Run format check
+7. Lint code
+8. Build application
+9. Run unit tests (if enabled)
+10. Run E2E tests with Playwright (if enabled)
 
-> Important: Ensure that you add the following variables to your repository:
->
-> - `VERCEL_ORG_ID`: The ID of your Vercel organization.
-> - `VERCEL_PROJECT_ID`: The ID of your Vercel project.
+### CD Job Steps
 
-> Important: Ensure that you add the following secrets to your repository:
->
-> - `VERCEL_TOKEN`: This token is required for authentication with Vercel.
+1. Checkout repository
+2. Setup AWS credentials
+3. Download environment variables from S3
+4. Deploy to Vercel
+5. Comment deployment URL on pull request (for preview deployments)
 
-## Outputs
+## Permissions
 
-### `deployment-url`
+The workflow requires the following GitHub permissions:
 
-- **Description**: The URL of the deployed application.
-- **Produced by**: The `cd` job in the workflow.
+- `id-token: write`: For OIDC authentication with AWS
+- `contents: write`: For accessing repository contents
+- `pull-requests: write`: For commenting on pull requests
+- `packages: read`: For accessing GitHub packages
+- `issues: write`: For creating comments on issues
 
 ## Notes
 
-- Ensure that the provided Vercel token has the necessary permissions to deploy to your Vercel project.
-- The deployment URL will be commented on the pull request after a successful deployment.
-
-Create 3 different files for CI/CD workflows inside your project:
-
-1. Create `.github/workflows/prod-ci-cd.yml` for production deployments.
-2. Create `.github/workflows/stage-ci-cd.yml` for stage deployments.
-3. Create `.github/workflows/preview-ci-cd.yml` for preview deployments.
+- The CD job only runs if the CI job completes successfully
+- For production deployments, set `environment` to 'production' and `prod` to 'true'
+- The workflow uses OIDC (OpenID Connect) for secure AWS authentication
+- Environment variables are loaded from S3, providing a secure way to manage sensitive configuration
+- Make sure your AWS role has appropriate permissions to access the S3 bucket containing your environment file
+- The workflow requires specific scripts to be defined in your package.json for the CI portion

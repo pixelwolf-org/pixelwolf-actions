@@ -1,7 +1,23 @@
 name: 'Web CI Workflow'
+description: 'CI workflow for web app using Bun for faster builds'
 
 on:
   workflow_call:
+    inputs:
+      run-unit-tests:
+        description: 'Should run unit tests'
+        required: false
+        default: 'true'
+        type: string
+      run-e2e-tests:
+        description: 'Should run E2E tests'
+        required: false
+        default: 'false'
+        type: string
+      env-s3-path:
+        description: 'Path to the environment file in S3 bucket'
+        required: true
+        type: string
 
 jobs:
   ci:
@@ -10,28 +26,62 @@ jobs:
       pull-requests: write
       contents: write
       packages: read
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: 'Setup Node.js'
-        uses: actions/setup-node@v4
+      - name: Setup aws credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          node-version: 'latest'
-          cache: npm
-          registry-url: 'https://npm.pkg.github.com'
+          role-to-assume: ${{ secrets.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: 'Download environment file from S3'
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/s3-to-env@main
+        with:
+          env-s3-path: ${{ inputs.env-s3-path }}
+
+      - name: 'Log environment variables'
+        run: |
+          echo "Environment variables loaded from S3:"
+          env | sort
+        shell: bash
+
+      - name: 'Setup Bun'
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-bun@main
+        with:
+          github-token: ${{ github.token }}
 
       - name: 'Install dependencies'
-        run: npm install
+        run: bun install --frozen-lockfile
         shell: bash
-        env:
-          NODE_AUTH_TOKEN: ${{ github.token }}
 
       - name: 'Run format (Prettier) check'
-        run: npm run format-check
+        run: bun run format-check
 
       - name: 'Lint'
-        run: npm run lint
+        run: bun run lint
 
-      - name: 'Build'
-        run: npm run build
+      - name: 'Build web app'
+        run: bun run build:ci
+
+      - name: 'Run unit tests'
+        if: ${{ inputs.run-unit-tests == 'true' }}
+        run: bun run test
+
+      - name: 'Install Playwright Chromium browser'
+        if: ${{ inputs.run-e2e-tests == 'true' }}
+        run: bunx playwright install chromium --with-deps
+
+      - name: 'Run Playwright tests'
+        if: ${{ inputs.run-e2e-tests == 'true' }}
+        run: bunx playwright test
+
+      - name: 'Upload Playwright report'
+        if: ${{ inputs.run-e2e-tests == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

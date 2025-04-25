@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Vercel
-        uses: ./actions/vercel-deploy
+        uses: pixelwolf-org/pixelwolf-actions/.github/actions/vercel-deploy@main
         with:
           vercel-token: 'your-vercel-token'
           org-id: 'your-vercel-org-id'
