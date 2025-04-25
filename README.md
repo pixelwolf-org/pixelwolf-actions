@@ -56,11 +56,12 @@ The **Pixelwolf Actions** repository is built to:
 
 ### Utilities
 
-| **Action Name**                                              | **Description**                                             |
-| ------------------------------------------------------------ | ----------------------------------------------------------- |
-| [gh-app-access-token](./docs/actions/gh-app-access-token.md) | Generates GitHub App Short Lived access-token.              |
-| [jwt](./docs/actions/)                                       | Generates a JWT using the specified issuer and private key. |
-| [pr-changed-files](./actions/pr-changed-files/)              | Retrieves a list of changed files in a pull request (PR).   |
+| **Action Name**                                                            | **Description**                                             |
+| -------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| [gh-app-access-token](./docs/actions/gh-app-access-token.md)               | Generates GitHub App Short Lived access-token.              |
+| [gh-create-or-update-secret](./docs/actions/gh-create-or-update-secret.md) | Create or update a secret via the GitHub API.               |
+| [jwt](./docs/actions/jwt.md)                                               | Generates a JWT using the specified issuer and private key. |
+| [pr-changed-files](./docs/actions/pr-changed-files.md)                     | Retrieves a list of changed files in a pull request (PR).   |
 
 ## Workflows
 
