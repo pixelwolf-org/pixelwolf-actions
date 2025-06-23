@@ -3,7 +3,7 @@
   "description": "Create or Update Repository Secret",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "Pixelwolf <tech@pixelwolf.com.br>",
+  "author": "Pixelwolf <engineering@pixelwolf.com.br>",
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@octokit/rest": "^21.1.1",

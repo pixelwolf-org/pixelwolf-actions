@@ -1,6 +1,6 @@
 name: 'Terraform Apply'
 description: 'Executes Terraform to apply infrastructure changes. Requires AWS credentials configured in the workflow.'
-author: 'Pixelwolf <tech@pixelwolf.com.br>'
+author: 'Pixelwolf <engineering@pixelwolf.com.br>'
 
 inputs:
   customer-name:
