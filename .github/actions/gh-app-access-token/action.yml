@@ -1,6 +1,6 @@
 name: 'GitHub App Token Generator'
 description: 'Generates GitHub App Short Lived access-token'
-author: 'Pixelwolf <tech@pixelwolf.com.br>'
+author: 'Pixelwolf <engineering@pixelwolf.com.br>'
 
 inputs:
   app-id:

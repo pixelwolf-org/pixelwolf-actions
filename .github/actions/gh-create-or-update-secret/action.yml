@@ -1,20 +1,24 @@
 name: 'Create or Update Repository Secret'
-description: 'A GitHub Action to create or update a repository secret via the GitHub API'
-author: 'Pixelwolf <tech@pixelwolf.com.br>'
+description: 'A GitHub Action to create or update repository or organization secrets (Actions/Dependabot) via the GitHub API'
+author: 'Pixelwolf <engineering@pixelwolf.com.br>'
 
 inputs:
   secret-name:
-    description: 'The name of the secret to be created or updated in the repository.'
+    description: 'Name of the secret to create or update. Must follow GitHub naming conventions.'
     required: true
   secret-value:
-    description: 'The value to be stored in the secret.'
+    description: 'Value to encrypt and store in the secret. Will be automatically encrypted using GitHub public key.'
     required: true
-  secret-type:
-    description: 'The type of secret to be created or updated (e.g., repository).'
+  scope:
+    description: 'Target scope for the secret. Must be either "repository" (for repo-level secrets) or "organization" (for org-level secrets).'
     required: true
     default: 'repository'
+  secret-type:
+    description: 'Type of secret to create/update. Must be either "actions" (for GitHub Actions secrets) or "dependabot" (for Dependabot secrets).'
+    required: true
+    default: 'actions'
   github-token:
-    description: 'A Personal Access Token or GitHub Actions token with sufficient permissions to manage secrets in the repository.'
+    description: 'GitHub token with required permissions. For repository secrets, needs repo scope. For organization secrets, needs admin:org scope.'
     required: true
 
 runs:

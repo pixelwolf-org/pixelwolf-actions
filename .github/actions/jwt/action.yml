@@ -1,6 +1,6 @@
 name: 'Generate JWT Token'
 description: 'Generates a JWT token with a specified issuer, private key, and optional expiration time.'
-author: 'Pixelwolf <tech@pixelwolf.com.br>'
+author: 'Pixelwolf <engineering@pixelwolf.com.br>'
 
 inputs:
   iss:
