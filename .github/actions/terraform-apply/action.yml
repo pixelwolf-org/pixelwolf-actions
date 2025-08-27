@@ -70,7 +70,8 @@ runs:
           -backend-config="bucket=${{ steps.terraform-s3-bucket.outputs.value }}" \
           -backend-config="key=${{ steps.project-identifier.outputs.value }}.tfstate" \
           -backend-config="region=${{ inputs.aws-region }}" \
-          -backend-config="dynamodb_table=pixelwolf-terraform-lock"
+          -backend-config="use_lockfile=true" \
+          -backend-config="encrypt=true"
 
     - name: 'Validate Terraform Configuration'
       working-directory: ${{ inputs.working-directory }}
