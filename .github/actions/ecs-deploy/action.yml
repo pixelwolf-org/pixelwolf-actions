@@ -14,9 +14,14 @@ inputs:
   ecs-container:
     description: 'The name of the container in the task definition to update.'
     required: true
-  ecs-task-definition:
-    description: 'The family name of the Amazon ECS task definition.'
-    required: true
+  ecs-wait-for-service-stability:
+    description: 'Whether to wait for the ECS service to reach a stable state after deployment. Use `true` or `false`.'
+    default: 'false'
+    required: false
+  ecs-wait-for-service-stability-timeout:
+    description: 'How many minutes to wait for the ECS service to reach stability (int).'
+    default: '5'
+    required: false
 
 runs:
   using: composite
@@ -45,11 +50,12 @@ runs:
         container-name: ${{ inputs.ecs-container }}
         image: ${{ inputs.ecr-image }}
 
-    - name: 'Deploy Updated Task Definition to ECS Service'
+    - name: 🚀 Deploy Updated Task Definition to ECS Service
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
       with:
         cluster: ${{ inputs.ecs-cluster }}
         service: ${{ inputs.ecs-service }}
         task-definition: ${{ steps.render-task.outputs.task-definition }}
-        wait-for-service-stability: true
+        wait-for-service-stability: ${{ inputs.ecs-wait-for-service-stability == 'true' }}
+        wait-for-minutes: ${{ inputs.ecs-wait-for-service-stability-timeout }}
         propagate-tags: SERVICE
