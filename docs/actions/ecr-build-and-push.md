@@ -1,51 +1,57 @@
 # ECR Build and Push
 
-A GitHub Action to build a Docker image and push it to an Amazon Elastic Container Registry (ECR). This action streamlines the process of containerizing your application and publishing it to AWS.
+A GitHub Action to build a Docker image and push it to Amazon Elastic Container Registry (ECR).
+This action streamlines the process of containerizing your application and publishing it to AWS.
 
 ## Features
 
-- **Automated Tagging**: Derives the Docker image tag from the GitHub commit hash if no custom tag is provided.
-- **ECR Authentication**: Automatically handles authentication with Amazon ECR using `aws-actions/amazon-ecr-login`.
-- **Flexible Build Context**: Supports custom build contexts for the Docker image.
-- **Push to ECR**: Publishes both the specific tag and the `latest` tag to the specified ECR repository.
+* **Automated Tagging**: Uses a custom tag if provided, otherwise falls back to the GitHub commit hash.
+* **ECR Authentication**: Automatically handles authentication with Amazon ECR using `aws-actions/amazon-ecr-login`.
+* **Flexible Build Context**: Supports custom build contexts for the Docker image.
+* **Digest Reference**: Exposes the built image by digest for reliable deployment.
 
 ## Inputs
 
 ### `repository`
 
-- **Description**: The name of the ECR repository to push the Docker image to.
-- **Type**: `string`
-- **Required**: Yes
+* **Description**: The name of the ECR repository where the Docker image will be pushed.
+* **Type**: `string`
+* **Required**: Yes
 
 ### `tag`
 
-- **Description**: The Docker image tag. If not provided, defaults to the GitHub commit hash.
-- **Type**: `string`
-- **Required**: No
+* **Description**: The Docker image tag. Defaults to the short Git commit hash if not provided.
+* **Type**: `string`
+* **Required**: No
+
+### `platform`
+
+* **Description**: Target platform for the Docker image build (e.g., `linux/amd64`, `linux/arm64`).
+* **Type**: `string`
+* **Default**: `linux/arm64`
+* **Required**: No
 
 ### `context`
 
-- **Description**: The build context for the Docker image. Can be a path or URL.
-- **Type**: `string`
-- **Default**: .
-- **Required**: No
+* **Description**: The build context for the Docker image. Can be a local path or a URL.
+* **Type**: `string`
+* **Default**: `.`
+* **Required**: No
 
 ### `dockerfile`
 
-- **Description**: The path to the Dockerfile.
-- **Type**: `string`
-- **Default**: `./Dockerfile`
-- **Required**: No
+* **Description**: The path to the Dockerfile.
+* **Type**: `string`
+* **Default**: `./Dockerfile`
+* **Required**: No
 
 ## Outputs
 
 ### `image`
 
-- **Description**: The full URI of the Docker image pushed to the ECR repository.
+* **Description**: The full image URI (including digest) of the built and pushed Docker image in ECR.
 
 ## Usage
-
-Below is an example of how to use this action in your GitHub workflow:
 
 ```yaml
 name: Build and Push to ECR
@@ -62,7 +68,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up AWS Credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -76,18 +82,16 @@ jobs:
           repository: my-ecr-repo
           tag: v1.0.0
           context: ./app
-
-      - name: Print Image URI
-        run: |
-          echo "Docker Image URI: ${{ steps.build.outputs.image }}"
+          dockerfile: ./app/Dockerfile
+          platform: linux/amd64
 ```
 
 ## Notes
 
-- **AWS Credentials**: Ensure the aws-actions/configure-aws-credentials action is configured with the necessary AWS access key and secret access key in your workflow.
-- **Permissions**: The IAM role or user associated with your AWS credentials must have permissions to push to the specified ECR repository.
-- **Registry Authentication**: This action handles ECR login automatically using the `aws-actions/amazon-ecr-login` action.
-- **Default Tagging**: If no tag is provided, the first 7 characters of the current GitHub commit hash are used.
+* **AWS Credentials**: Ensure `aws-actions/configure-aws-credentials` is configured with appropriate AWS access keys.
+* **Permissions**: The IAM role/user must have permissions to push to the target ECR repository.
+* **Registry Authentication**: ECR login is automatically handled using `aws-actions/amazon-ecr-login`.
+* **Default Tagging**: If no `tag` is provided, the first seven characters of the Git commit SHA are used.
 
 ---
 

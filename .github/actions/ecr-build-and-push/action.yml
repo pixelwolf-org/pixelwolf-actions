@@ -1,26 +1,30 @@
 name: 'ECR Build and Push'
-description: 'This GitHub Action builds a Docker image and pushes it to an Amazon Elastic Container Registry (ECR). It requires AWS credentials to be set up in the environment.'
+description: 'Builds a Docker image and pushes it to Amazon Elastic Container Registry (ECR). Requires AWS credentials configured in the environment.'
 
 inputs:
   repository:
-    description: 'The name of the ECR repository where the Docker image will be pushed. Example: my-repo-name.'
+    description: 'The name of the ECR repository where the Docker image will be pushed. Example: my-repo-name'
     required: true
   tag:
-    description: 'The tag for the Docker image. If not provided, the commit hash of the current GitHub workflow will be used as the tag.'
+    description: 'The tag for the Docker image. Defaults to the short commit hash if not provided.'
     required: false
     default: ''
+  platform:
+    description: 'Target platform for the Docker image build. Example: linux/amd64, linux/arm64'
+    required: true
+    default: 'linux/arm64'
   context:
-    description: 'The build context for the Docker image. Can be a local path or a URL. Default: "." (current directory).'
+    description: 'The build context for the Docker image. Can be a local path or a URL. Default: "." (current directory)'
     required: false
     default: '.'
   dockerfile:
-    description: 'The path to the Dockerfile. Default: "./Dockerfile".'
+    description: 'The path to the Dockerfile. Default: "./Dockerfile"'
     required: false
     default: './Dockerfile'
 
 outputs:
   image:
-    description: 'The full URI of the built and pushed Docker image in ECR.'
+    description: 'The full image URI (including digest) of the built and pushed Docker image in ECR.'
     value: ${{ steps.set-outputs.outputs.image }}
 
 runs:
@@ -32,11 +36,7 @@ runs:
       run: |
         tag="${{ inputs.tag }}"
         if [ -z "$tag" ]; then
-          tag="$(echo $GITHUB_SHA | cut -c1-7)"
-        fi
-        if [ -z "$tag" ]; then
-          echo "Error: Unable to determine a valid tag."
-          exit 1
+          tag="$(echo "$GITHUB_SHA" | cut -c1-7)"
         fi
         echo "tag=$tag" >> $GITHUB_OUTPUT
 
@@ -45,17 +45,17 @@ runs:
       uses: aws-actions/amazon-ecr-login@v2
 
     - name: 'Build and Push Docker Image'
+      id: build-and-push
       uses: docker/build-push-action@v6
       with:
         context: ${{ inputs.context }}
         file: ${{ inputs.dockerfile }}
-        tags: |
-          ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repository }}:${{ steps.build-tag.outputs.tag }}
-          ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repository }}:latest
+        platforms: ${{ inputs.platform }}
+        tags: ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repository }}:${{ steps.build-tag.outputs.tag }}
         push: true
 
     - name: 'Set Output Variables'
       id: set-outputs
       shell: bash
       run: |
-        echo "image=${{ steps.login-ecr.outputs.registry }}/${{ inputs.repository }}:${{ steps.build-tag.outputs.tag }}" >> $GITHUB_OUTPUT
+        echo "image=${{ steps.login-ecr.outputs.registry }}/${{ inputs.repository }}@${{ steps.build-and-push.outputs.digest }}" >> $GITHUB_OUTPUT
