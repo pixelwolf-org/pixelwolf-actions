@@ -35,23 +35,6 @@ runs:
         echo "📍 ECS Container: ${{ inputs.ecs-container }}"
         echo "📍 ECS Task Definition Family: ${{ inputs.ecs-task-definition }}"
 
-#    - name: 'Download Task Definition JSON'
-#      shell: bash
-#      run: |
-#        aws ecs describe-task-definition \
-#          --task-definition ${{ inputs.ecs-task-definition }} \
-#          --query taskDefinition > task-definition.json
-#
-#    - name: 'Extract existing task definition tags'
-#      shell: bash
-#      run: |
-#          TASK_DEF_ARN=$(aws ecs describe-task-definition --task-definition ${{ inputs.ecs-task-definition }} --query 'taskDefinition.taskDefinitionArn' --output text)
-#
-#          aws ecs list-tags-for-resource \
-#            --resource-arn "$TASK_DEF_ARN" \
-#            --query tags \
-#            > task-definition-tags.json
-
     - name: 'Update ECS Task Definition with New Image'
       id: render-task
       uses: aws-actions/amazon-ecs-render-task-definition@v1
