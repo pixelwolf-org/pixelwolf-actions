@@ -94,6 +94,13 @@ jobs:
 - **Default**: `./terraform`
 - **Required**: No
 
+### `terraform-bucket`
+
+- **Description**: S3 bucket name for Terraform state storage.
+- **Type**: `string`
+- **Default**: `null`
+- **Required**: No
+
 ## Outputs
 
 No explicit outputs are provided. The action logs execution process to the console.

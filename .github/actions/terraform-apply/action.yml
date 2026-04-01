@@ -24,6 +24,9 @@ inputs:
     description: 'Path to the Terraform configuration files.'
     required: false
     default: './terraform'
+  terraform-bucket:
+    description: 'S3 bucket name for Terraform state storage.'
+    required: false
 
 runs:
   using: composite
@@ -41,7 +44,11 @@ runs:
       id: terraform-s3-bucket
       shell: bash
       run: |
-        BUCKET_NAME="pixelwolf-$(echo '${{ inputs.environment }}' | awk '{print tolower($0)}')-terraform"
+        if [ -n "${{ inputs.terraform-bucket }}" ]; then
+          BUCKET_NAME="${{ inputs.terraform-bucket }}"
+        else
+          BUCKET_NAME="pixelwolf-$(echo '${{ inputs.environment }}' | awk '{print tolower($0)}')-terraform"
+        fi
         echo "Terraform S3 Bucket: $BUCKET_NAME"
         echo "value=$BUCKET_NAME" >> $GITHUB_OUTPUT
 
