@@ -1,39 +1,40 @@
 # Setup Python Environment
 
-Sets up Python and Poetry with optional caching for dependencies.
+Sets up Python and Poetry or uv with optional caching for dependencies.
 
 ## Features
 
 - **Python Setup**: Installs a specified Python version.
-- **Poetry Installation**: Installs Poetry with a specified version or the latest available.
-- **Dependency Caching**: Optionally enables caching for Poetry and pip dependencies.
+- **Package Manager Support**: Supports both [Poetry](https://python-poetry.org/) and [uv](https://github.com/astral-sh/uv).
+- **Dependency Caching**: Optionally enables caching for Poetry, uv, and pip dependencies.
 
 ## Usage
 
+### Using Poetry (Default)
+
 ```yaml
-name: 'My Workflow'
+steps:
+  - name: Checkout Code
+    uses: actions/checkout@v4
 
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-    branches: ['*']
+  - name: Setup Python Environment
+    uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-python@main
+    with:
+      python-version: '3.12'
+```
 
-jobs:
-  my-job:
-    name: My Job
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ['3.12']
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+### Using uv
 
-      - name: Setup Python Environment
-        uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-python@main
-        with:
-          python-version: ${{ matrix.python-version }}
+```yaml
+steps:
+  - name: Checkout Code
+    uses: actions/checkout@v4
+
+  - name: Setup Python Environment
+    uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-python@main
+    with:
+      python-version: '3.12'
+      package-manager: 'uv'
 ```
 
 ## Inputs
@@ -44,15 +45,28 @@ jobs:
 - **Type**: string
 - **Required**: Yes
 
+### `package-manager`
+
+- **Description**: Package manager to use. Options: `poetry`, `uv`.
+- **Type**: string
+- **Default**: `"poetry"`
+- **Required**: No
+
 ### `poetry-version`
 
 - **Description**: Poetry version to install. Leave empty for the latest version.
 - **Type**: string
 - **Required**: No
 
+### `uv-version`
+
+- **Description**: uv version to install. Leave empty for the latest version.
+- **Type**: string
+- **Required**: No
+
 ### `use-cache`
 
-- **Description**: Enable caching for Poetry and pip dependencies.
+- **Description**: Enable caching for Poetry/uv and pip dependencies.
 - **Type**: boolean
 - **Default**: "true"
 - **Required**: No
@@ -63,5 +77,5 @@ No explicit outputs are provided. The action logs execution process to the conso
 
 ## Notes
 
-- **Virtual Environment**: Poetry is configured to use in-project virtual environments.
-- **Cache Strategy**: The cache key is based on OS, Python version, Poetry version, and `poetry.lock`.
+- **Virtual Environment**: When using Poetry, it is recommended to configure it to use in-project virtual environments (`poetry config virtualenvs.in-project true`).
+- **Cache Strategy**: The cache key is based on OS, Python version, package manager, version, and the respective lock file (`poetry.lock` or `uv.lock`).

@@ -1,15 +1,22 @@
 name: 'Setup Python Environment'
-description: 'Sets up Python and Poetry with optional caching for dependencies.'
+description: 'Sets up Python and Poetry or uv with optional caching for dependencies.'
 
 inputs:
   python-version:
     description: "Python version to install. Example: '3.12'"
     required: true
+  package-manager:
+    description: "Package manager to use. Options: 'poetry', 'uv'."
+    default: 'poetry'
+    required: false
+  uv-version:
+    description: 'uv version to install. Leave empty to install the latest version.'
+    required: false
   poetry-version:
     description: 'Poetry version to install. Leave empty to install the latest version.'
     required: false
   use-cache:
-    description: 'Enable caching for Poetry and pip dependencies.'
+    description: 'Enable caching for Poetry/uv and pip dependencies.'
     default: 'true'
     required: false
 
@@ -22,6 +29,7 @@ runs:
         python-version: ${{ inputs.python-version }}
 
     - name: Install Poetry
+      if: ${{ inputs.package-manager == 'poetry' }}
       shell: bash
       run: |
         if [[ -n "${{ inputs.poetry-version }}" ]]; then
@@ -29,10 +37,17 @@ runs:
         else
           curl -sSL https://install.python-poetry.org | python3 -
         fi
-        echo "Poetry installed: $(poetry --version)"
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        echo "Poetry installed"
+
+    - name: Install uv
+      if: ${{ inputs.package-manager == 'uv' }}
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: ${{ inputs.uv-version || 'latest' }}
 
     - name: Set up Poetry cache (if enabled)
-      if: ${{ inputs.use-cache == 'true' }}
+      if: ${{ inputs.use-cache == 'true' && inputs.package-manager == 'poetry' }}
       uses: actions/cache@v4
       with:
         path: |
@@ -41,3 +56,13 @@ runs:
         key: ${{ runner.os }}-python-${{ inputs.python-version }}-poetry-${{ inputs.poetry-version }}-cache-${{ hashFiles('**/poetry.lock') }}
         restore-keys: |
           ${{ runner.os }}-python-${{ inputs.python-version }}-poetry-${{ inputs.poetry-version }}-cache-
+
+    - name: Set up uv cache (if enabled)
+      if: ${{ inputs.use-cache == 'true' && inputs.package-manager == 'uv' }}
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/uv
+        key: ${{ runner.os }}-python-${{ inputs.python-version }}-uv-${{ inputs.uv-version }}-cache-${{ hashFiles('**/uv.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-python-${{ inputs.python-version }}-uv-${{ inputs.uv-version }}-cache-

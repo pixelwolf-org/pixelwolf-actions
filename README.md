@@ -52,7 +52,7 @@ The **Pixelwolf Actions** repository is built to:
 
 | **Action Name**                                | **Description**            |
 | ---------------------------------------------- | -------------------------- |
-| [setup-python](./docs/actions/setup-python.md) | Sets up Python and Poetry. |
+| [setup-python](./docs/actions/setup-python.md) | Sets up Python and Poetry or uv. |
 
 ### Utilities
 
