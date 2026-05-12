@@ -32,7 +32,7 @@ runs:
   using: composite
   steps:
     - name: 'Setup Terraform'
-      uses: hashicorp/setup-terraform@v3
+      uses: hashicorp/setup-terraform@v4
 
     - name: 'Configure Git Access for Pixelwolf Terraform Modules'
       shell: bash
