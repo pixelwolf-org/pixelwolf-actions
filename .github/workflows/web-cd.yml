@@ -45,7 +45,7 @@ jobs:
       deployment-url: ${{ steps.vercel-deploy.outputs.deployment-url }}
     steps:
       - name: 'Checkout repository'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup aws credentials with OIDC
         uses: aws-actions/configure-aws-credentials@v6

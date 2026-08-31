@@ -15,7 +15,7 @@ Sets up Python and Poetry or uv with optional caching for dependencies.
 ```yaml
 steps:
   - name: Checkout Code
-    uses: actions/checkout@v4
+    uses: actions/checkout@v7
 
   - name: Setup Python Environment
     uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-python@main
@@ -28,7 +28,7 @@ steps:
 ```yaml
 steps:
   - name: Checkout Code
-    uses: actions/checkout@v4
+    uses: actions/checkout@v7
 
   - name: Setup Python Environment
     uses: pixelwolf-org/pixelwolf-actions/.github/actions/setup-python@main
