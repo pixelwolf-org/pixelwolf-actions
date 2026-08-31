@@ -1,5 +1,5 @@
 name: 'Web CI Workflow'
-description: 'CI workflow for web app using Bun for faster builds'
+# CI workflow for web app using Bun for faster builds
 
 on:
   workflow_call:

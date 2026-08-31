@@ -19,6 +19,7 @@ Welcome to the **Pixelwolf Actions** repository! This repository serves as the c
     - [Adding a New Workflow](#adding-a-new-workflow)
     - [Updating an Existing Action or Workflow](#updating-an-existing-action-or-workflow)
     - [Guidelines](#guidelines)
+    - [Linting](#linting)
   - [Notes](#notes)
 
 ## Overview
@@ -50,8 +51,8 @@ The **Pixelwolf Actions** repository is built to:
 
 ### Python
 
-| **Action Name**                                | **Description**            |
-| ---------------------------------------------- | -------------------------- |
+| **Action Name**                                | **Description**                  |
+| ---------------------------------------------- | -------------------------------- |
 | [setup-python](./docs/actions/setup-python.md) | Sets up Python and Poetry or uv. |
 
 ### Utilities
@@ -146,6 +147,37 @@ We welcome contributions to improve and expand our custom actions. Follow these 
 - Follow naming conventions and keep actions modular and reusable.
 - Maintain thorough documentation to simplify onboarding and usage.
 - Rigorously test all changes before committing.
+
+### Linting
+
+Workflows and custom actions are linted by [actionlint](https://github.com/rhysd/actionlint) and
+validated against the [SchemaStore](https://www.schemastore.org/) GitHub Actions schemas. Both run
+through [pre-commit](https://pre-commit.com), configured in [`.pre-commit-config.yaml`](.pre-commit-config.yaml).
+
+Enable the git hook once per clone:
+
+```bash
+uv tool install pre-commit   # or: pipx install pre-commit / brew install pre-commit
+pre-commit install
+```
+
+From then on, staged workflow and action files are checked on every commit. To lint the whole
+repository on demand:
+
+```bash
+pre-commit run --all-files
+```
+
+The same hooks run in CI via [`.github/workflows/lint-actions.yml`](.github/workflows/lint-actions.yml)
+on every push to `main` and on every pull request.
+
+What each hook covers:
+
+| Hook                     | Files                          | Checks                                                                                                        |
+| ------------------------ | ------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `actionlint`             | `.github/workflows/*.yml`      | Workflow syntax, `${{ }}` expression types, context/`needs` availability, runner labels, shellcheck on `run:` |
+| `check-github-actions`   | `.github/actions/*/action.yml` | Action metadata schema — required keys, input/output structure, unknown fields                                |
+| `check-github-workflows` | `.github/workflows/*.yml`      | Workflow schema, complementing actionlint                                                                     |
 
 ## Notes
 

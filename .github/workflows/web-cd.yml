@@ -1,5 +1,5 @@
 name: 'Web CD Workflow'
-description: 'CD workflow for web app deployment to Vercel'
+# CD workflow for web app deployment to Vercel
 
 on:
   workflow_call:

@@ -1,5 +1,5 @@
 name: 'Production CI/CD'
-description: 'A CI/CD that should run whenever a pull request to main is closed'
+# A CI/CD that should run whenever a pull request to main is closed
 
 on:
   workflow_call:

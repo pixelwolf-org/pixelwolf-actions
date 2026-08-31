@@ -1,0 +1,27 @@
+# Lint GitHub Actions workflows and custom composite/JS actions.
+#
+# Install locally once:
+#   uvx pre-commit install     (or: pipx install pre-commit && pre-commit install)
+# Run against everything:
+#   uvx pre-commit run --all-files
+
+default_install_hook_types: [pre-commit]
+
+repos:
+  # actionlint: deep linting of .github/workflows/*.yml — expression syntax,
+  # context/`needs` availability, action input names, runner labels, and
+  # shellcheck over every `run:` block.
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
+  # actionlint does not understand action metadata files, so custom actions are
+  # validated against the SchemaStore JSON schemas instead.
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.38.0
+    hooks:
+      # .github/actions/*/action.yml
+      - id: check-github-actions
+      # .github/workflows/*.yml — schema check complementing actionlint
+      - id: check-github-workflows

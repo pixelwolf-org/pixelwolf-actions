@@ -1,0 +1,44 @@
+name: 'Lint Actions'
+# Validates this repository's own workflows and custom actions with actionlint
+# and the SchemaStore GitHub Actions schemas, via the shared pre-commit config.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lint-actions-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: 'actionlint + schema validation'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v7
+
+      - name: 'Setup Python'
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: 'Cache pre-commit environments'
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            pre-commit-${{ runner.os }}-
+
+      - name: 'Install pre-commit'
+        run: pip install pre-commit
+
+      - name: 'Run pre-commit hooks'
+        run: pre-commit run --all-files --show-diff-on-failure --color=always
