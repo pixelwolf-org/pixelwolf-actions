@@ -42,7 +42,7 @@ runs:
 
     - name: Install uv
       if: ${{ inputs.package-manager == 'uv' }}
-      uses: astral-sh/setup-uv@v9
+      uses: astral-sh/setup-uv@v7
       with:
         version: ${{ inputs.uv-version || 'latest' }}
 
