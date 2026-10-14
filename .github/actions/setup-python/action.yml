@@ -40,11 +40,23 @@ runs:
         echo "$HOME/.local/bin" >> $GITHUB_PATH
         echo "Poetry installed"
 
+    # Installed with the official script instead of `astral-sh/setup-uv`: repositories that only allow actions owned
+    # by pixelwolf-org or GitHub (e.g., pixelwolf-iac) fail at "Set up job" when a composite action references a
+    # third-party action, even in a step that is skipped.
     - name: Install uv
       if: ${{ inputs.package-manager == 'uv' }}
-      uses: astral-sh/setup-uv@v7
-      with:
-        version: ${{ inputs.uv-version || 'latest' }}
+      shell: bash
+      env:
+        UV_VERSION: ${{ inputs.uv-version }}
+        UV_NO_MODIFY_PATH: '1'
+      run: |
+        if [[ -n "$UV_VERSION" ]]; then
+          curl -LsSf "https://astral.sh/uv/${UV_VERSION}/install.sh" | sh
+        else
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+        fi
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        "$HOME/.local/bin/uv" --version
 
     - name: Set up Poetry cache (if enabled)
       if: ${{ inputs.use-cache == 'true' && inputs.package-manager == 'poetry' }}
