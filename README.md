@@ -47,6 +47,7 @@ The **Pixelwolf Actions** repository is built to:
 | [ecr-build-and-push](./docs/actions/ecr-build-and-push.md)       | Builds and pushes Docker images to AWS ECR.       |
 | [ecs-deploy](./docs/actions/ecs-deploy.md)                       | Deploys an Amazon ECR image to an ECS cluster.    |
 | [lambda-deploy](./docs/actions/lambda-deploy.md)                 | Deploys an Amazon ECR image to a Lambda Function. |
+| [stage-switch](./docs/actions/stage-switch.md)                   | Starts or stops a project's stage resources.      |
 | [terraform-apply](./docs/actions/terraform-apply.md)             | Applies Terraform changes for infrastructure.     |
 
 ### Python
