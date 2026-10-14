@@ -1,0 +1,96 @@
+name: 'Stage Switch'
+description: 'Starts or stops the stage resources of a project through StageKeeper and waits until they are ready. Requires AWS credentials configured in the workflow.'
+author: 'Pixelwolf <engineering@pixelwolf.com.br>'
+
+inputs:
+  action:
+    description: 'What to do with the project resources: `start` or `stop`.'
+    required: true
+  projects:
+    description: 'Projects to switch, as `<customer>-<project>` (e.g., `pixelwolf-sabia`). Comma or newline separated.'
+    required: true
+  resources:
+    description: 'Only switch these resource types: `ecs`, `rds`, `ec2`, `asg`, `eventbridge` (or full type names). Comma or newline separated. Default: every type.'
+    required: false
+    default: ''
+  clusters:
+    description: 'Only switch the ECS services of these clusters. Comma or newline separated.'
+    required: false
+    default: ''
+  names:
+    description: 'Only switch resources whose name, id or ARN matches one of these globs (e.g., `*-api`). Comma or newline separated.'
+    required: false
+    default: ''
+  force:
+    description: 'Start only: also start resources that were not stopped by StageKeeper. Use `true` or `false`.'
+    required: false
+    default: 'false'
+  dry-run:
+    description: 'Only report what would be switched, without changing anything. Use `true` or `false`.'
+    required: false
+    default: 'false'
+  wait:
+    description: 'Wait for StageKeeper to process the request and fail the step if it fails. Use `true` or `false`.'
+    required: false
+    default: 'true'
+  wait-for-ready:
+    description: 'Start only: also wait until the started resources are available (ECS services stable, databases and instances available). Use `true` or `false`.'
+    required: false
+    default: 'true'
+  timeout-minutes:
+    description: 'Maximum time to wait, in minutes, for StageKeeper and the started resources (int).'
+    required: false
+    default: '20'
+  topic-arn:
+    description: 'ARN of the StageKeeper SNS topic. Its region is used for every AWS call.'
+    required: false
+    default: 'arn:aws:sns:us-east-1:490004652867:pixelwolf-stagekeeper-infrastructure-switch-scheduler'
+  log-group:
+    description: 'CloudWatch log group of the StageKeeper Lambda function.'
+    required: false
+    default: '/aws/lambda/pixelwolf-stagekeeper-infra-switcher'
+
+outputs:
+  request-id:
+    description: 'Unique id of the request, echoed in the StageKeeper logs.'
+    value: ${{ steps.switch.outputs.request-id }}
+  status:
+    description: 'StageKeeper result status: `ok`, `failed`, `skipped`, `error`, or `sent` when `wait` is `false`.'
+    value: ${{ steps.switch.outputs.status }}
+  switched:
+    description: 'Number of resources started or stopped.'
+    value: ${{ steps.switch.outputs.switched }}
+  result:
+    description: 'Full StageKeeper result, as JSON.'
+    value: ${{ steps.switch.outputs.result }}
+
+runs:
+  using: composite
+  steps:
+    - name: 'Information Check'
+      shell: bash
+      env:
+        STAGE_ACTION: ${{ inputs.action }}
+        STAGE_PROJECTS: ${{ inputs.projects }}
+      run: |
+        echo "🎬 Action: ${STAGE_ACTION}"
+        echo "📍 Projects: ${STAGE_PROJECTS}"
+
+    - name: '🚦 Switch Stage Resources'
+      id: switch
+      shell: bash
+      # Inputs are passed as environment variables, never interpolated into the script.
+      env:
+        STAGE_ACTION: ${{ inputs.action }}
+        STAGE_PROJECTS: ${{ inputs.projects }}
+        STAGE_RESOURCES: ${{ inputs.resources }}
+        STAGE_CLUSTERS: ${{ inputs.clusters }}
+        STAGE_NAMES: ${{ inputs.names }}
+        STAGE_FORCE: ${{ inputs.force }}
+        STAGE_DRY_RUN: ${{ inputs.dry-run }}
+        STAGE_WAIT: ${{ inputs.wait }}
+        STAGE_WAIT_FOR_READY: ${{ inputs.wait-for-ready }}
+        STAGE_TIMEOUT_MINUTES: ${{ inputs.timeout-minutes }}
+        STAGE_TOPIC_ARN: ${{ inputs.topic-arn }}
+        STAGE_LOG_GROUP: ${{ inputs.log-group }}
+      run: '"${GITHUB_ACTION_PATH}/stage-switch.sh"'
