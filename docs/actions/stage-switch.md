@@ -39,11 +39,13 @@ jobs:
       - name: 'Checkout Code'
         uses: actions/checkout@v7
 
-      - name: 'Setup aws credentials with OIDC'
+      - name: 'Setup aws credentials for StageKeeper'
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume: ${{ secrets.AWS_STAGE_DEPLOY_OIDC_ROLE_ARN }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_STAGEKEEPER_ROLE_ARN }}
+          aws-region: us-east-1
+          # Covers starting the project, running the tests and stopping it.
+          role-duration-seconds: 7200
 
       - name: 'Start stage'
         uses: pixelwolf-org/pixelwolf-actions/.github/actions/stage-switch@main
@@ -217,16 +219,23 @@ Full StageKeeper result, as JSON:
 
 ## Notes
 
-- **AWS credentials** must be configured beforehand with `aws-actions/configure-aws-credentials`. The role needs:
+- **AWS credentials** must be configured beforehand with `aws-actions/configure-aws-credentials`. Assume the
+  `pixelwolf-stagekeeper-github-actions` role, available as the `AWS_STAGEKEEPER_ROLE_ARN` organization variable. It
+  is managed by StageKeeper (`terraform/github-actions.tf`), can be assumed for up to 4 hours and only grants what
+  the action needs:
 
-  | Permission                                                       | Resource                                                                            | Used for                    |
-  | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------- | --------------------------- |
-  | `sns:Publish`                                                    | `arn:aws:sns:us-east-1:490004652867:pixelwolf-stagekeeper-*`                        | Sending the request         |
-  | `logs:FilterLogEvents`                                           | `arn:aws:logs:us-east-1:490004652867:log-group:/aws/lambda/pixelwolf-stagekeeper-*` | `wait`                      |
-  | `ecs:DescribeServices`                                           | `arn:aws:ecs:*:*:service/*`                                                         | `wait-for-ready`, ECS       |
-  | `rds:DescribeDBInstances`, `rds:DescribeDBClusters`              | `*`                                                                                 | `wait-for-ready`, RDS       |
-  | `ec2:DescribeInstances`, `autoscaling:DescribeAutoScalingGroups` | `*`                                                                                 | `wait-for-ready`, EC2 / ASG |
+  | Permission                                                       | Resource                     | Used for                    |
+  | ---------------------------------------------------------------- | ---------------------------- | --------------------------- |
+  | `sns:Publish`                                                    | StageKeeper SNS topic        | Sending the request         |
+  | `logs:FilterLogEvents`                                           | StageKeeper Lambda log group | `wait`                      |
+  | `ecs:DescribeServices`                                           | ECS services                 | `wait-for-ready`, ECS       |
+  | `rds:DescribeDBInstances`, `rds:DescribeDBClusters`              | RDS instances and clusters   | `wait-for-ready`, RDS       |
+  | `ec2:DescribeInstances`, `autoscaling:DescribeAutoScalingGroups` | `*`                          | `wait-for-ready`, EC2 / ASG |
 
+  To use another role, grant it the same permissions.
+
+- **Other AWS steps**: `configure-aws-credentials` replaces the credentials of the job. When the job also uses another
+  role (e.g., to deploy), configure the StageKeeper role again before each `stage-switch` step.
 - **Only resources StageKeeper stopped are started** unless `force: true`. Resources that are already running are not
   awaited, and resources still stopping are skipped (a notice is printed when anything is skipped).
 - **Stop in an `if: always()` step**, so the project is stopped even when the tests fail. The scheduled stop catches
