@@ -220,7 +220,7 @@ Full StageKeeper result, as JSON:
 ## Notes
 
 - **AWS credentials** must be configured beforehand with `aws-actions/configure-aws-credentials`. Assume the
-  `pixelwolf-stagekeeper-github-actions` role, available as the `AWS_STAGEKEEPER_ROLE_ARN` organization variable. It
+  `pixelwolf-stagekeeper-github-actions` role, available as the `AWS_STAGEKEEPER_ROLE_ARN` organization secret. It
   is managed by StageKeeper (`terraform/github-actions.tf`), can be assumed for up to 4 hours and only grants what
   the action needs:
 
