@@ -29,7 +29,7 @@
 set -euo pipefail
 
 readonly RESULT_MARKER='StageKeeper result:'
-readonly RESOURCE_TYPES='ecs rds ec2 asg eventbridge ecs-service rds-instance rds-cluster ec2-instance autoscaling-group eventbridge-rule'
+readonly RESOURCE_TYPES='ecs rds ec2 asg eventbridge ecs-service rds-instance rds-cluster ec2-instance autoscaling-group eventbridge-rule eventbridge-schedule'
 readonly POLL_INTERVAL=10
 
 die() {
@@ -235,7 +235,7 @@ while IFS=$'\t' read -r type id arn cluster; do
     ec2-instance) wait_for "ec2-instance ${id}" aws ec2 wait instance-running --instance-ids "$id" ;;
     autoscaling-group) wait_for_asg "$id" ;;
     ecs-service) wait_for "ecs-service ${id}" aws ecs wait services-stable --cluster "$cluster" --services "$arn" ;;
-    eventbridge-rule) ;; # Enabled immediately.
+    eventbridge-rule | eventbridge-schedule) ;; # Enabled immediately.
     *) echo "::warning::Not waiting for unknown resource type '${type}' (${id})." ;;
   esac
 done < <(jq -r '.switched[]? | [.type, .id, .arn, (.cluster // "")] | @tsv' <<<"$RESULT")
