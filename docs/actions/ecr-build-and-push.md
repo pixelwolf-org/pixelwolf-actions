@@ -45,6 +45,15 @@ This action streamlines the process of containerizing your application and publi
 * **Default**: `./Dockerfile`
 * **Required**: No
 
+### `provenance`
+
+* **Description**: Provenance attestation mode passed to `docker/build-push-action` (e.g., `false`, `mode=min`, `mode=max`).
+  Set it to `false` for Lambda functions: with attestations, the image is pushed as an OCI image index, which Lambda
+  rejects (`The image manifest, config or layer media type for the source image ... is not supported`).
+* **Type**: `string`
+* **Default**: the buildx default (`mode=min`)
+* **Required**: No
+
 ## Outputs
 
 ### `image`
@@ -91,6 +100,8 @@ jobs:
 * **AWS Credentials**: Ensure `aws-actions/configure-aws-credentials` is configured with appropriate AWS access keys.
 * **Permissions**: The IAM role/user must have permissions to push to the target ECR repository.
 * **Registry Authentication**: ECR login is automatically handled using `aws-actions/amazon-ecr-login`.
+* **Lambda Functions**: Set `provenance: false` and a `platform` matching the function architecture
+  (`linux/amd64` for `x86_64`, `linux/arm64` for `arm64`).
 * **Default Tagging**: If no `tag` is provided, the first seven characters of the Git commit SHA are used.
 
 ---
