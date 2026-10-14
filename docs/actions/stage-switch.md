@@ -42,7 +42,7 @@ jobs:
       - name: 'Setup aws credentials for StageKeeper'
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume: ${{ vars.AWS_STAGEKEEPER_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AWS_STAGEKEEPER_ROLE_ARN }}
           aws-region: us-east-1
           # Covers starting the project, running the tests and stopping it.
           role-duration-seconds: 7200
@@ -111,7 +111,7 @@ jobs:
 
 - **Description**: Only switch these resource types. Comma or newline separated.
 - **Accepted values**: `ecs`, `rds`, `ec2`, `asg`, `eventbridge`, or the full type names `ecs-service`, `rds-instance`,
-  `rds-cluster`, `ec2-instance`, `autoscaling-group`, `eventbridge-rule`.
+  `rds-cluster`, `ec2-instance`, `autoscaling-group`, `eventbridge-rule`, `eventbridge-schedule`.
 - **Default**: every type
 - **Required**: No
 
@@ -220,7 +220,7 @@ Full StageKeeper result, as JSON:
 ## Notes
 
 - **AWS credentials** must be configured beforehand with `aws-actions/configure-aws-credentials`. Assume the
-  `pixelwolf-stagekeeper-github-actions` role, available as the `AWS_STAGEKEEPER_ROLE_ARN` organization variable. It
+  `pixelwolf-stagekeeper-github-actions` role, available as the `AWS_STAGEKEEPER_ROLE_ARN` organization secret. It
   is managed by StageKeeper (`terraform/github-actions.tf`), can be assumed for up to 4 hours and only grants what
   the action needs:
 
